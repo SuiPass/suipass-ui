@@ -1,9 +1,9 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="p-2 flex gap-2">
+      {/* <div className="p-2 flex gap-2">
         <Link to="/" className="[&.active]:font-bold">
           Home
         </Link>{" "}
@@ -11,8 +11,10 @@ export const Route = createRootRoute({
           Dashboard
         </Link>
       </div>
-      <hr />
-      <Outlet />
+      <hr /> */}
+      <div className=" animate-fade-in">
+        <Outlet />
+      </div>
     </>
-  ),
+  )
 });

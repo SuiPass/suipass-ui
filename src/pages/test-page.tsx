@@ -1,5 +1,6 @@
 import { Header, SpotLightBg } from '@/components';
 import { ConnectButton, useCurrentAccount, useSuiClientQuery } from '@mysten/dapp-kit';
+import { SuiObjectResponse } from '@mysten/sui.js/client';
 
 function ConnectedAccount() {
   const account = useCurrentAccount();
@@ -18,25 +19,59 @@ function ConnectedAccount() {
 }
 
 function OwnedObjects({ address }: { address: string }) {
-  const { data } = useSuiClientQuery('getOwnedObjects', {
-    owner: address
+  const { data, isPending, isError, error } = useSuiClientQuery('getOwnedObjects', {
+    owner: address,
+    options: {
+      showType: true,
+      showOwner: true,
+      showPreviousTransaction: true,
+      showDisplay: false,
+      showContent: false,
+      showBcs: false,
+      showStorageRebate: false
+    }
   });
-  if (!data) {
-    return null;
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
     <div>
       <div className="">Owned objects:</div>
-      <ul role="list" className="marker:text-sky-400 list-disc pl-5 space-y-3 text-slate-400">
+      <ul role="list" className="marker:text-sky-400 list-disc pl-5 space-y-2 text-slate-400">
         {data.data.map((object) => (
           <li key={object.data?.objectId}>
-            <a href={`https://suiexplorer.com/object/${object.data?.objectId}?network=devnet`}>
-              {object.data?.objectId}
-            </a>
+            <ObjectPreview data={object} />
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function ObjectPreview({ data }: { data: SuiObjectResponse }) {
+  if (data.error) {
+    return (
+      <div>
+        <div>Error:</div>
+        <pre>{JSON.stringify(data.error, null, 2)}</pre>
+      </div>
+    );
+  }
+  if (!data.data) {
+    return <div>Hong biet show gi</div>;
+  }
+
+  return (
+    <div>
+      <div>Id: {data.data.objectId}</div>
+      <div>Type: {data.data.type}</div>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
@@ -49,19 +84,17 @@ export function Test() {
         <div className="relative">
           <Header />
           <main className="container mx-auto relative">
-            <section className="grid grid-cols-5 gap-16 py-32 text-white">
-              <div className="col-span-5 md:col-span-3">
-                <ConnectButton
-                  style={{
-                    padding: '10px 20px',
-                    background: '#f00',
-                    marginLeft: '20px',
-                    borderRadius: '10px'
-                  }}
-                />
-                <ConnectedAccount />
-              </div>
-            </section>
+            <div className="col-span-5 md:col-span-3 text-white">
+              <ConnectButton
+                style={{
+                  padding: '10px 20px',
+                  background: '#f00',
+                  marginLeft: '20px',
+                  borderRadius: '10px'
+                }}
+              />
+              <ConnectedAccount />
+            </div>
           </main>
         </div>
       </div>

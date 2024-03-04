@@ -1,6 +1,12 @@
-import { Header, SpotLightBg } from '@/components';
-import { ConnectButton, useCurrentAccount, useSuiClientQuery } from '@mysten/dapp-kit';
+import { Button, Header, SpotLightBg } from '@/components';
+import {
+  ConnectButton,
+  useCurrentAccount,
+  useSignAndExecuteTransactionBlock,
+  useSuiClientQuery
+} from '@mysten/dapp-kit';
 import { SuiObjectResponse } from '@mysten/sui.js/client';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
 
 function ConnectedAccount() {
   const account = useCurrentAccount();
@@ -9,11 +15,107 @@ function ConnectedAccount() {
     return null;
   }
 
+  const modAddr = '0x79e66a5f43ad9f3b33e15b7187d4235c1d158da9aface3b03f8624cac2aab0a3';
+
   return (
-    <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
-      <div>Address: {account.address}</div>
-      <div>Chain: {account.chains}</div>
-      <OwnedObjects address={account.address} />
+    <div className="col-span-5 md:col-span-3 text-white">
+      <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
+        <div>Address: {account.address}</div>
+        <div>Chain: {account.chains}</div>
+        <OwnedObjects address={account.address} />
+      </div>
+      <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
+        <div>Address: {account.address}</div>
+        <div>Chain: {account.chains}</div>
+        <Actions modAddr={modAddr} />
+      </div>
+    </div>
+  );
+}
+
+function Actions({ modAddr }: { modAddr: string }) {
+  const { mutate: signAndExec } = useSignAndExecuteTransactionBlock();
+  const currentAccount = useCurrentAccount();
+
+  function newUser() {
+    const txb = new TransactionBlock();
+    const func = 'user::new';
+    txb.moveCall({
+      arguments: [txb.pure.string('name: tinguyen')],
+      target: `${modAddr}::${func}`
+    });
+
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[SUCCESS]', func, JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[ERROR]', func, JSON.stringify(e));
+        }
+      }
+    );
+  }
+
+  function submitReq() {
+    const txb = new TransactionBlock();
+    const func = 'provider::submit_request';
+    txb.moveCall({
+      arguments: [],
+      target: `${modAddr}::${func}`
+    });
+
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[SUCCESS]', func, JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[ERROR]', func, JSON.stringify(e));
+        }
+      }
+    );
+  }
+
+  if (!currentAccount) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div style={{ padding: 20, display: 'flex', flexDirection: 'column' }}>
+      <Button
+        size="lg"
+        onClick={() => {
+          newUser();
+        }}
+      >
+        <div className="flex items-center">
+          <div className="ml-4">user::new</div>
+        </div>
+      </Button>
+      <Button
+        className="mt-5"
+        size="lg"
+        onClick={() => {
+          submitReq();
+        }}
+      >
+        <div className="flex items-center">
+          <div className="ml-4">provider::submit_request</div>
+        </div>
+      </Button>
     </div>
   );
 }

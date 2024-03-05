@@ -1,50 +1,36 @@
-import { Button, Header, SpotLightBg } from '@/components';
+import { Button, Header, OwnedObj, SpotLightBg } from '@/components';
+import { getScoreTxb, mergeTxb, mintPassportTxb, newUserTxb, submitReqTxb } from '@/txb';
 import {
   ConnectButton,
+  useAutoConnectWallet,
   useCurrentAccount,
-  useSignAndExecuteTransactionBlock,
-  useSuiClientQuery
+  useSignAndExecuteTransactionBlock
 } from '@mysten/dapp-kit';
-import { SuiObjectResponse } from '@mysten/sui.js/client';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
 
 function ConnectedAccount() {
   const account = useCurrentAccount();
-
   if (!account) {
     return null;
   }
-
-  const modAddr = '0x79e66a5f43ad9f3b33e15b7187d4235c1d158da9aface3b03f8624cac2aab0a3';
 
   return (
     <div className="col-span-5 md:col-span-3 text-white">
       <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
         <div>Address: {account.address}</div>
         <div>Chain: {account.chains}</div>
-        <OwnedObjects address={account.address} />
+        <OwnedObj address={account.address} />
       </div>
       <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
-        <div>Address: {account.address}</div>
-        <div>Chain: {account.chains}</div>
-        <Actions modAddr={modAddr} />
+        <Actions />
       </div>
     </div>
   );
 }
 
-function Actions({ modAddr }: { modAddr: string }) {
+function Actions() {
   const { mutate: signAndExec } = useSignAndExecuteTransactionBlock();
-  const currentAccount = useCurrentAccount();
-
   function newUser() {
-    const txb = new TransactionBlock();
-    const func = 'user::new';
-    txb.moveCall({
-      arguments: [txb.pure.string('name: tinguyen')],
-      target: `${modAddr}::${func}`
-    });
-
+    const txb = newUserTxb('name: tinguyen');
     signAndExec(
       {
         transactionBlock: txb,
@@ -54,23 +40,17 @@ function Actions({ modAddr }: { modAddr: string }) {
       },
       {
         onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
+          console.log('[S] user::new', JSON.stringify(tx));
         },
         onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
+          console.log('[E] user::new', JSON.stringify(e));
         }
       }
     );
   }
 
   function submitReq() {
-    const txb = new TransactionBlock();
-    const func = 'provider::submit_request';
-    txb.moveCall({
-      arguments: [],
-      target: `${modAddr}::${func}`
-    });
-
+    const txb = submitReqTxb();
     signAndExec(
       {
         transactionBlock: txb,
@@ -80,17 +60,73 @@ function Actions({ modAddr }: { modAddr: string }) {
       },
       {
         onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
+          console.log('[S] suipass::submit_request', JSON.stringify(tx));
         },
         onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
+          console.log('[E] suipass::submit_request', JSON.stringify(e));
         }
       }
     );
   }
 
-  if (!currentAccount) {
-    return <div>Loading...</div>;
+  function merge() {
+    const txb = mergeTxb();
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[S] user::merge', JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[E] user::merge', JSON.stringify(e));
+        }
+      }
+    );
+  }
+
+  function mintPassport() {
+    const txb = mintPassportTxb();
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[S] suipass::mint_passport', JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[E] suipass::mint_passport', JSON.stringify(e));
+        }
+      }
+    );
+  }
+
+  function getScore() {
+    const txb = getScoreTxb();
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[S] suipass::calculate_user_score', JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[E] suipass::calculate_user_score', JSON.stringify(e));
+        }
+      }
+    );
   }
 
   return (
@@ -113,80 +149,57 @@ function Actions({ modAddr }: { modAddr: string }) {
         }}
       >
         <div className="flex items-center">
-          <div className="ml-4">provider::submit_request</div>
+          <div className="ml-4">suipass::submit_request</div>
+        </div>
+      </Button>
+      <Button
+        className="mt-5"
+        size="lg"
+        onClick={() => {
+          merge();
+        }}
+      >
+        <div className="flex items-center">
+          <div className="ml-4">user::merge</div>
+        </div>
+      </Button>
+      <Button
+        className="mt-5"
+        size="lg"
+        onClick={() => {
+          getScore();
+        }}
+      >
+        <div className="flex items-center">
+          <div className="ml-4">suipass::calculate_user_score</div>
+        </div>
+      </Button>
+      <Button
+        className="mt-5"
+        size="lg"
+        onClick={() => {
+          mintPassport();
+        }}
+      >
+        <div className="flex items-center">
+          <div className="ml-4">suipass::mint_passport</div>
         </div>
       </Button>
     </div>
   );
 }
 
-function OwnedObjects({ address }: { address: string }) {
-  const { data, isPending, isError, error } = useSuiClientQuery('getOwnedObjects', {
-    owner: address,
-    options: {
-      showType: true,
-      showOwner: true,
-      showPreviousTransaction: true,
-      showDisplay: false,
-      showContent: false,
-      showBcs: false,
-      showStorageRebate: false
-    }
-  });
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  return (
-    <div>
-      <div className="">Owned objects:</div>
-      <ul role="list" className="marker:text-sky-400 list-disc pl-5 space-y-2 text-slate-400">
-        {data.data.map((object) => (
-          <li key={object.data?.objectId}>
-            <ObjectPreview data={object} />
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function ObjectPreview({ data }: { data: SuiObjectResponse }) {
-  if (data.error) {
-    return (
-      <div>
-        <div>Error:</div>
-        <pre>{JSON.stringify(data.error, null, 2)}</pre>
-      </div>
-    );
-  }
-  if (!data.data) {
-    return <div>Hong biet show gi</div>;
-  }
-
-  return (
-    <div>
-      <div>Id: {data.data.objectId}</div>
-      <div>Type: {data.data.type}</div>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
-}
-
 export function Test() {
+  const autoConnectionStatus = useAutoConnectWallet();
+
   return (
-    <>
-      <div className="min-h-[800px] min-w-[375px] relative">
-        <SpotLightBg />
-        <div className="relative">
-          <Header />
-          <main className="container mx-auto relative">
-            <div className="col-span-5 md:col-span-3 text-white">
+    <div className="min-h-[800px] min-w-[375px] relative">
+      <SpotLightBg />
+      <div className="relative">
+        <Header />
+        <main className="container mx-auto relative">
+          <div className="text-white">
+            <div className="container mx-auto py-10 bg-slate-800 rounded-xl mt-10">
               <ConnectButton
                 style={{
                   padding: '10px 20px',
@@ -195,11 +208,12 @@ export function Test() {
                   borderRadius: '10px'
                 }}
               />
-              <ConnectedAccount />
+              <div>Auto-connection: {autoConnectionStatus}</div>
             </div>
-          </main>
-        </div>
+            <ConnectedAccount />
+          </div>
+        </main>
       </div>
-    </>
+    </div>
   );
 }

@@ -12,8 +12,41 @@ import {
 import { Minus, Plus } from 'lucide-react';
 import { useEffect } from 'react';
 import { Spotlight } from '@/lib/animation';
+import { submitReqTxb } from '@/txb';
+import { useSignAndExecuteTransactionBlock } from '@mysten/dapp-kit';
+
+// http://localhost:5173/dashboard?code=839d71697fe958ee9bea&state=%2Fdashboard#0
 
 export function Dashboard() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+
+  const { mutate: signAndExec } = useSignAndExecuteTransactionBlock();
+  function submitReq(code: string) {
+    const txb = submitReqTxb(code);
+    signAndExec(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true
+        }
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[S] suipass::submit_request', JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[E] suipass::submit_request', JSON.stringify(e));
+        }
+      }
+    );
+  }
+
+  useEffect(() => {
+    if (!code) return;
+    submitReq(code);
+  }, [code]);
+
   useEffect(() => {
     // Init Spotlight
     const spotlights = document.querySelectorAll('[data-spotlight]');
@@ -21,6 +54,7 @@ export function Dashboard() {
       new Spotlight(spotlight);
     });
   });
+
   return (
     <>
       <div className="min-h-[800px] min-w-[375px] relative text-white">

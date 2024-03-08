@@ -8,7 +8,6 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer';
-import { Minus, Plus } from 'lucide-react';
 import { Button } from '.';
 
 export function Stamp() {

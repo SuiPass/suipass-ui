@@ -2,9 +2,11 @@ import { Link } from '@tanstack/react-router';
 import { useWindowScroll } from '@uidotdev/usehooks';
 import { useMemo } from 'react';
 import { Button } from '.';
+import { useDisconnectWallet } from '@mysten/dapp-kit';
 
 export function Header() {
   const [{ y }] = useWindowScroll();
+  const { mutate: disconnect } = useDisconnectWallet();
 
   const yLessThan100 = (y ?? 0) < 100;
   const isBgTransparent = useMemo(() => {
@@ -32,6 +34,7 @@ export function Header() {
             {isLogged && (
               <Button
                 onClick={() => {
+                  disconnect();
                   localStorage.removeItem('logged');
                   location.replace('/');
                 }}

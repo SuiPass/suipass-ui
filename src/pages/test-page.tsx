@@ -207,7 +207,7 @@ export function Test() {
                   marginLeft: '20px',
                   borderRadius: '10px'
                 }}
-              />
+              ></ConnectButton>
               <div>Auto-connection: {autoConnectionStatus}</div>
             </div>
             <ConnectedAccount />

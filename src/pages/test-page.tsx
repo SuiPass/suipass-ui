@@ -50,7 +50,7 @@ function Actions() {
   }
 
   function submitReq() {
-    const txb = submitReqTxb();
+    const txb = submitReqTxb('some proof');
     signAndExec(
       {
         transactionBlock: txb,

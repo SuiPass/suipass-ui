@@ -1,51 +1,19 @@
 import { Header, SpotLightBg, Stamp } from '@/components';
-// import {
-//   Drawer,
-//   DrawerClose,
-//   DrawerContent,
-//   DrawerDescription,
-//   DrawerFooter,
-//   DrawerHeader,
-//   DrawerTitle,
-//   DrawerTrigger
-// } from '@/components/ui/drawer';
-// import { Minus, Plus } from 'lucide-react';
 import { useEffect } from 'react';
 import { Spotlight } from '@/lib/animation';
-import { submitReqTxb } from '@/txb';
-import { useSignAndExecuteTransactionBlock } from '@mysten/dapp-kit';
-
-// http://localhost:5173/dashboard?code=839d71697fe958ee9bea&state=%2Fdashboard#0
+import { useSubmitRequest } from '@/hooks';
 
 export function Dashboard() {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
 
-  const { mutate: signAndExec } = useSignAndExecuteTransactionBlock();
-  function submitReq(code: string) {
-    const txb = submitReqTxb(code);
-    signAndExec(
-      {
-        transactionBlock: txb,
-        options: {
-          showEffects: true
-        }
-      },
-      {
-        onSuccess: (tx) => {
-          console.log('[S] suipass::submit_request', JSON.stringify(tx));
-        },
-        onError: (e) => {
-          console.log('[E] suipass::submit_request', JSON.stringify(e));
-        }
-      }
-    );
-  }
+  const { available, mutate: submitRequest } = useSubmitRequest();
+  const providerId = '0x0ae16ee5f5a9fe9e01163f726b6369abbcd03dd65bf11acc34842e1674949129';
 
   useEffect(() => {
     if (!code) return;
-    submitReq(code);
-  }, [code]);
+    if (submitRequest) submitRequest(providerId, code);
+  }, [code, available]);
 
   useEffect(() => {
     // Init Spotlight

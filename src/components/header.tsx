@@ -1,17 +1,18 @@
 import { Link } from '@tanstack/react-router';
 import { useWindowScroll } from '@uidotdev/usehooks';
 import { useMemo } from 'react';
-import { Button } from '.';
+import { useHeader } from '@/hooks';
+import { Button } from './ui';
 
 export function Header() {
+  const { logged, label, logoutButtonOnClick } = useHeader();
+
   const [{ y }] = useWindowScroll();
 
   const yLessThan100 = (y ?? 0) < 100;
   const isBgTransparent = useMemo(() => {
     return yLessThan100;
   }, [yLessThan100]);
-
-  const isLogged = !!localStorage.getItem('logged');
 
   return (
     <>
@@ -23,21 +24,17 @@ export function Header() {
             <Link to="/">LOGO</Link>
           </h1>
           <nav>
-            <a href="#" className="text-white px-4">
+            {/* <a href="#" className="text-white px-4">
               Features
             </a>
             <a href="#" className="text-white px-4">
               About
-            </a>
-            {isLogged && (
-              <Button
-                onClick={() => {
-                  localStorage.removeItem('logged');
-                  location.replace('/');
-                }}
-              >
-                Logout
-              </Button>
+            </a> */}
+            {logged && (
+              <>
+                <span className="text-sm">Hi {label}</span> &nbsp;
+                <Button onClick={logoutButtonOnClick}>Logout</Button>
+              </>
             )}
           </nav>
         </div>

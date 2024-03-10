@@ -13,7 +13,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 0,
-          left: 0
+          left: 0,
         }}
         className="animate-wiggle-left"
       />
@@ -22,7 +22,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 0,
-          right: 0
+          right: 0,
         }}
         className="animate-wiggle-right"
       />
@@ -31,7 +31,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 1200,
-          left: 0
+          left: 0,
         }}
         className="animate-wiggle-left"
       />
@@ -40,7 +40,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 1200,
-          right: 0
+          right: 0,
         }}
         className="animate-wiggle-right"
       />
@@ -49,7 +49,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 2400,
-          left: 0
+          left: 0,
         }}
         className="animate-wiggle-left"
       />
@@ -58,7 +58,7 @@ export function SpotLightBg() {
         style={{
           position: 'absolute',
           top: 2400,
-          right: 0
+          right: 0,
         }}
         className="animate-wiggle-right"
       />

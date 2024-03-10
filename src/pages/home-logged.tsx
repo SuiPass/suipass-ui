@@ -1,5 +1,6 @@
 import { Button, Header, SpotLightBg } from '@/components';
 import { Link } from '@tanstack/react-router';
+import SuipassLogo from '@/assets/logo.png';
 
 export function HomeLogged() {
   return (
@@ -17,12 +18,14 @@ export function HomeLogged() {
                   faucibus nunc amet convallis posuere diam nulla. Pellentesque vulputate dui
                   posuere orci tellus dolor, semper convallis sed.
                 </p>
-                <Button size="lg" className="w-full md:w-auto">
-                  <Link to="/dashboard">Go to Dashboard</Link>
-                </Button>
+                <Link to="/dashboard">
+                  <Button size="lg" className="w-full md:w-auto">
+                    Go to Dashboard
+                  </Button>
+                </Link>
               </div>
-              <div className="hidden md:col-span-2 md:block">
-                <img src="https://placehold.co/300x300" className="object-cover w-full" />
+              <div className="hidden md:col-span-2 md:block rounded-full overflow-hidden">
+                <img src={SuipassLogo} className="object-cover w-full" />
               </div>
             </section>
           </main>

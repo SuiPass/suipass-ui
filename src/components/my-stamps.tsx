@@ -6,7 +6,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger
+  DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Minus, Plus } from 'lucide-react';
 import { Button } from '.';
@@ -82,7 +82,7 @@ export function Stamp() {
                     client_id: '5f5991f94e3f8e1224df',
                     redirect_uri: 'http://localhost:5173/dashboard',
                     scope: 'user:email',
-                    state: location.pathname
+                    state: location.pathname,
                   };
 
                   const qs = new URLSearchParams(options);

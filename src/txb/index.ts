@@ -1,7 +1,5 @@
-import { SUIPASS_ADDR } from '@/cfg';
+import { GITHUB_PROVIDER_ID, PACKAGE_ADDR, SUIPASS_ADDR } from '@/cfg';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
-
-const PACKAGE_ADDR = '0xedc73afdf0eae447167519c6484f1067f6f11e036c1642657c4c378010bc2902';
 
 export function newUserTxb(info: string): TransactionBlock {
   const txb = new TransactionBlock();
@@ -16,18 +14,12 @@ export function submitReqTxb(code: string): TransactionBlock {
   const txb = new TransactionBlock();
   txb.moveCall({
     arguments: [
-      // Id of User Object
-      txb.object('0x3cd19f30b46f5b97cb2da41a3531f68744f2b01dc4735416cd5e703214f66442'),
-      // Id of Suipass (shared object), TODO: this is static you can set it in env or fetch from backend?
       txb.object(SUIPASS_ADDR),
-      // Provider Id, can get from fetching the SuiPass object and take a look at the providers field.
-      txb.pure.address('0x0ae16ee5f5a9fe9e01163f726b6369abbcd03dd65bf11acc34842e1674949129'),
-      // Request address, this is address of this wallet
-      txb.pure.address('0xe3ea11c64666cab98eb233433e2c2332bba0d3e21473c539ebc247613c8d281f'),
+      txb.pure.address(GITHUB_PROVIDER_ID),
       // Proof
       txb.pure.string(code),
       // Coin Id, id of the Sui token
-      txb.object('0x4eb18852e2d3f40fa328123d321c48f4c8476f92790c5eaf29da8cda67bc53e4')
+      txb.object('0x71c4e219562b513015765d584a945a8d887c44ce863d15ad670c25e642ce71b3')
     ],
     target: `${PACKAGE_ADDR}::suipass::submit_request`
   });
@@ -39,9 +31,9 @@ export function mergeTxb(): TransactionBlock {
   txb.moveCall({
     arguments: [
       // Id of User Object
-      txb.object('0x3cd19f30b46f5b97cb2da41a3531f68744f2b01dc4735416cd5e703214f66442'),
+      txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008'),
       // Id of Approval
-      txb.object('0xcc3511e45bdb99d4ba60ad127f873c93ddeff0f37ff87d33deebc7a24b3c6ef5')
+      txb.object('0xf1f266fc298b3a819ebfbcd3cc91c6a3372ea926a351eec5791fedc3c4cff48d')
     ],
     target: `${PACKAGE_ADDR}::user::merge`
   });
@@ -52,10 +44,9 @@ export function mintPassportTxb(): TransactionBlock {
   const txb = new TransactionBlock();
   txb.moveCall({
     arguments: [
-      // Id of Suipass (shared object), TODO: this is static you can set it in env or fetch from backend?
-      txb.object('0x07dde60f0d3b11c852b061f6d1197757e6e1c98cb15a22a7a955922085f177c2'),
+      txb.object(SUIPASS_ADDR),
       // Id of User Object
-      txb.object('0x3cd19f30b46f5b97cb2da41a3531f68744f2b01dc4735416cd5e703214f66442')
+      txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008')
     ],
     target: `${PACKAGE_ADDR}::suipass::mint_passport`
   });
@@ -66,10 +57,9 @@ export function getScoreTxb(): TransactionBlock {
   const txb = new TransactionBlock();
   txb.moveCall({
     arguments: [
-      // Id of Suipass (shared object), TODO: this is static you can set it in env or fetch from backend?
-      txb.object('0x07dde60f0d3b11c852b061f6d1197757e6e1c98cb15a22a7a955922085f177c2'),
+      txb.object(SUIPASS_ADDR),
       // Id of User Object
-      txb.object('0x3cd19f30b46f5b97cb2da41a3531f68744f2b01dc4735416cd5e703214f66442')
+      txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008')
     ],
     target: `${PACKAGE_ADDR}::suipass::calculate_user_score`
   });

@@ -9,10 +9,8 @@ export function OwnedObj({ address }: IOwnedObj) {
     owner: address,
     options: {
       showType: true,
-      showOwner: true,
-      showPreviousTransaction: true,
       showDisplay: false,
-      showContent: false,
+      showContent: true,
       showBcs: false,
       showStorageRebate: false
     }

@@ -6,12 +6,14 @@ export function ConnectWalletModal() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    rootEventHandler.on(EventNames.OPEN_CONNECT_WALLET_MODAL, () => {
-      setOpen(true);
-    });
+    const mapListeners = [
+      rootEventHandler.on(EventNames.OPEN_CONNECT_WALLET_MODAL, () => {
+        setOpen(true);
+      }),
+    ];
 
     return () => {
-      rootEventHandler.remove(EventNames.OPEN_CONNECT_WALLET_MODAL);
+      rootEventHandler.removeListeners(mapListeners);
     };
   }, []);
   return <ConnectModal trigger={<></>} open={open} onOpenChange={(isOpen) => setOpen(isOpen)} />;

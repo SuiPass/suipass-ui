@@ -4,3 +4,4 @@ export * from './splot-light-bg';
 export * from './my-stamps';
 export * from './connected-account';
 export * from './connect-wallet-modal';
+export * from './list-stamps';

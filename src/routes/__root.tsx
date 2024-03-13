@@ -1,32 +1,17 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { useInitialize } from '@/hooks';
+import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router';
 import { useEffect } from 'react';
-import { useNavigate } from '@tanstack/react-router';
-import { EventNames, rootEventHandler } from '@/events';
 
 export function RouteComponent() {
-  const navigate = useNavigate();
+  useInitialize();
 
+  const { location } = useRouterState();
   useEffect(() => {
-    rootEventHandler.on(EventNames.WALLET_CONNECTED, () => {
-      navigate({
-        to: '/dashboard',
-      });
-    });
-
-    rootEventHandler.on(EventNames.WALLET_DISCONNECTED, () => {
-      navigate({
-        to: '/',
-      });
-    });
-
-    return () => {
-      rootEventHandler.remove(EventNames.WALLET_CONNECTED);
-      rootEventHandler.remove(EventNames.WALLET_DISCONNECTED);
-    };
-  }, []);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
-    <div className=" animate-fade-in">
+    <div className="animate-fade-in">
       <Outlet />
     </div>
   );

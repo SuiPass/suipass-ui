@@ -1,4 +1,5 @@
 import { EventNames, rootEventHandler } from '@/events';
+import { useAppStore } from '@/stores';
 import {
   useConnectWallet,
   useCurrentAccount,
@@ -8,6 +9,7 @@ import {
 import { useCallback } from 'react';
 
 export function useAppWallet() {
+  const { isLogged } = useAppStore();
   const currentAccount = useCurrentAccount();
   const wallets = useWallets();
   const { mutate: connectWallet } = useConnectWallet();
@@ -30,7 +32,7 @@ export function useAppWallet() {
   }, []);
 
   return {
-    logged: !!currentAccount,
+    logged: !!currentAccount && isLogged,
     label: currentAccount?.label,
     connect,
     disconnect,

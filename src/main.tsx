@@ -2,24 +2,13 @@ import '@/css/global.css';
 import '@mysten/dapp-kit/dist/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { RouterProvider } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui.js/client';
-
-// Import the generated route tree
-import { routeTree } from './routeTree.gen';
 import { createPortal } from 'react-dom';
-
-// Create a new router instance
-const router = createRouter({ routeTree });
-
-// Register the router instance for type safety
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
+import '@/events/listeners';
+import { router } from './router';
 
 const queryClient = new QueryClient();
 const networks = {

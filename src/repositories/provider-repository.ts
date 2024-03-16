@@ -2,27 +2,17 @@ import { Repository } from '@/base';
 import { SUI_CONFIGS } from '@/configs';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 
-class UserRepository extends Repository {
-  async getUserInfo() {
-    const res = await this.client.getOwnedObjects({
-      owner: this.account.address,
-      options: {
-        showContent: true,
-      },
-      limit: 1,
-      filter: {
-        StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
-      },
+class ProviderRepository extends Repository {
+  async submitReq(input: { provider: string; proof: any }) {
+    const txb = new TransactionBlock();
+    const func = 'provider::submit_request';
+    txb.moveCall({
+      arguments: [txb.pure.string(JSON.stringify(input))],
+      target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
 
-    return res.data[0];
-  }
-
-  async newUser(input: { name: string }) {
-    const txb = new TransactionBlock();
-    const func = 'user::new';
-    txb.moveCall({
-      arguments: [txb.pure.string(JSON.stringify({ name: input.name }))],
+    console.log({
+      arguments: [txb.pure.string(JSON.stringify(input))],
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
 
@@ -45,4 +35,4 @@ class UserRepository extends Repository {
   }
 }
 
-export const userRepository = new UserRepository();
+export const providerRepository = new ProviderRepository();

@@ -12,8 +12,8 @@ export function useAppWallet() {
   const { isLogged } = useAppStore();
   const currentAccount = useCurrentAccount();
   const wallets = useWallets();
-  const { mutate: connectWallet } = useConnectWallet();
-  const { mutate: disconnectWallet } = useDisconnectWallet();
+  const { mutate: connectWallet, isPending: connectWalletIsPending } = useConnectWallet();
+  const { mutate: disconnectWallet, isPending: disconnectWalletIsPending } = useDisconnectWallet();
 
   const connect = useCallback(() => {
     connectWallet(
@@ -33,7 +33,9 @@ export function useAppWallet() {
 
   return {
     logged: !!currentAccount && isLogged,
-    label: currentAccount?.label,
+    label: currentAccount?.label ?? currentAccount?.address,
+    connectWalletIsPending,
+    disconnectWalletIsPending,
     connect,
     disconnect,
   };

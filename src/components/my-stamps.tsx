@@ -2,19 +2,24 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { Minus, Plus } from 'lucide-react';
 import { Button } from '.';
+import { useSubmitRequestDialog } from '@/hooks';
 
-export function Stamp() {
+export function Stamp({
+  data,
+}: {
+  data: { label: string; icon: string; description: string; onClick: () => void };
+}) {
+  const { open, mutation, setOpen, submitButtonOnClick } = useSubmitRequestDialog();
+
   return (
     <>
-      <Drawer>
+      <Drawer direction="right" open={open} onOpenChange={setOpen}>
         {/* <!-- Card 1 --> */}
         <div className="relative h-full bg-slate-800 rounded-3xl p-px before:absolute before:w-80 before:h-80 before:-left-40 before:-top-40 before:bg-slate-400 before:rounded-full before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-500 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:group-hover:opacity-100 before:z-10 before:blur-[100px] after:absolute after:w-96 after:h-96 after:-left-48 after:-top-48 after:bg-indigo-500 after:rounded-full after:opacity-0 after:pointer-events-none after:transition-opacity after:duration-500 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:hover:opacity-10 after:z-30 after:blur-[100px] overflow-hidden">
           <div className="relative h-full bg-slate-900 p-6 pb-8 rounded-[inherit] z-20 overflow-hidden">
@@ -34,7 +39,7 @@ export function Stamp() {
                 ></div>
                 <img
                   className="inline-flex"
-                  src="https://cruip-tutorials.vercel.app/spotlight-effect/card-01.png"
+                  src={data.icon}
                   width="200"
                   height="200"
                   alt="Card 01"
@@ -42,11 +47,9 @@ export function Stamp() {
               </div>
               {/* <!-- Text --> */}
               <div className="grow mb-5">
-                <div className="text-primary text-4xl font-light mb-4">6.92</div>
-                <h2 className="text-2xl text-slate-200 font-bold mb-1">GitHub</h2>
-                <p className="text-sm text-slate-500">
-                  Quickly apply filters to refine your issues lists and create custom views.
-                </p>
+                {/* <div className="text-primary text-4xl font-light mb-4">6.92</div> */}
+                <h2 className="text-2xl text-slate-200 font-bold mb-1">{data.label}</h2>
+                <p className="text-sm text-slate-500">{data.description}</p>
               </div>
               <DrawerTrigger asChild>
                 <a
@@ -67,31 +70,16 @@ export function Stamp() {
             </div>
           </div>
         </div>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-sm">
+        <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-[500px] rounded-none">
+          <div>
             <DrawerHeader>
               <DrawerTitle>Github</DrawerTitle>
-              <DrawerDescription>6.9</DrawerDescription>
+              {/* <DrawerDescription>6.9</DrawerDescription> */}
             </DrawerHeader>
             <DrawerFooter>
-              <Button
-                onClick={() => {
-                  const rootURl = 'https://github.com/login/oauth/authorize';
-
-                  const options = {
-                    client_id: '5f5991f94e3f8e1224df',
-                    redirect_uri: 'http://localhost:5173/dashboard',
-                    scope: 'user:email',
-                    state: location.pathname,
-                  };
-
-                  const qs = new URLSearchParams(options);
-                  const url = `${rootURl}?${qs.toString()}`;
-                  console.log(url);
-                  window.location.href = url;
-                }}
-              >
-                Connect
+              <Button onClick={data.onClick}>Connect</Button>
+              <Button onClick={submitButtonOnClick} isLoading={mutation.isPending}>
+                Submit
               </Button>
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>

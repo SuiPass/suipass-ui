@@ -17,11 +17,11 @@ export function Dashboard() {
         <div className="relative">
           <Header />
           <main className="container mx-auto relative">
-            <section className="pt-32 pb-24">
+            {/* <section className="pt-32 pb-24">
               <div className="">
                 <h2 className="mb-12 text-3xl">My Stamps</h2>
               </div>
-            </section>
+            </section> */}
             <section className="py-24">
               <div className="">
                 <h2 className="mb-12 text-3xl">Add stamps</h2>

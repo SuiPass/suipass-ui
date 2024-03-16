@@ -1,6 +1,7 @@
 import { useInitialize } from '@/hooks';
 import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export function RouteComponent() {
   useInitialize();
@@ -12,6 +13,7 @@ export function RouteComponent() {
 
   return (
     <div className="animate-fade-in">
+      {createPortal(<></>, document.body)}
       <Outlet />
     </div>
   );

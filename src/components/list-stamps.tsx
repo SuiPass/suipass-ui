@@ -26,7 +26,6 @@ const listOfStamps = [
 
 export function ListStamps() {
   useEffect(() => {
-    // Init Spotlight
     const spotlights = document.querySelectorAll('[data-spotlight]');
     spotlights.forEach((spotlight) => {
       new Spotlight(spotlight);

@@ -9,13 +9,25 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '.';
 import { useSubmitRequestDialog } from '@/hooks';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { requestRepository } from '@/repositories';
 
 export function Stamp({
   data,
 }: {
-  data: { label: string; icon: string; description: string; onClick: () => void };
+  data: { code: string; label: string; icon: string; description: string; onClick: () => void };
 }) {
   const { open, mutation, setOpen, submitButtonOnClick } = useSubmitRequestDialog();
+  const { data: requestListData, isLoading: requestListIsLoading } = useQuery({
+    queryKey: ['request/list'],
+    queryFn: async () => {
+      return requestRepository.list({ provider: data.code });
+    },
+  });
+
+  if (requestListIsLoading) return <div>Loading...</div>;
+
+  console.log(requestListData);
 
   return (
     <>

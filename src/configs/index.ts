@@ -3,3 +3,5 @@ export const SUI_CONFIGS = {
   PACKAGE_ADDR: '0xe6d525267a80bdb072252ac138d96f7487934afd75959c303045e8905f463e23',
   SUIPASS_ADDR: '0xb1409e04f54cce675884db13764705a4b385e8fac727c49d830271be82dabfc8',
 } as const;
+
+export const SUIPASS_API_URL = 'https://suipass-api-gamma.vercel.app/api';

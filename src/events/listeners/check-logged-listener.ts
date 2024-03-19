@@ -9,6 +9,5 @@ rootEventHandler.on(EventNames.CHECK_LOGGED, async (payload: { account: WalletAc
   setIsLogged(!!payload.account);
 
   const suiCoin = await userRepository.getSuiCoin();
-  console.info('suiCoin', suiCoin);
   setCoin({ sui: suiCoin.data?.objectId });
 });

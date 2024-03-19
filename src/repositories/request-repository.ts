@@ -4,6 +4,7 @@ import axios from 'axios';
 
 class RequestRepository extends Repository {
   async list(payload?: { provider: string }) {
+    console.info(this.constructor.name, { list: payload });
     const res = await axios.get(`${SUIPASS_API_URL}/request/list`, {
       params: {
         address: this.account.address,
@@ -11,7 +12,16 @@ class RequestRepository extends Repository {
       },
     });
 
-    return res.data;
+    return res.data?.data;
+  }
+
+  async create(payload?: { provider: string }) {
+    console.info(this.constructor.name, { create: payload });
+    await axios.post(`${SUIPASS_API_URL}/request/create`, payload, {
+      params: {
+        address: this.account.address,
+      },
+    });
   }
 }
 

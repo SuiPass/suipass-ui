@@ -2,36 +2,35 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '.';
-import { useSubmitRequestDialog } from '@/hooks';
-import { useQuery } from '@tanstack/react-query';
-import { requestRepository } from '@/repositories';
+import { StampStatus, useStamp } from '@/hooks/use-stamp';
 
 export function Stamp({
   data,
 }: {
   data: { code: string; label: string; icon: string; description: string; onClick: () => void };
 }) {
-  const { open, mutation, setOpen, submitButtonOnClick } = useSubmitRequestDialog();
-  const { data: requestListData, isLoading: requestListIsLoading } = useQuery({
-    queryKey: ['request/list'],
-    queryFn: async () => {
-      return requestRepository.list({ provider: data.code });
-    },
-  });
+  const {
+    isLoading,
+    needToSubmit,
+    status,
+    openDrawer,
+    mutation,
+    setOpenDrawer,
+    submitButtonOnClick,
+  } = useStamp({ code: data.code });
 
-  if (requestListIsLoading) return <div>Loading...</div>;
-
-  console.log(requestListData);
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
-      <Drawer direction="right" open={open} onOpenChange={setOpen}>
+      <Drawer direction="right" open={openDrawer} onOpenChange={setOpenDrawer}>
         {/* <!-- Card 1 --> */}
         <div className="relative h-full bg-slate-800 rounded-3xl p-px before:absolute before:w-80 before:h-80 before:-left-40 before:-top-40 before:bg-slate-400 before:rounded-full before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-500 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:group-hover:opacity-100 before:z-10 before:blur-[100px] after:absolute after:w-96 after:h-96 after:-left-48 after:-top-48 after:bg-indigo-500 after:rounded-full after:opacity-0 after:pointer-events-none after:transition-opacity after:duration-500 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:hover:opacity-10 after:z-30 after:blur-[100px] overflow-hidden">
           <div className="relative h-full bg-slate-900 p-6 pb-8 rounded-[inherit] z-20 overflow-hidden">
@@ -86,13 +85,17 @@ export function Stamp({
           <div>
             <DrawerHeader>
               <DrawerTitle>Github</DrawerTitle>
-              {/* <DrawerDescription>6.9</DrawerDescription> */}
+              <DrawerDescription className="text-lg py-10">{`STATUS: ${status}`}</DrawerDescription>
             </DrawerHeader>
             <DrawerFooter>
-              <Button onClick={data.onClick}>Connect</Button>
-              <Button onClick={submitButtonOnClick} isLoading={mutation.isPending}>
-                Submit
-              </Button>
+              {![StampStatus.WAITING, StampStatus.UPDATING].includes(status) &&
+                (needToSubmit ? (
+                  <Button onClick={submitButtonOnClick} isLoading={mutation.isPending}>
+                    Submit
+                  </Button>
+                ) : (
+                  <Button onClick={data.onClick}>Connect</Button>
+                ))}
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>

@@ -27,12 +27,12 @@ const listOfStamps = [
 ];
 
 export function ListStamps() {
-  const { data: stampsData, isLoading: stampsIsLoading } = useQuery({
-    queryKey: ['stamps'],
-    queryFn: async () => {
-      return userRepository.getStamps();
-    },
-  });
+  // const { data: stampsData, isLoading: stampsIsLoading } = useQuery({
+  //   queryKey: ['stamps'],
+  //   queryFn: async () => {
+  //     return userRepository.getStamps();
+  //   },
+  // });
 
   useEffect(() => {
     const spotlights = document.querySelectorAll('[data-spotlight]');
@@ -41,9 +41,7 @@ export function ListStamps() {
     });
   }, []);
 
-  if (stampsIsLoading) return <div>Loading...</div>;
-
-  console.log('stampsData', stampsData);
+  // if (stampsIsLoading) return <div>Loading...</div>;
 
   return (
     <div

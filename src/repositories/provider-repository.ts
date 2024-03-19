@@ -5,14 +5,7 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 class ProviderRepository extends Repository {
   async submitReq(input: { provider: string; proof: any }) {
     const txb = new TransactionBlock();
-    const func = 'provider::submit_request';
-
-    console.log('submitReqPayload', [
-      txb.object(SUI_CONFIGS.SUIPASS_ADDR),
-      txb.pure.address(SUI_CONFIGS.GITHUB_PROVIDER_ID),
-      txb.pure.string(JSON.stringify(input.proof)),
-      txb.object(this.suiCoin),
-    ]);
+    const func = 'suipass::submit_request';
 
     txb.moveCall({
       arguments: [

@@ -18,4 +18,10 @@ export class Repository {
     if (coin?.sui) return coin.sui;
     throw Error(`${this.constructor.name}: Sui coin of account is nil!`);
   }
+
+  protected get user() {
+    const { user } = useContractStore.getState();
+    if (user) return user;
+    throw Error(`${this.constructor.name}: User is nil!`);
+  }
 }

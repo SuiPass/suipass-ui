@@ -9,13 +9,12 @@ class UserRepository extends Repository {
       options: {
         showContent: true,
       },
-      limit: 1,
       filter: {
         StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
       },
     });
 
-    return res.data[0];
+    return res.data[res.data.length - 1];
   }
 
   async getSuiCoin() {
@@ -30,6 +29,32 @@ class UserRepository extends Repository {
     });
 
     return res.data[res.data.length - 1];
+  }
+
+  async getScore(input: { name: string }) {
+    const txb = new TransactionBlock();
+    const func = 'suipass::calculate_user_score';
+    txb.moveCall({
+      arguments: [txb.object(SUI_CONFIGS.SUIPASS_ADDR), txb.object(this.user.id)],
+      target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
+    });
+
+    await this.client.command.mutateAsync(
+      {
+        transactionBlock: txb,
+        options: {
+          showEffects: true,
+        },
+      },
+      {
+        onSuccess: (tx) => {
+          console.log('[SUCCESS]', func, JSON.stringify(tx));
+        },
+        onError: (e) => {
+          console.log('[ERROR]', func, JSON.stringify(e));
+        },
+      },
+    );
   }
 
   async newUser(input: { name: string }) {

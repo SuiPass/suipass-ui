@@ -6,7 +6,7 @@ import { generateUsername } from 'unique-username-generator';
 
 rootEventHandler.on(EventNames.WALLET_CONNECTED, async () => {
   const { setIsLogged } = useAppStore.getState();
-  const { setCoin } = useContractStore.getState();
+  const { setCoin, setUser } = useContractStore.getState();
 
   // check user is registered
   const userInfo = await userRepository.getUserInfo();
@@ -19,7 +19,8 @@ rootEventHandler.on(EventNames.WALLET_CONNECTED, async () => {
   const suiCoin = await userRepository.getSuiCoin();
 
   setIsLogged(true);
-  setCoin({ sui: suiCoin.data?.objectId });
+  setUser({ id: userInfo.data!.objectId });
+  setCoin({ sui: suiCoin.data!.objectId });
 
   router.navigate({
     to: '/dashboard',

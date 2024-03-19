@@ -47,19 +47,6 @@ class ProviderRepository extends Repository {
     });
     return txb;
   }
-
-  async getScoreTxb(): Promise<TransactionBlock> {
-    const txb = new TransactionBlock();
-    txb.moveCall({
-      arguments: [
-        txb.object(SUI_CONFIGS.SUIPASS_ADDR),
-        // Id of User Object
-        txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008'),
-      ],
-      target: `${SUI_CONFIGS.PACKAGE_ADDR}::suipass::calculate_user_score`,
-    });
-    return txb;
-  }
 }
 
 export const providerRepository = new ProviderRepository();

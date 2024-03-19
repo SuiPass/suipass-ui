@@ -12,11 +12,11 @@ export function useInitialize() {
   const account = useCurrentAccount();
 
   useEffect(() => {
-    rootEventHandler.emit(EventNames.CHECK_LOGGED, { account });
-  }, []);
-
-  useEffect(() => {
     (client as any).command = command;
     rootEventHandler.emit(EventNames.INIT_SUI_CLIENT, { client, account });
   }, [client, account]);
+
+  useEffect(() => {
+    rootEventHandler.emit(EventNames.CHECK_LOGGED, { account });
+  }, []);
 }

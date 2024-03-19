@@ -6,15 +6,19 @@ import { WalletAccount } from '@wallet-standard/base';
 type ContractStoreState = {
   client: (SuiClient & { command: ReturnType<typeof useSignAndExecuteTransactionBlock> }) | null;
   account: WalletAccount | null;
+  coin: { sui?: string } | null;
 };
 type ContractStoreAction = {
   setClient: (client: ContractStoreState['client']) => void;
   setAccount: (account: ContractStoreState['account']) => void;
+  setCoin: (account: ContractStoreState['coin']) => void;
 };
 
 export const useContractStore = create<ContractStoreState & ContractStoreAction>((set) => ({
   client: null,
   account: null,
+  coin: null,
   setClient: (client: ContractStoreState['client']) => set({ client }),
   setAccount: (account: ContractStoreState['account']) => set({ account }),
+  setCoin: (coin: ContractStoreState['coin']) => set({ coin }),
 }));

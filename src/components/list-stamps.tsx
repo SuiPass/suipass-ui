@@ -1,6 +1,8 @@
 import { Stamp } from '@/components';
 import { useEffect } from 'react';
 import { Spotlight } from '@/lib/animation';
+import { userRepository } from '@/repositories';
+import { useQuery } from '@tanstack/react-query';
 
 const listOfStamps = [
   {
@@ -25,12 +27,23 @@ const listOfStamps = [
 ];
 
 export function ListStamps() {
+  const { data: stampsData, isLoading: stampsIsLoading } = useQuery({
+    queryKey: ['stamps'],
+    queryFn: async () => {
+      return userRepository.getStamps();
+    },
+  });
+
   useEffect(() => {
     const spotlights = document.querySelectorAll('[data-spotlight]');
     spotlights.forEach((spotlight) => {
       new Spotlight(spotlight);
     });
   }, []);
+
+  if (stampsIsLoading) return <div>Loading...</div>;
+
+  console.log('stampsData', stampsData);
 
   return (
     <div

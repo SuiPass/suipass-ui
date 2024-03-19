@@ -12,4 +12,10 @@ export class Repository {
     if (account) return account;
     throw Error(`${this.constructor.name}: Contract wallet account is nil!`);
   }
+
+  protected get suiCoin() {
+    const { coin } = useContractStore.getState();
+    if (coin?.sui) return coin.sui;
+    throw Error(`${this.constructor.name}: Sui coin of account is nil!`);
+  }
 }

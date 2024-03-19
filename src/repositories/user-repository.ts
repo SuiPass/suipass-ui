@@ -18,6 +18,20 @@ class UserRepository extends Repository {
     return res.data[0];
   }
 
+  async getSuiCoin() {
+    const res = await this.client.getOwnedObjects({
+      owner: this.account.address,
+      options: {
+        showContent: true,
+      },
+      filter: {
+        StructType: `0x2::coin::Coin<0x2::sui::SUI>`,
+      },
+    });
+
+    return res.data[res.data.length - 1];
+  }
+
   async newUser(input: { name: string }) {
     const txb = new TransactionBlock();
     const func = 'user::new';
@@ -42,6 +56,20 @@ class UserRepository extends Repository {
         },
       },
     );
+  }
+
+  async getStamps() {
+    const res = await this.client.getOwnedObjects({
+      owner: SUI_CONFIGS.GITHUB_PROVIDER_ID,
+      options: {
+        showContent: true,
+      },
+      // filter: {
+      //   StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
+      // },
+    });
+
+    return res.data;
   }
 }
 

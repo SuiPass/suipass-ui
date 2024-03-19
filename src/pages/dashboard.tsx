@@ -4,7 +4,6 @@ import { Spotlight } from '@/lib/animation';
 
 export function Dashboard() {
   useEffect(() => {
-    // Init Spotlight
     const spotlights = document.querySelectorAll('[data-spotlight]');
     spotlights.forEach((spotlight) => {
       new Spotlight(spotlight);

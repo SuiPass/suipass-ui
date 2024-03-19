@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '.';
 import { useSubmitRequestDialog } from '@/hooks';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { requestRepository } from '@/repositories';
 
 export function Stamp({

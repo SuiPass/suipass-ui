@@ -15,3 +15,7 @@ export const SUI_CONFIGS = {
 } as const;
 
 export const SUIPASS_API_URL = 'https://suipass-api-gamma.vercel.app/api';
+
+export const SUIPASS_CONFIGS = {
+  URL: import.meta.env.VITE_SUIPASS_URL ?? 'https://suipass.xyz',
+};

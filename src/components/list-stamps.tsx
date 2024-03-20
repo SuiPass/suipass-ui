@@ -1,6 +1,7 @@
 import { Stamp } from '@/components';
 import { useEffect } from 'react';
 import { Spotlight } from '@/lib/animation';
+import { SUIPASS_CONFIGS } from '@/configs';
 
 const listOfStamps = [
   {
@@ -12,9 +13,30 @@ const listOfStamps = [
       const rootURl = 'https://github.com/login/oauth/authorize';
       const options = {
         client_id: '5f5991f94e3f8e1224df',
-        redirect_uri: `http://localhost:5173/dashboard?suipassProvider=github`,
+        redirect_uri: `${SUIPASS_CONFIGS.URL}/dashboard?suipassProvider=github`,
         scope: 'user:email',
         state: location.pathname,
+      };
+
+      const qs = new URLSearchParams(options);
+      const url = `${rootURl}?${qs.toString()}`;
+      window.location.href = url;
+    },
+  },
+  {
+    code: 'google',
+    label: 'Google',
+    icon: 'https://cruip-tutorials.vercel.app/spotlight-effect/card-01.png',
+    description: 'Goooooooooooooooooooooooooooogle',
+    onClick: () => {
+      const rootURl = 'https://accounts.google.com/o/oauth2/v2/auth';
+      const options = {
+        client_id: '711294972943-nonheh2v74203ksus9l2ekfiqhbe202s.apps.googleusercontent.com',
+        redirect_uri: `${SUIPASS_CONFIGS.URL}/dashboard?suipassProvider=google`,
+        state: location.pathname,
+        response_type: 'code',
+        scope:
+          'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
       };
 
       const qs = new URLSearchParams(options);

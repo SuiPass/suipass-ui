@@ -84,7 +84,7 @@ export function Stamp({
         <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-[500px] rounded-none">
           <div>
             <DrawerHeader>
-              <DrawerTitle>Github</DrawerTitle>
+              <DrawerTitle>{data.label}</DrawerTitle>
               <DrawerDescription className="text-lg py-10">{`STATUS: ${status}`}</DrawerDescription>
             </DrawerHeader>
             <DrawerFooter>

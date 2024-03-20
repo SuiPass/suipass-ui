@@ -10,7 +10,7 @@ export enum StampStatus {
   UPDATING = 'UPDATING',
 }
 
-export function useStamp({ code }: { code: string }) {
+export function useStamp({ code: stampCode }: { code: string }) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [status, setStatus] = useState(StampStatus.NOT_CONNECT);
   const { suipassProvider, code: providerProof } = useSearch<
@@ -24,7 +24,7 @@ export function useStamp({ code }: { code: string }) {
   const { data: requestListData, isLoading: requestListIsLoading } = useQuery({
     queryKey: ['request/list'],
     queryFn: () => {
-      return requestRepository.list({ provider: code });
+      return requestRepository.list({ provider: stampCode });
     },
   });
 
@@ -43,7 +43,7 @@ export function useStamp({ code }: { code: string }) {
   }, [suipassProvider, providerProof]);
 
   useEffect(() => {
-    if (suipassProvider) {
+    if (suipassProvider === stampCode) {
       setOpenDrawer(true);
     }
   }, [suipassProvider]);
@@ -51,8 +51,12 @@ export function useStamp({ code }: { code: string }) {
   useEffect(() => {
     if (!requestListData) return;
 
-    const waitingRequest = requestListData.find((i: any) => i.isApproved === false);
-    const approvedRequest = requestListData.find((i: any) => i.isApproved === true);
+    const waitingRequest = requestListData.find(
+      (i: any) => i.isApproved === false && i.provider == suipassProvider,
+    );
+    const approvedRequest = requestListData.find(
+      (i: any) => i.isApproved === true && i.provider === suipassProvider,
+    );
     if (waitingRequest && approvedRequest) {
       setStatus(StampStatus.UPDATING);
       return;

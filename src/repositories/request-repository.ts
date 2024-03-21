@@ -18,11 +18,12 @@ class RequestRepository extends Repository {
     return res.data?.data;
   }
 
-  async create(payload?: { provider: string }) {
+  async create(payload: { provider: string; proof: string }) {
     console.info(this.constructor.name, { create: payload });
     await axios.post(`${SUIPASS_API_URL}/requests`, payload, {
       params: {
         address: this.account.address,
+        proof: payload?.proof,
       },
       headers: {
         'x-wallet-address': this.account.address,

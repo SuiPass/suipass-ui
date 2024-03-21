@@ -14,7 +14,7 @@ export const SUI_CONFIGS = {
   GITHUB_PROVIDER_ID: '0xff33d62dbb85e6dd131b994cb228bad33f092ecde51f346fe1d8c8ffa76f8015',
 } as const;
 
-export const SUIPASS_API_URL = 'https://suipass-api-gamma.vercel.app/api';
+export const SUIPASS_API_URL = 'https://api.suipass.xyz/api';
 
 export const SUIPASS_CONFIGS = {
   URL: import.meta.env.VITE_SUIPASS_URL ?? 'https://suipass.xyz',

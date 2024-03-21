@@ -7,12 +7,15 @@ class ProviderRepository extends Repository {
     const txb = new TransactionBlock();
     const func = 'suipass::submit_request';
 
+    // txb.setGasPrice([txb.object(this.suiCoin)]);
+    const [coin] = txb.splitCoins(txb.gas, [100]);
+    console.log('COINs', JSON.stringify(coin), JSON.stringify(txb.gas));
     txb.moveCall({
       arguments: [
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),
         txb.pure.address(SUI_CONFIGS.GITHUB_PROVIDER_ID),
         txb.pure.string(JSON.stringify(input.proof)),
-        txb.object(this.suiCoin),
+        coin,
       ],
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });

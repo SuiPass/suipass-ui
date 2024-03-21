@@ -34,6 +34,7 @@ export function useStamp({ code: stampCode }: { code: string }) {
       await providerRepository.submitReq(payload);
       await requestRepository.create({
         provider: suipassProvider,
+        proof: payload.proof,
       });
     },
   });

@@ -4,12 +4,10 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 
 class ProviderRepository extends Repository {
   async submitReq(input: { provider: string; proof: any }) {
-    const txb = new TransactionBlock();
     const func = 'suipass::submit_request';
+    const txb = new TransactionBlock();
 
-    // txb.setGasPrice([txb.object(this.suiCoin)]);
-    const [coin] = txb.splitCoins(txb.gas, [100]);
-    console.log('COINs', JSON.stringify(coin), JSON.stringify(txb.gas));
+    const coin = txb.splitCoins(txb.gas, [100]);
     txb.moveCall({
       arguments: [
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),
@@ -19,6 +17,11 @@ class ProviderRepository extends Repository {
       ],
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
+
+    txb.transferObjects(
+      [coin],
+      txb.pure('0xe2506e387f97da99fa0b9bae65c46cf34a3b465404911136bb9d109ab43557b7'),
+    );
 
     await this.client.command.mutateAsync(
       {

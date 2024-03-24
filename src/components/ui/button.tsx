@@ -4,31 +4,25 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary/80 text-primary-foreground border border-primary hover:bg-primary',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-10 px-4 py-2 text-base rounded-md',
-        sm: 'h-9 px-3 text-sm',
-        lg: 'h-16 px-12 text-xl rounded-lg',
-        icon: 'h-10 w-10 text-sm',
-      },
+const buttonVariants = cva('block justify-center font-semibold leading-6 text-center ', {
+  variants: {
+    variant: {
+      default: 'bg-teal-400 text-neutral-900',
+      secondary: 'bg-teal-400 text-neutral-900',
+      outline: 'bg-teal-400 text-neutral-900',
+      ghost: 'bg-slate-800 bg-opacity-60 text-base text-gray-500',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: 'px-6 py-3 mt-6 rounded-2xl max-md:px-5',
+      sm: 'px-10 py-6 text-xl rounded-2xl',
+      lg: 'px-10 py-6 text-xl rounded-2xl',
     },
   },
-);
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -40,6 +34,8 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, isLoading, children, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+    if (props.disabled) variant = 'ghost';
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -47,7 +43,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isLoading ? true : props.disabled}
         {...props}
       >
-        {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : children}
+        <div className="relative">
+          {isLoading && (
+            <div className="absolute w-full flex justify-center">
+              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+            </div>
+          )}
+          <div className={`${isLoading ? 'opacity-0' : ''}`}>{children}</div>
+        </div>
       </Comp>
     );
   },

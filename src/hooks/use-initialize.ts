@@ -1,4 +1,4 @@
-import { EventNames, rootEventHandler } from '@/events';
+import { rootStore } from '@/stores';
 import {
   useCurrentAccount,
   useSignAndExecuteTransactionBlock,
@@ -13,10 +13,10 @@ export function useInitialize() {
 
   useEffect(() => {
     (client as any).command = command;
-    rootEventHandler.emit(EventNames.INIT_SUI_CLIENT, { client, account });
-  }, [client, account]);
+    rootStore.contract.set.client(client as any);
+  }, []);
 
   useEffect(() => {
-    rootEventHandler.emit(EventNames.CHECK_LOGGED, { account });
-  }, []);
+    if (account) rootStore.contract.set.account(account);
+  }, [!account]);
 }

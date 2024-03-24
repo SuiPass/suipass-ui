@@ -1,41 +1,113 @@
-import { Button, Header, SpotLightBg } from '@/components';
-import SuiIconIcon from '@/assets/sui_icon.svg';
-import SuipassLogo from '@/assets/logo.png';
-import { useHomePage } from '@/hooks';
+import { CredentialCard, Header } from '@/components';
+import * as React from 'react';
+
+const credentialData = [
+  {
+    imageSrc:
+      'https://cdn.builder.io/api/v1/image/assets/TEMP/92f018e0d1f887ddb1494d02ecb3fec8d5f8cbecbdf4ce2d3184f28ff2f897b4?apiKey=05796128f6dd44148e772baecec9d384&',
+    points: 7.38,
+    title: 'Github',
+    description: 'Connect to Github to verify your code contributions.',
+  },
+  {
+    imageSrc:
+      'https://cdn.builder.io/api/v1/image/assets/TEMP/65e169b1b0ec9ac80a3baa365909885d3cac9fc9ba9ae433d6dabd84183a41ed?apiKey=05796128f6dd44148e772baecec9d384&',
+    points: 12.31,
+    title: 'SUI',
+    description: 'Verify SUI activity.',
+  },
+  {
+    imageSrc:
+      'https://cdn.builder.io/api/v1/image/assets/TEMP/5340c725d11a928eb03435e46058ff7b6d209ef766a54d705a9629d3c1719c10?apiKey=05796128f6dd44148e772baecec9d384&',
+    points: 4.12,
+    title: 'X',
+    description: 'Connect to X to verify your social media presence.',
+  },
+  {
+    imageSrc:
+      'https://cdn.builder.io/api/v1/image/assets/TEMP/19cdfe3a6637a45dafff62e4ee504e5f08d3e5aa39666a5219b5c478699861cb?apiKey=05796128f6dd44148e772baecec9d384&',
+    points: 3.15,
+    title: 'LinkedIn',
+    description: 'Connect your existing Linkedin account to verify.',
+  },
+];
 
 export function Home() {
-  const { connectWalletButtonOnClick } = useHomePage();
-
   return (
-    <>
-      <div className="min-h-[800px] min-w-[375px] relative">
-        <SpotLightBg />
-        <div className="relative">
-          <Header />
-          <main className="container mx-auto relative">
-            <section className="grid grid-cols-5 gap-16 py-32 text-white">
-              <div className="col-span-5 md:col-span-3">
-                <div className="mb-2 text-2xl">Decentralize Passport</div>
-                <h1 className="text-6xl mb-12 font-bold md:text-8xl">Suipass</h1>
-                <p className="max-w-xl mb-16 text-xl font-thin">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo adipiscing
-                  faucibus nunc amet convallis posuere diam nulla. Pellentesque vulputate dui
-                  posuere orci tellus dolor, semper convallis sed.
-                </p>
-                <Button size="lg" className="w-full md:w-auto" onClick={connectWalletButtonOnClick}>
-                  <div className="flex items-center">
-                    <img src={SuiIconIcon} className="h-6" />
-                    <div className="ml-4">Sign in with Sui</div>
-                  </div>
-                </Button>
-              </div>
-              <div className="hidden md:col-span-2 md:block rounded-full overflow-hidden">
-                <img src={SuipassLogo} className="object-cover w-full" />
-              </div>
-            </section>
-          </main>
+    <div className="flex flex-col bg-neutral-900 min-h-dvh max-md:p-6">
+      <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
+        <div className="flex gap-5 justify-between self-start text-base font-semibold">
+          <div className="justify-center px-5 text-white">Add Creds</div>
+          <div className="justify-center px-5 text-gray-500">Collected Creds (0/5)</div>
         </div>
-      </div>
-    </>
+        <div className="mt-6 max-md:max-w-full flex max-md:flex-col-reverse">
+          <div className="w-[68%] max-md:ml-0 max-md:w-full">
+            <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1">
+              {credentialData.map((credential, index) => (
+                <CredentialCard key={index} {...credential} />
+              ))}
+            </div>
+          </div>
+          <aside className="ml-5 w-[32%] max-md:ml-0 max-md:w-full max-md:mb-8">
+            <div className="sticky top-40">
+              <div className="flex flex-col max-md:mt-8">
+                <section className="flex flex-col p-6 bg-slate-800 bg-opacity-40 rounded-[40px] max-md:px-5">
+                  <h2 className="text-xl font-semibold text-white">Statistics</h2>
+                  <div className="flex flex-col mt-6">
+                    <div className="text-base font-medium text-gray-500">Humanity Points</div>
+                    <div className="flex gap-2 self-start mt-4 whitespace-nowrap">
+                      <div className="text-2xl font-semibold text-white">0</div>
+                      <div className="text-sm font-light text-gray-500">pts</div>
+                    </div>
+                  </div>
+                  <hr className="shrink-0 mt-6 h-px bg-gray-500 border border-gray-500 border-dashed" />
+                  <div className="flex flex-col mt-6">
+                    <div className="text-base font-medium text-gray-500">Points/Threshold</div>
+                    <div className="flex flex-col mt-4">
+                      <div className="flex gap-5 justify-between px-2 py-1 w-full text-sm whitespace-nowrap">
+                        <div className="flex gap-5 justify-between">
+                          <div className="text-white">0</div>
+                          <div className="font-bold text-center text-teal-400">20</div>
+                        </div>
+                        <div className="text-right text-white">100</div>
+                      </div>
+                      <div className="flex flex-col justify-center items-start py-1 mt-2 bg-slate-800 rounded-[30px] max-md:pr-5">
+                        <img
+                          src="https://cdn.builder.io/api/v1/image/assets/TEMP/0d6197d28fe9cca1d887789338442d4060365565047ba1d21f947575e3b25943?apiKey=05796128f6dd44148e772baecec9d384&"
+                          alt="Progress bar"
+                          className="w-3 aspect-[0.75] fill-teal-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section className="flex flex-col p-6 mt-6 w-full whitespace-nowrap bg-neutral-900 rounded-[32px] max-md:px-5">
+                  <h3 className="text-base font-medium text-gray-500">Creds</h3>
+                  <div className="flex gap-5 mt-6">
+                    <div className="flex flex-1 gap-3">
+                      <div className="text-2xl font-medium text-amber-400">0</div>
+                      <div className="my-auto text-sm text-white">Valid</div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="text-2xl font-medium text-gray-500">0</div>
+                      <div className="my-auto text-sm text-white">Expired</div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <section className="flex flex-col p-6 mt-8 text-white bg-slate-800 bg-opacity-40 rounded-[32px] max-md:px-5">
+                <h2 className="text-xl font-semibold">How it works?</h2>
+                <p className="mt-6 text-sm font-light">
+                  SuiPass empowers you to build your digital identity by collecting Credentials
+                  (Creds). Once reaching the threshold, the choice is yours! You can decide to mint
+                  a unique Passport NFT, which will grant you access to these features within
+                  ecosystem.
+                </p>
+              </section>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
   );
 }

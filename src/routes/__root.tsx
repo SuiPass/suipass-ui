@@ -1,3 +1,4 @@
+import { Header } from '@/components';
 import { useInitialize } from '@/hooks';
 import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router';
 import { useEffect } from 'react';
@@ -14,6 +15,7 @@ export function RouteComponent() {
   return (
     <div className="animate-fade-in">
       {createPortal(<></>, document.body)}
+      <Header />
       <Outlet />
     </div>
   );

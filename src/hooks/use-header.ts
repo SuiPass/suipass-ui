@@ -1,15 +1,15 @@
 import { useAppWallet } from '.';
 
 export function useHeader() {
-  const { logged, label, disconnect } = useAppWallet();
+  const { isLogged, label, disconnect } = useAppWallet();
 
-  const logoutButtonOnClick = () => {
+  const logoutBtnOnClick = () => {
     disconnect();
   };
 
   return {
-    logged,
+    isLogged,
     label,
-    logoutButtonOnClick,
+    logoutBtnOnClick,
   };
 }

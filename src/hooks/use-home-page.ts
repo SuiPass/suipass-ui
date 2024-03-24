@@ -2,12 +2,12 @@ import { useAppWallet } from '.';
 
 export function useHomePage() {
   const { connect, connectWalletIsPending } = useAppWallet();
-  const connectWalletButtonOnClick = () => {
+  const signInBtnOnClick = () => {
     connect();
   };
 
   return {
-    connectWalletIsPending,
-    connectWalletButtonOnClick,
+    signInBtnIsLoading: connectWalletIsPending,
+    signInBtnOnClick,
   };
 }

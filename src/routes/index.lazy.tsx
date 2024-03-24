@@ -1,13 +1,13 @@
-import { Dashboard } from '@/pages/dashboard';
 import { Home } from '@/pages/home';
-import { useAppStore } from '@/stores';
+import { Landing } from '@/pages/landing';
+import { rootStore } from '@/stores';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
-function HomeComponent() {
-  const { isLogged } = useAppStore();
-  return isLogged ? <Dashboard /> : <Home />;
+function IndexComponent() {
+  const isLogged = rootStore.app.use.isLogged();
+  return isLogged ? <Home /> : <Landing />;
 }
 
 export const Route = createLazyFileRoute('/')({
-  component: HomeComponent,
+  component: IndexComponent,
 });

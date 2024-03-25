@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --black: #111019;
+    --light-grey: #5F5F76;
+    --dark-grey: #302E40;
+    --aqua-green: #36D4B7;
+    --yellow: #FFC336
   }
 
   .dark {
@@ -17,8 +22,8 @@
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
 
 body {
-  background-color: #0b0b0b;
-} */
+  background-color: var(--black);
+} 

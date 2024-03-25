@@ -1,40 +1,46 @@
-import { CredentialCard, Header } from '@/components';
-import * as React from 'react';
+import { Container, CredentialCard, Header } from '@/components';
+import GithubCardIconImg from '@/assets/github-card-icon.png';
+import SuiCardIconImg from '@/assets/sui-card-icon.svg';
+import XCardIconImg from '@/assets/github-card-icon.png';
+import LinkedInCardIconImg from '@/assets/linkedin-card-icon.png';
+import VerisoulCardIconImg from '@/assets/verisoul-card-icon.png';
 
 const credentialData = [
   {
-    imageSrc:
-      'https://cdn.builder.io/api/v1/image/assets/TEMP/92f018e0d1f887ddb1494d02ecb3fec8d5f8cbecbdf4ce2d3184f28ff2f897b4?apiKey=05796128f6dd44148e772baecec9d384&',
+    imageSrc: GithubCardIconImg,
     points: 7.38,
     title: 'Github',
     description: 'Connect to Github to verify your code contributions.',
   },
   {
-    imageSrc:
-      'https://cdn.builder.io/api/v1/image/assets/TEMP/65e169b1b0ec9ac80a3baa365909885d3cac9fc9ba9ae433d6dabd84183a41ed?apiKey=05796128f6dd44148e772baecec9d384&',
+    imageSrc: SuiCardIconImg,
     points: 12.31,
     title: 'SUI',
     description: 'Verify SUI activity.',
   },
   {
-    imageSrc:
-      'https://cdn.builder.io/api/v1/image/assets/TEMP/5340c725d11a928eb03435e46058ff7b6d209ef766a54d705a9629d3c1719c10?apiKey=05796128f6dd44148e772baecec9d384&',
+    imageSrc: XCardIconImg,
     points: 4.12,
     title: 'X',
     description: 'Connect to X to verify your social media presence.',
   },
   {
-    imageSrc:
-      'https://cdn.builder.io/api/v1/image/assets/TEMP/19cdfe3a6637a45dafff62e4ee504e5f08d3e5aa39666a5219b5c478699861cb?apiKey=05796128f6dd44148e772baecec9d384&',
+    imageSrc: LinkedInCardIconImg,
     points: 3.15,
     title: 'LinkedIn',
     description: 'Connect your existing Linkedin account to verify.',
+  },
+  {
+    imageSrc: VerisoulCardIconImg,
+    points: 2.39,
+    title: 'Verisoul',
+    description: 'Connect to Verisoul to verify your human identity.',
   },
 ];
 
 export function Home() {
   return (
-    <div className="flex flex-col bg-neutral-900 min-h-dvh max-md:p-6">
+    <Container>
       <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
         <div className="flex gap-5 justify-between self-start text-base font-semibold">
           <div className="justify-center px-5 text-white">Add Creds</div>
@@ -108,6 +114,6 @@ export function Home() {
           </aside>
         </div>
       </main>
-    </div>
+    </Container>
   );
 }

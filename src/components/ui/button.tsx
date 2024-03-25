@@ -7,9 +7,9 @@ import { Loader2 } from 'lucide-react';
 const buttonVariants = cva('block justify-center font-semibold leading-6 text-center ', {
   variants: {
     variant: {
-      default: 'bg-teal-400 text-neutral-900',
-      secondary: 'bg-teal-400 text-neutral-900',
-      outline: 'bg-teal-400 text-neutral-900',
+      default: 'bg-aqua-green text-neutral-900',
+      secondary: 'bg-aqua-green text-neutral-900',
+      outline: 'bg-aqua-green text-neutral-900',
       ghost: 'bg-slate-800 bg-opacity-60 text-base text-gray-500',
     },
     size: {

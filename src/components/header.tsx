@@ -39,21 +39,23 @@ export function Header() {
   const { isLogged, logoutBtnOnClick } = useHeader();
 
   return (
-    <header className="w-full fixed top-0 z-50 bg-black flex justify-between items-center px-12 py-6 max-md:flex-wrap max-md:px-5">
-      <Brand />
-      {isLogged && <AccountDropdown logoutBtnOnClick={logoutBtnOnClick} />}
-      {!isLogged && (
-        <div className="flex gap-[7.5rem] max-md:gap-5">
-          <nav className="flex-1 font-semibold text-right text-white max-md:max-w-full">Docs</nav>
-          <div className="flex flex-col justify-center self-stretch my-auto">
-            <div className="flex gap-5">
-              {socialIcons.map((icon, index) => (
-                <SocialIcon key={index} {...icon} />
-              ))}
+    <header className="w-full fixed top-0 z-50 bg-black px-12 py-6 max-md:px-5">
+      <div className="max-w-screen-2xl mx-auto flex justify-between items-center max-md:flex-wrap">
+        <Brand />
+        {isLogged && <AccountDropdown logoutBtnOnClick={logoutBtnOnClick} />}
+        {!isLogged && (
+          <div className="flex gap-[7.5rem] max-md:gap-5">
+            <nav className="flex-1 font-semibold text-right text-white max-md:max-w-full">Docs</nav>
+            <div className="flex flex-col justify-center self-stretch my-auto">
+              <div className="flex gap-5">
+                {socialIcons.map((icon, index) => (
+                  <SocialIcon key={index} {...icon} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }

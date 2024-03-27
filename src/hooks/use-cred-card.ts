@@ -10,7 +10,7 @@ export enum StampStatus {
   UPDATING = 'UPDATING',
 }
 
-export function useCredentialCard({ code: stampCode }: { code: string }) {
+export function useCredCard({ code: stampCode }: { code: string }) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [status, setStatus] = useState(StampStatus.NOT_CONNECT);
   const { suipassProvider, code: providerProof } = useSearch<

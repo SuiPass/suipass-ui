@@ -9,7 +9,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '.';
-import { StampStatus, useCredentialCard } from '@/hooks';
+import { StampStatus, useCredCard } from '@/hooks';
 
 export function Stamp({
   data,
@@ -24,7 +24,7 @@ export function Stamp({
     mutation,
     setOpenDrawer,
     submitButtonOnClick,
-  } = useCredentialCard({ code: data.code });
+  } = useCredCard({ code: data.code });
 
   if (isLoading) return <div>Loading...</div>;
 

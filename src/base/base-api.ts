@@ -1,7 +1,9 @@
+import { SUIPASS_API_URL } from '@/configs';
 import { rootStore } from '@/stores';
+import axios, { AxiosRequestConfig } from 'axios';
 
-export class Repository {
-  protected get client() {
+export class BaseApi {
+  protected get suiClient() {
     const client = rootStore.contract.get.client();
     if (client) return client;
     throw Error(`${this.constructor.name}: Contract client is nil!`);
@@ -23,5 +25,15 @@ export class Repository {
     const user = rootStore.contract.get.user();
     if (user) return user;
     throw Error(`${this.constructor.name}: User is nil!`);
+  }
+
+  protected httpClient(config: AxiosRequestConfig) {
+    return axios({
+      baseURL: SUIPASS_API_URL,
+      headers: {
+        ['x-wallet-address']: this.account.address,
+      },
+      ...config,
+    });
   }
 }

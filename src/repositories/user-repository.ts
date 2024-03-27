@@ -1,8 +1,8 @@
-import { Repository } from '@/base';
+import { BaseRepository } from '@/base';
 import { SUI_CONFIGS } from '@/configs';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 
-class UserRepository extends Repository {
+class UserRepository extends BaseRepository {
   async getUserInfo() {
     const res = await this.client.getOwnedObjects({
       owner: this.account.address,

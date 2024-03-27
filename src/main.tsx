@@ -16,13 +16,11 @@ const networks = {
 };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <SuiClientProvider defaultNetwork="testnet" networks={networks}>
-        <WalletProvider autoConnect>
-          <RouterProvider router={router} />
-        </WalletProvider>
-      </SuiClientProvider>
-    </QueryClientProvider>
-  </React.StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <SuiClientProvider defaultNetwork="testnet" networks={networks}>
+      <WalletProvider autoConnect>
+        <RouterProvider router={router} />
+      </WalletProvider>
+    </SuiClientProvider>
+  </QueryClientProvider>,
 );

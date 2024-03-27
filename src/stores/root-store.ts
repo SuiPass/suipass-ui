@@ -26,5 +26,6 @@ contractStore.store.subscribe(async (state, prevState) => {
     appStore.set.isRegistered(true);
     contractStore.set.coin({ sui: coin.data!.objectId });
     appStore.set.isLogged(true);
+    appStore.set.isLoading(false);
   }
 });

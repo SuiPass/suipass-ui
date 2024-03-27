@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
-const buttonVariants = cva('block justify-center font-semibold leading-6 text-center ', {
+const buttonVariants = cva('block justify-center font-semibold leading-6 text-center', {
   variants: {
     variant: {
       default: 'bg-aqua-green text-neutral-900',
@@ -13,7 +13,7 @@ const buttonVariants = cva('block justify-center font-semibold leading-6 text-ce
       ghost: 'bg-slate-800 bg-opacity-60 text-base text-gray-500',
     },
     size: {
-      default: 'px-6 py-3 mt-6 rounded-2xl max-md:px-5',
+      default: 'px-6 py-3 rounded-2xl max-md:px-5',
       sm: 'px-10 py-6 text-xl rounded-2xl',
       lg: 'px-10 py-6 text-xl rounded-2xl',
     },

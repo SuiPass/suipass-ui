@@ -5,27 +5,19 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { rootStore } from '@/stores';
 
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 interface WalletInfoProps {
-  email: string;
-  address: string;
-  tokenName: string;
-  tokenAmount: number;
   logoutBtnOnClick: () => void;
+  address: string;
 }
 
-const WalletInfo: React.FC<WalletInfoProps> = ({
-  email,
-  address,
-  tokenName,
-  tokenAmount,
-  logoutBtnOnClick,
-}) => {
+const WalletInfo: React.FC<WalletInfoProps> = ({ logoutBtnOnClick, address }) => {
   return (
     <div className="flex flex-col justify-center p-4 w-full rounded-3xl bg-neutral-900">
       <div className="text-sm font-light leading-5 text-gray-500">Connected wallet</div>
-      <div className="flex gap-2 mt-2 text-sm font-light leading-5 text-white whitespace-nowrap">
+      {/* <div className="flex gap-2 mt-2 text-sm font-light leading-5 text-white whitespace-nowrap">
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/56da6ad43abad46ab8c7be68c30040fb6f24467ee98e568ee61ab2476eb86c15?apiKey=05796128f6dd44148e772baecec9d384&"
@@ -33,7 +25,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({
           className="shrink-0 w-6 aspect-square"
         />
         <div className="my-auto">{email}</div>
-      </div>
+      </div> */}
       <div className="flex gap-4 mt-2">
         <div className="flex-1 justify-center items-start px-8 text-base font-semibold leading-6 text-white whitespace-nowrap">
           {address}
@@ -83,9 +75,10 @@ type AccountDropdownProps = {
   logoutBtnOnClick: () => void;
 };
 export function AccountDropdown({ logoutBtnOnClick }: AccountDropdownProps) {
+  const address = rootStore.contract.useTracked.account()?.address;
+
   const walletData = {
-    email: 'example@gmail.com',
-    address: '0xe1b2…b23b',
+    address: `${address?.slice(0, 6)}...${address?.slice(address.length - 4, address.length)}`,
     tokenName: 'SUI',
     tokenAmount: 150.0,
   };

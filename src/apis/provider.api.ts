@@ -1,8 +1,9 @@
-import { BaseRepository } from '@/base';
+import { BaseApi } from '@/base';
 import { SUI_CONFIGS } from '@/configs';
+import { ProviderModel } from '@/models';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 
-class ProviderRepository extends BaseRepository {
+class ProviderApi extends BaseApi {
   async submitReq(input: { provider: string; proof: any }) {
     const txb = new TransactionBlock();
     const func = 'suipass::submit_request';
@@ -17,7 +18,7 @@ class ProviderRepository extends BaseRepository {
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
 
-    await this.client.command.mutateAsync(
+    await this.suiClient.command.mutateAsync(
       {
         transactionBlock: txb,
         options: {
@@ -47,6 +48,15 @@ class ProviderRepository extends BaseRepository {
     });
     return txb;
   }
+
+  async getList(): Promise<ProviderModel[]> {
+    const res = await this.httpClient({
+      method: 'get',
+      url: '/providers',
+    });
+
+    return res.data.data;
+  }
 }
 
-export const providerRepository = new ProviderRepository();
+export const providerApi = new ProviderApi();

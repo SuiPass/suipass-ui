@@ -16,6 +16,9 @@ contractStore.store.subscribe(async (state, prevState) => {
     let user = await userRepository.getUserInfo();
 
     if (!user) {
+      await new Promise((res) => {
+        setTimeout(() => res(true), 500);
+      });
       await userRepository.newUser({ name: generateUsername() });
       user = await userRepository.getUserInfo();
     }

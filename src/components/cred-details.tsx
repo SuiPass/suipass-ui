@@ -33,14 +33,6 @@ interface ChecklistItemProps {
   points: number;
 }
 
-const ChecklistItem: React.FC<ChecklistItemProps> = ({ iconUrl, label, points }) => (
-  <div className="flex gap-2 items-center mt-4">
-    <img src={iconUrl} alt={label} className="shrink-0 self-stretch w-6 aspect-square" />
-    <div className="flex-1 self-stretch my-auto text-white">{label}</div>
-    <div className="self-stretch my-auto text-right text-amber-400">{points.toFixed(2)} pts</div>
-  </div>
-);
-
 interface MyComponentProps {
   badgeData: BadgeProps;
   stats: StatProps[];
@@ -190,9 +182,9 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
       </div>
       <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black pt-2">
         <Button>Verify</Button>
-        <Button variant="ghost" onClick={() => setDrawerIsOpen(false)}>
+        {/* <Button variant="ghost" onClick={() => setDrawerIsOpen(false)}>
           Remove
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

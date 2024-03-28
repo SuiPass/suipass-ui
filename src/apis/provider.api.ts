@@ -4,19 +4,22 @@ import { ProviderModel } from '@/models';
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 
 class ProviderApi extends BaseApi {
-  async submitReq(input: { provider: string; proof: any }) {
-    const txb = new TransactionBlock();
+  async submitReq(input: { providerAddress: string; proof: any }) {
     const func = 'suipass::submit_request';
+    const txb = new TransactionBlock();
 
+    const coin = txb.splitCoins(txb.gas, [100]);
     txb.moveCall({
       arguments: [
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),
-        txb.pure.address(SUI_CONFIGS.GITHUB_PROVIDER_ID),
+        txb.pure.address(input.providerAddress),
         txb.pure.string(JSON.stringify(input.proof)),
-        txb.object(this.suiCoin),
+        coin,
       ],
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
+
+    txb.transferObjects([coin], txb.pure(this.suiCoin));
 
     await this.suiClient.command.mutateAsync(
       {
@@ -36,18 +39,18 @@ class ProviderApi extends BaseApi {
     );
   }
 
-  async mintPassportTxb(): Promise<TransactionBlock> {
-    const txb = new TransactionBlock();
-    txb.moveCall({
-      arguments: [
-        txb.object(SUI_CONFIGS.SUIPASS_ADDR),
-        // Id of User Object
-        txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008'),
-      ],
-      target: `${SUI_CONFIGS.PACKAGE_ADDR}::suipass::mint_passport`,
-    });
-    return txb;
-  }
+  // async mintPassportTxb(): Promise<TransactionBlock> {
+  //   const txb = new TransactionBlock();
+  //   txb.moveCall({
+  //     arguments: [
+  //       txb.object(SUI_CONFIGS.SUIPASS_ADDR),
+  //       // Id of User Object
+  //       txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008'),
+  //     ],
+  //     target: `${SUI_CONFIGS.PACKAGE_ADDR}::suipass::mint_passport`,
+  //   });
+  //   return txb;
+  // }
 
   async getList(): Promise<ProviderModel[]> {
     const res = await this.httpClient({

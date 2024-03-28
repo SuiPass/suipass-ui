@@ -1,9 +1,8 @@
 export * from './ui';
 export * from './header';
 export * from './splot-light-bg';
-export * from './my-stamps';
 export * from './connected-account';
-export * from './list-stamps';
+// export * from './list-stamps';
 export * from './brand';
 export * from './account-dropdown';
 export * from './cred-card';

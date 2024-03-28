@@ -2,14 +2,16 @@ import { Button, CredDetails } from '.';
 import { Drawer, DrawerContent, DrawerTrigger } from './ui/drawer';
 import { useState } from 'react';
 import { CredDto } from '@/dtos';
+import { useCredCard } from '@/hooks';
 
 type CredCardProps = {
   data: CredDto;
 };
 
 export const CredCard: React.FC<CredCardProps> = ({ data }) => {
-  // const {} = useCredCard({ code: 'github' });
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
+
+  useCredCard({ data, setDrawerIsOpen });
 
   return (
     <div className="flex flex-col p-6 border border-solid bg-dark-grey border-dark-grey rounded-[40px] h-full">
@@ -28,7 +30,7 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
         <div>
           <Drawer direction="right" open={isDrawerOpen} onOpenChange={setDrawerIsOpen}>
             <DrawerTrigger asChild>
-              <Button className="mt-6" onClick={() => setDrawerIsOpen((prevState) => !prevState)}>
+              <Button className="mt-6" onClick={() => setDrawerIsOpen(true)}>
                 Connect
               </Button>
             </DrawerTrigger>

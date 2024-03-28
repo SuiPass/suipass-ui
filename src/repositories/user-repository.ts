@@ -83,19 +83,19 @@ class UserRepository extends BaseRepository {
     );
   }
 
-  async getStamps() {
-    const res = await this.client.getOwnedObjects({
-      owner: SUI_CONFIGS.GITHUB_PROVIDER_ID,
-      options: {
-        showContent: true,
-      },
-      // filter: {
-      //   StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
-      // },
-    });
+  // async getStamps() {
+  //   const res = await this.client.getOwnedObjects({
+  //     owner: SUI_CONFIGS.GITHUB_PROVIDER_ID,
+  //     options: {
+  //       showContent: true,
+  //     },
+  //     // filter: {
+  //     //   StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
+  //     // },
+  //   });
 
-    return res.data;
-  }
+  //   return res.data;
+  // }
 }
 
 export const userRepository = new UserRepository();

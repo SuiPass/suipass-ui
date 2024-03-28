@@ -20,7 +20,7 @@ export function useAppWallet() {
 
   const disconnect = useCallback(() => {
     disconnectWallet();
-    window.location.reload();
+    window.location.replace('/');
   }, []);
 
   return {

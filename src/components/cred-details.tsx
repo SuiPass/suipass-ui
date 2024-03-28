@@ -1,66 +1,14 @@
 import { CredDto } from '@/dtos';
-import * as React from 'react';
-import { Button } from '.';
+import { Button, Loader } from '.';
 import { Progress } from '@/components/ui/progress';
-
 import TimerIcon from '@/assets/icons/timer.svg';
 import VerifyIcon from '@/assets/icons/verify.svg';
 import StarIcon from '@/assets/icons/star.svg';
 import CloseIcon from '@/assets/icons/close.svg';
 import { Checkbox } from './ui/checkbox';
+import { CredStatus, useCredDetails } from '@/hooks';
 
-interface BadgeProps {
-  imageUrl: string;
-  points: number;
-}
-
-interface StatProps {
-  iconUrl: string;
-  label: string;
-  value: string;
-}
-
-const Stat: React.FC<StatProps> = ({ iconUrl, label, value }) => (
-  <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">
-    <img src={iconUrl} alt={label} className="w-6 aspect-square" />
-    <div className="mt-2 text-xs font-light">{label}</div>
-    <div className="self-stretch mt-2 text-base font-medium">{value}</div>
-  </div>
-);
-
-interface ChecklistItemProps {
-  label: string;
-  points: number;
-}
-
-interface MyComponentProps {
-  badgeData: BadgeProps;
-  stats: StatProps[];
-  checklistItems: ChecklistItemProps[];
-}
-
-const sampleProps: MyComponentProps = {
-  badgeData: {
-    imageUrl: '/images/github-badge.png',
-    points: 7.38,
-  },
-  stats: [
-    {
-      iconUrl: '/images/earned.svg',
-      label: 'Earned',
-      value: 'mm.dd.yyyy',
-    },
-    {
-      iconUrl: '/images/expires.svg',
-      label: 'Expires',
-      value: 'mm.dd.yyyy',
-    },
-    {
-      iconUrl: '/images/points-gained.svg',
-      label: 'Points Gained',
-      value: '0',
-    },
-  ],
+const sampleProps: any = {
   checklistItems: [
     {
       label: 'Created at least 90 days ago',
@@ -84,9 +32,15 @@ type CredDetailsProps = {
 
 export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
   const { checklistItems } = sampleProps;
+  const { status, submitBtnIsLoading, verifyBtnOnClick, submitBtnOnClick } = useCredDetails({
+    data,
+    setDrawerIsOpen,
+  });
+
+  console.log(status);
 
   return (
-    <div className="overflow-scroll flex flex-col p-4 w-[472px] shadow-lg bg-black">
+    <div className="overflow-scroll flex flex-col px-4 w-[472px] shadow-lg bg-black">
       <div className="flex justify-center items-center self-end p-2 w-10 rounded-lg">
         <img
           src={CloseIcon}
@@ -161,8 +115,8 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               </button>
             </div>
             <div className="flex flex-col mt-6 pb-6 text-sm font-light">
-              {checklistItems.map((item) => (
-                <div className="flex gap-2 items-center mt-4">
+              {checklistItems.map((item: any) => (
+                <div key={item.label} className="flex gap-2 items-center mt-4">
                   <Checkbox id={item.label} />
                   {/* <label
                     htmlFor={item.label}
@@ -180,11 +134,15 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
           </div>
         </section>
       </div>
-      <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black pt-2">
-        <Button>Verify</Button>
-        {/* <Button variant="ghost" onClick={() => setDrawerIsOpen(false)}>
-          Remove
-        </Button> */}
+      <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black py-4">
+        {status === null && <Loader />}
+        {status === CredStatus.NotConnected && <Button onClick={verifyBtnOnClick}>Verify</Button>}
+        {status === CredStatus.NeedToSubmit && (
+          <Button onClick={submitBtnOnClick} isLoading={submitBtnIsLoading}>
+            Submit
+          </Button>
+        )}
+        {status === CredStatus.Waiting && <Button disabled>Waiting</Button>}
       </div>
     </div>
   );

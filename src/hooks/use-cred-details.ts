@@ -134,19 +134,24 @@ export function useCredDetails({
     }
   }, [data]);
 
-  const submitBtnOnClick = useCallback(() => {
-    mutation.mutate({ providerAddress: data.id, proof: providerProof });
-  }, [suipassProvider, providerProof]);
+  // const submitBtnOnClick = useCallback(() => {
+  //   mutation.mutate({ providerAddress: data.id, proof: providerProof });
+  // }, [suipassProvider, providerProof]);
 
   useEffect(() => {
-    if (suipassProvider === providerCode) setDrawerIsOpen(true);
-  }, [suipassProvider, providerCode]);
+    if (status === CredStatus.NeedToSubmit) {
+      if (suipassProvider === providerCode) {
+        setDrawerIsOpen(true);
+        mutation.mutate({ providerAddress: data.id, proof: providerProof });
+      }
+    }
+  }, [suipassProvider, providerCode, status]);
 
   return {
     status,
     mutation,
     verifyBtnOnClick,
-    submitBtnOnClick,
-    submitBtnIsLoading: mutation.isPending,
+    // submitBtnOnClick,
+    // submitBtnIsLoading: mutation.isPending,
   };
 }

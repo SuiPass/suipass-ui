@@ -32,7 +32,7 @@ type CredDetailsProps = {
 
 export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
   const { checklistItems } = sampleProps;
-  const { status, submitBtnIsLoading, verifyBtnOnClick, submitBtnOnClick } = useCredDetails({
+  const { status, verifyBtnOnClick } = useCredDetails({
     data,
     setDrawerIsOpen,
   });
@@ -135,11 +135,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
       <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black py-4">
         {status === null && <Loader />}
         {status === CredStatus.NotConnected && <Button onClick={verifyBtnOnClick}>Verify</Button>}
-        {status === CredStatus.NeedToSubmit && (
-          <Button onClick={submitBtnOnClick} isLoading={submitBtnIsLoading}>
-            Submit
-          </Button>
-        )}
+        {status === CredStatus.NeedToSubmit && <Button disabled>Submitting</Button>}
         {status === CredStatus.Waiting && <Button disabled>Waiting</Button>}
       </div>
     </div>

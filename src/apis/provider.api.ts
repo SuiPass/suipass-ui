@@ -5,10 +5,11 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 
 class ProviderApi extends BaseApi {
   async submitReq(input: { providerAddress: string; proof: any }) {
+    console.log('SUBMIT_REQUEST:INPUT', input);
     const func = 'suipass::submit_request';
     const txb = new TransactionBlock();
 
-    const coin = txb.splitCoins(txb.gas, [100]);
+    const coin = txb.splitCoins(txb.gas, [10000]);
     txb.moveCall({
       arguments: [
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),

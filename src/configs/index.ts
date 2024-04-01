@@ -7,8 +7,7 @@ export const SUI_CONFIGS = {
   ADMIN_CAP: '0x4d0cf2c2b77a23003804355e6796abacf7365682a12c43cf01583c9e01dc2add',
 } as const;
 
-export const SUIPASS_API_URL = 'https://api.suipass.xyz/api';
-
 export const SUIPASS_CONFIGS = {
   URL: import.meta.env.VITE_SUIPASS_URL ?? 'https://suipass.xyz',
+  API_URL: import.meta.env.VITE_SUIPASS_API_URL ?? 'https://api.suipass.xyz/api',
 };

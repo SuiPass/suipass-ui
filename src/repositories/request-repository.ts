@@ -1,7 +1,6 @@
 import { requestApi } from '@/apis';
 class RequestRepository {
   async getList(payload?: { provider: string }) {
-    console.info(this.constructor.name, { list: payload });
     const data = await requestApi.getList(payload);
     return data;
   }

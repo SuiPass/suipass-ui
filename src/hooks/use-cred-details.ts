@@ -35,12 +35,29 @@ const verifyFunctions = {
       redirect_uri: `${SUIPASS_CONFIGS.URL}/dashboard?suipassProvider=google`,
       state: location.pathname,
       response_type: 'code',
-      scope:
-        'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ].join(' '),
     };
 
     const qs = new URLSearchParams(options);
     const url = `${rootURl}?${qs.toString()}`;
+    window.location.href = url;
+  },
+  twitterOAuth: () => {
+    const rootUrl = 'https://twitter.com/i/oauth2/authorize';
+    const options = {
+      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=twitter`,
+      client_id: 'LV9ERkc2ZUE1NE5TNzJvVUFKcjQ6MTpjaQ',
+      state: 'state',
+      response_type: 'code',
+      code_challenge: 'y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8',
+      code_challenge_method: 'S256',
+      scope: ['users.read'].join(' '),
+    };
+    const qs = new URLSearchParams(options).toString();
+    const url = `${rootUrl}?${qs}`;
     window.location.href = url;
   },
 } as const;
@@ -110,11 +127,14 @@ export function useCredDetails({
       case 'google':
         verifyFunctions.googleOAuth();
         return;
+
+      case 'twitter':
+        verifyFunctions.twitterOAuth();
+        return;
     }
   }, [data]);
 
   const submitBtnOnClick = useCallback(() => {
-    console.log({ providerAddress: data.id, proof: providerProof });
     mutation.mutate({ providerAddress: data.id, proof: providerProof });
   }, [suipassProvider, providerProof]);
 

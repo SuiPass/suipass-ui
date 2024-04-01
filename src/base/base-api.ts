@@ -1,4 +1,4 @@
-import { SUIPASS_API_URL } from '@/configs';
+import { SUIPASS_CONFIGS } from '@/configs';
 import { rootStore } from '@/stores';
 import axios, { AxiosRequestConfig } from 'axios';
 
@@ -29,7 +29,7 @@ export class BaseApi {
 
   protected httpClient(config: AxiosRequestConfig) {
     return axios({
-      baseURL: SUIPASS_API_URL,
+      baseURL: SUIPASS_CONFIGS.API_URL,
       headers: {
         ['x-wallet-address']: this.account.address,
       },

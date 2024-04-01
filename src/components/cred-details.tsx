@@ -37,8 +37,6 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
     setDrawerIsOpen,
   });
 
-  console.log(status);
-
   return (
     <div className="overflow-scroll flex flex-col px-4 w-[472px] shadow-lg bg-black">
       <div className="flex justify-center items-center self-end p-2 w-10 rounded-lg">

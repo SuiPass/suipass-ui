@@ -4,8 +4,6 @@ import axios from 'axios';
 
 class RequestApi extends BaseApi {
   async getList(payload?: { provider: string }) {
-    console.info(this.constructor.name, { list: payload });
-
     const res = await this.httpClient({
       method: 'get',
       url: '/requests',
@@ -18,7 +16,6 @@ class RequestApi extends BaseApi {
   }
 
   async create(payload: { provider: string; proof: string }) {
-    console.info(this.constructor.name, { create: payload });
     await this.httpClient({
       method: 'post',
       url: '/requests',

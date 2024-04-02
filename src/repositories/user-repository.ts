@@ -10,7 +10,7 @@ class UserRepository extends BaseRepository {
         showContent: true,
       },
       filter: {
-        StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
+        StructType: `${SUI_CONFIGS.ORIGINAL_PACKAGE_ADDR}::user::User`,
       },
     });
 

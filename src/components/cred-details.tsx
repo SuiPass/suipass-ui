@@ -54,7 +54,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               <div className="my-auto">{data.name}</div>
             </div>
             <div className="flex items-center gap-0.5 px-4 py-2 rounded-2xl bg-yellow">
-              <div className="text-base font-semibold">{data.points.data ?? 0}</div>&nbsp;
+              <div className="text-base font-semibold">{data.points}</div>&nbsp;
               <div className="text-xs font-light"> points</div>
             </div>
           </div>
@@ -89,9 +89,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">
                 <img src={StarIcon} className="w-6 aspect-square" />
                 <div className="mt-2 text-xs font-light">Points Gained</div>
-                <div className="self-stretch mt-2 text-center font-medium">
-                  {data.points.data ?? 0}
-                </div>
+                <div className="self-stretch mt-2 text-center font-medium">{data.points}</div>
               </div>
             </div>
             <div className="flex flex-col mt-6">
@@ -99,7 +97,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
                 <div className="flex-1">0</div>
                 <div className="flex-1 text-right">{data.maxPoints}</div>
               </div>
-              <Progress className="mt-2" value={data.points.data ?? 0} max={data.maxPoints} />
+              <Progress className="mt-2" value={data.points} max={data.maxPoints} />
             </div>
           </section>
           <section className="flex flex-col px-6 pt-6 mt-5 bg-dark-grey rounded-[32px]">

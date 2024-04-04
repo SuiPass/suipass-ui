@@ -1,3 +1,5 @@
+import { CredStatus } from '@/dtos';
+
 export type ProviderModel = {
   id: string;
   name: string;
@@ -16,4 +18,5 @@ export type ProviderModel = {
     evidence: string;
     score: number;
   }[];
+  status?: CredStatus;
 };

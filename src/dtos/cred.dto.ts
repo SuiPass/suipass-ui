@@ -1,9 +1,7 @@
-import { Lazy } from '@/base';
-
 export enum CredStatus {
-  NOT_CONNECTED = 'not_connected',
-  WAITING = 'waiting',
-  CONNECTED = 'connected',
+  NotVerified = 'not_verified',
+  Waiting = 'waiting',
+  Verified = 'verified',
 }
 export type CredDto = {
   id: string;
@@ -12,5 +10,5 @@ export type CredDto = {
   logo: string;
   maxPoints: number;
   points: number;
-  status: Lazy<CredStatus>;
+  status: CredStatus;
 };

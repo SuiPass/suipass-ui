@@ -6,9 +6,9 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 
 function IndexComponent() {
   const isLogged = rootStore.app.use.isLogged();
-  return isLogged ? <Home status={[CredStatus.NotVerified, CredStatus.Waiting]} /> : <Landing />;
+  return isLogged ? <Home status={[CredStatus.Verified]} /> : <Landing />;
 }
 
-export const Route = createLazyFileRoute('/dashboard')({
+export const Route = createLazyFileRoute('/collected-creds')({
   component: IndexComponent,
 });

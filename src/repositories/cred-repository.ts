@@ -1,12 +1,12 @@
 import { providerApi } from '@/apis';
 import { LazyField } from '@/base';
-import { CredDto } from '@/dtos';
+import { CredDto, CredStatus } from '@/dtos';
 
 class CredRepository {
-  async getList(): Promise<CredDto[]> {
+  async getList({ status }: { status?: CredStatus[] } = {}): Promise<CredDto[]> {
     const providerModels = await providerApi.getList();
 
-    const dtos: CredDto[] = providerModels.map((provider) => {
+    let dtos: CredDto[] = providerModels.map((provider) => {
       provider.approvals?.sort((a, b) => (a.issuedDate < b.issuedDate ? 1 : -1));
 
       return {
@@ -16,9 +16,11 @@ class CredRepository {
         logo: provider.logoUrl,
         maxPoints: provider.maxScore,
         points: provider.approvals ? provider.approvals[0].score : 0,
-        status: LazyField,
+        status: provider.status ?? CredStatus.NotVerified,
       };
     });
+
+    if (status) dtos = dtos.filter((dto) => status.includes(dto.status));
 
     return dtos;
   }

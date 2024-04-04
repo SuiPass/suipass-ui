@@ -1,15 +1,31 @@
 import { Container, CredCard, Loader } from '@/components';
+import { CredStatus } from '@/dtos';
 import { useListOfCreds } from '@/hooks';
+import { Link } from '@tanstack/react-router';
 
-export function Home() {
-  const { listOfCredsData, listOfCredsIsLoading } = useListOfCreds();
+export function Home({ status }: { status: CredStatus[] }) {
+  const { listOfCredsData, listOfCredsIsLoading } = useListOfCreds({
+    status,
+  });
 
   return (
     <Container>
       <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
         <div className="flex gap-5 justify-between self-start text-base font-semibold">
-          <div className="justify-center px-5 text-white">Add Creds</div>
-          <div className="justify-center px-5 text-gray-500">Collected Creds (0/5)</div>
+          <Link to="/">
+            <div
+              className={`justify-center px-5 cursor-pointer hover:text-white ${status.includes(CredStatus.Verified) ? 'text-gray-500' : 'text-white'}`}
+            >
+              Add Creds
+            </div>
+          </Link>
+          <Link to="/collected-creds">
+            <div
+              className={`justify-center px-5 text-gray-500 cursor-pointer hover:text-white ${!status.includes(CredStatus.Verified) ? 'text-gray-500' : 'text-white'}`}
+            >
+              Collected Creds (0/5)
+            </div>
+          </Link>
         </div>
         <div className="mt-6 max-md:max-w-full flex max-md:flex-col-reverse">
           <div className="w-[68%] max-md:ml-0 max-md:w-full">

@@ -11,6 +11,6 @@ export type CredDto = {
   desc: string;
   logo: string;
   maxPoints: number;
-  points: Lazy<number>;
+  points: number;
   status: Lazy<CredStatus>;
 };

@@ -18,7 +18,7 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
       <div className="flex gap-5 justify-between w-full text-center">
         <img src={data.logo} alt="Logo" className="h-12" />
         <div className="flex items-center gap-0.5 px-4 py-2 rounded-2xl bg-neutral-900 bg-opacity-40">
-          <div className="text-base font-semibold text-white">{data.points.data ?? 0}</div>&nbsp;
+          <div className="text-base font-semibold text-white">{data.points}</div>&nbsp;
           <div className="text-xs font-light text-light-grey"> points</div>
         </div>
       </div>

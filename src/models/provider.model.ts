@@ -8,4 +8,12 @@ export type ProviderModel = {
   balance: number;
   maxLevel: number;
   maxScore: number;
+  approvals?: {
+    id: string;
+    provider: string;
+    level: number;
+    issuedDate: string;
+    evidence: string;
+    score: number;
+  }[];
 };

@@ -115,6 +115,9 @@ export function useCredDetails({
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.LIST_OF_CREDS],
+      });
     },
   });
 

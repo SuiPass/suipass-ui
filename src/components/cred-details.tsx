@@ -62,7 +62,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
                 <img src={VerifyIcon} className="w-6 aspect-square" />
                 <div className="mt-2 text-xs font-light">Earned</div>
                 <div className="self-stretch mt-2 text-center font-medium">
-                  {data.issuedDate?.toISOString().split('T')[0]}
+                  {data.issuedDate ? data.issuedDate.toISOString().split('T')[0] : 'N/A'}
                 </div>
               </div>
               <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">

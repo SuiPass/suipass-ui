@@ -1,101 +1,45 @@
-import { BaseRepository } from '@/base';
-import { SUI_CONFIGS } from '@/configs';
-import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { providerApi, userApi } from '@/apis';
+import { CredStatus, UserDto, UserStatisticsDto } from '@/dtos';
 
-class UserRepository extends BaseRepository {
+class UserRepository {
+  async newUser(input: { name: string }) {
+    await userApi.newUser(input);
+  }
+
   async getUserInfo() {
-    const res = await this.client.getOwnedObjects({
-      owner: this.account.address,
-      options: {
-        showContent: true,
-      },
-      filter: {
-        StructType: `${SUI_CONFIGS.ORIGINAL_PACKAGE_ADDR}::user::User`,
-      },
-    });
-
-    return res.data[res.data.length - 1];
+    return userApi.getUserInfo();
   }
 
   async getSuiCoin() {
-    const res = await this.client.getOwnedObjects({
-      owner: this.account.address,
-      options: {
-        showContent: true,
-      },
-      filter: {
-        StructType: `0x2::coin::Coin<0x2::sui::SUI>`,
-      },
-    });
-
-    return res.data[res.data.length - 1];
+    return userApi.getSuiCoin();
   }
 
-  async getScore(input: { name: string }) {
-    const txb = new TransactionBlock();
-    const func = 'suipass::calculate_user_score';
-    txb.moveCall({
-      arguments: [txb.object(SUI_CONFIGS.SUIPASS_ADDR), txb.object(this.user.id)],
-      target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
-    });
-
-    await this.client.command.mutateAsync(
-      {
-        transactionBlock: txb,
-        options: {
-          showEffects: true,
-        },
-      },
-      {
-        onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
-        },
-        onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
-        },
-      },
-    );
+  async getDetail(): Promise<UserDto> {
+    return userApi.getDetail();
   }
 
-  async newUser(input: { name: string }) {
-    const txb = new TransactionBlock();
-    const func = 'user::new';
-    txb.moveCall({
-      arguments: [txb.pure.string(JSON.stringify({ name: input.name }))],
-      target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
-    });
+  async getStatistics(): Promise<UserStatisticsDto> {
+    const [userDetailModel, providerModels] = await Promise.all([
+      userApi.getDetail(),
+      providerApi.getList(),
+    ]);
 
-    await this.client.command.mutateAsync(
-      {
-        transactionBlock: txb,
-        options: {
-          showEffects: true,
-        },
-      },
-      {
-        onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
-        },
-        onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
-        },
-      },
-    );
+    const allCredsCount = providerModels.length;
+    const verifiedCredsCount = providerModels.filter(
+      (provider) => provider.status === CredStatus.Verified,
+    ).length;
+    const humanityPoints = userDetailModel.totalScore;
+    const maxPoints = providerModels.reduce((prev, current) => {
+      return prev + current.maxScore;
+    }, 0);
+
+    return {
+      allCredsCount,
+      verifiedCredsCount,
+      humanityPoints,
+      maxPoints,
+    };
   }
-
-  // async getStamps() {
-  //   const res = await this.client.getOwnedObjects({
-  //     owner: SUI_CONFIGS.GITHUB_PROVIDER_ID,
-  //     options: {
-  //       showContent: true,
-  //     },
-  //     // filter: {
-  //     //   StructType: `${SUI_CONFIGS.PACKAGE_ADDR}::user::User`,
-  //     // },
-  //   });
-
-  //   return res.data;
-  // }
 }
 
 export const userRepository = new UserRepository();

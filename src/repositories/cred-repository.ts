@@ -1,5 +1,4 @@
 import { providerApi } from '@/apis';
-import { LazyField } from '@/base';
 import { CredDto, CredStatus } from '@/dtos';
 
 class CredRepository {
@@ -24,6 +23,23 @@ class CredRepository {
     if (status) dtos = dtos.filter((dto) => status.includes(dto.status));
 
     return dtos;
+  }
+
+  async getStats(): Promise<{
+    allCredsCount: number;
+    verifiedCredsCount: number;
+  }> {
+    const providerModels = await providerApi.getList();
+
+    const allCredsCount = providerModels.length;
+    const verifiedCredsCount = providerModels.filter(
+      (provider) => provider.status === CredStatus.Verified,
+    ).length;
+
+    return {
+      allCredsCount,
+      verifiedCredsCount,
+    };
   }
 }
 

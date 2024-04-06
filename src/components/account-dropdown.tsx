@@ -98,7 +98,7 @@ export function AccountDropdown({ logoutBtnOnClick }: AccountDropdownProps) {
       <DropdownMenuContent>
         <div className="flex flex-col justify-center p-3 max-w-xs shadow-lg bg-slate-800 rounded-[36px]">
           <WalletInfo {...walletData} logoutBtnOnClick={logoutBtnOnClick} />
-          <TokenInfo tokenName={walletData.tokenName} tokenAmount={walletData.tokenAmount} />
+          {/* <TokenInfo tokenName={walletData.tokenName} tokenAmount={walletData.tokenAmount} /> */}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

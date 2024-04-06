@@ -5,3 +5,10 @@ export type UserDto = {
   approvals: ApprivalDto[];
   totalScore: number;
 };
+
+export type UserStatisticsDto = {
+  allCredsCount: number;
+  verifiedCredsCount: number;
+  humanityPoints: number;
+  maxPoints: number;
+};

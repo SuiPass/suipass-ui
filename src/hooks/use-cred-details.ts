@@ -2,9 +2,10 @@ import { SUIPASS_CONFIGS } from '@/configs';
 import { QUERY_KEYS } from '@/consts';
 import { CredDto } from '@/dtos';
 import { providerRepository, requestRepository } from '@/repositories';
+import { rootStore } from '@/stores';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export enum CredStatus {
   NotConnected = 'NOT_CONNECTED',
@@ -19,7 +20,7 @@ const verifyFunctions = {
     const rootURl = 'https://github.com/login/oauth/authorize';
     const options = {
       client_id: '5f5991f94e3f8e1224df',
-      redirect_uri: `${SUIPASS_CONFIGS.URL}/dashboard?suipassProvider=github`,
+      redirect_uri: `https://suipass.xyz?suipassProvider=github`,
       scope: 'user:email',
       state: location.pathname,
     };
@@ -32,7 +33,7 @@ const verifyFunctions = {
     const rootURl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const options = {
       client_id: '711294972943-nonheh2v74203ksus9l2ekfiqhbe202s.apps.googleusercontent.com',
-      redirect_uri: `${SUIPASS_CONFIGS.URL}/dashboard?suipassProvider=google`,
+      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=google`,
       state: location.pathname,
       response_type: 'code',
       scope: [
@@ -62,6 +63,15 @@ const verifyFunctions = {
   },
 } as const;
 
+async function submitProof(payload: { providerAddress: string; providerCode: string; proof: any }) {
+  await providerRepository.submitReq(payload);
+  await requestRepository.create({
+    provider: payload.providerCode,
+    proof: payload.proof,
+  });
+  await new Promise((res) => setTimeout(() => res(true), 1000));
+}
+
 export function useCredDetails({
   data,
   setDrawerIsOpen,
@@ -69,8 +79,9 @@ export function useCredDetails({
   data: CredDto;
   setDrawerIsOpen: (isOpen: boolean) => void;
 }) {
+  const [status, setStatus] = useState<CredStatus | null>(null);
   const queryClient = useQueryClient();
-  const { suipassProvider, code: providerProof } = useSearch<
+  const { suipassProvider, code: socialProviderProof } = useSearch<
     any,
     { suipassProvider: string; code: string }
   >({
@@ -85,31 +96,39 @@ export function useCredDetails({
     },
   });
 
-  const status = useMemo(() => {
-    if (listOfRequestsIsLoading) return null;
+  useEffect(() => {
+    if (listOfRequestsIsLoading) {
+      setStatus(null);
+      return;
+    }
 
     if (listOfRequestsData) {
       if (listOfRequestsData.length) {
-        if (listOfRequestsData.find((request: any) => request.isApproved))
-          return CredStatus.Connected;
-        else return CredStatus.Waiting;
+        if (listOfRequestsData.find((request: any) => request.isApproved)) {
+          setStatus(CredStatus.Connected);
+          return;
+        } else {
+          setStatus(CredStatus.Waiting);
+          return;
+        }
       }
     }
 
-    if (providerCode === suipassProvider) return CredStatus.NeedToSubmit;
+    if (providerCode === suipassProvider) {
+      setStatus(CredStatus.NeedToSubmit);
+      return;
+    }
 
-    return CredStatus.NotConnected;
+    setStatus(CredStatus.NotConnected);
   }, [providerCode, suipassProvider, listOfRequestsIsLoading, listOfRequestsData]);
 
   // Mutation
   const mutation = useMutation({
     mutationFn: async (payload: { providerAddress: string; proof: string }) => {
-      await providerRepository.submitReq(payload);
-      await requestRepository.create({
-        provider: suipassProvider,
-        proof: providerProof,
+      await submitProof({
+        ...payload,
+        providerCode,
       });
-      await new Promise((res) => setTimeout(() => res(true), 1000));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -118,6 +137,7 @@ export function useCredDetails({
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.LIST_OF_CREDS],
       });
+      setStatus(CredStatus.Waiting);
     },
   });
 
@@ -134,18 +154,26 @@ export function useCredDetails({
       case 'twitter':
         verifyFunctions.twitterOAuth();
         return;
+
+      case 'sui':
+        setStatus(CredStatus.NeedToSubmit);
+        submitProof({
+          providerCode: providerCode,
+          providerAddress: data.id,
+          proof: {
+            walletAddress: rootStore.contract.get.account()?.address!,
+          },
+        });
+        return;
     }
   }, [data]);
 
-  // const submitBtnOnClick = useCallback(() => {
-  //   mutation.mutate({ providerAddress: data.id, proof: providerProof });
-  // }, [suipassProvider, providerProof]);
-
+  // Submit proof for google, twitter, github
   useEffect(() => {
     if (status === CredStatus.NeedToSubmit) {
       if (suipassProvider === providerCode) {
         setDrawerIsOpen(true);
-        mutation.mutate({ providerAddress: data.id, proof: providerProof });
+        mutation.mutate({ providerAddress: data.id, proof: socialProviderProof });
       }
     }
   }, [suipassProvider, providerCode, status]);

@@ -66,7 +66,7 @@ export function Home({ status }: { status: CredStatus[] }) {
                       <div className="flex gap-5 justify-between px-2 py-1 w-full text-sm whitespace-nowrap">
                         <div className="flex gap-5 justify-between">
                           <div className="text-white">0</div>
-                          <div className="font-bold text-center text-teal-400">20</div>
+                          {/* <div className="font-bold text-center text-teal-400">20</div> */}
                         </div>
                         <div className="text-right text-white">{userStatsData?.maxPoints}</div>
                       </div>

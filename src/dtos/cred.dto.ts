@@ -9,6 +9,7 @@ export type CredDto = {
   desc: string;
   logo: string;
   maxPoints: number;
-  points: number;
   status: CredStatus;
+  points: number;
+  issuedDate: Date | null;
 };

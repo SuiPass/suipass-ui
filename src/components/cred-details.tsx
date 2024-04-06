@@ -8,30 +8,12 @@ import CloseIcon from '@/assets/icons/close.svg';
 import { Checkbox } from './ui/checkbox';
 import { CredStatus, useCredDetails } from '@/hooks';
 
-const sampleProps: any = {
-  checklistItems: [
-    {
-      label: 'Created at least 90 days ago',
-      points: 1.02,
-    },
-    {
-      label: 'Created at least 180 days ago',
-      points: 1.23,
-    },
-    {
-      label: 'Created at least 365 days ago',
-      points: 1.43,
-    },
-  ],
-};
-
 type CredDetailsProps = {
   data: CredDto;
   setDrawerIsOpen: (open: boolean) => void;
 };
 
 export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
-  const { checklistItems } = sampleProps;
   const { status, verifyBtnOnClick } = useCredDetails({
     data,
     setDrawerIsOpen,
@@ -79,7 +61,9 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">
                 <img src={VerifyIcon} className="w-6 aspect-square" />
                 <div className="mt-2 text-xs font-light">Earned</div>
-                <div className="self-stretch mt-2 text-center font-medium">N/A</div>
+                <div className="self-stretch mt-2 text-center font-medium">
+                  {data.issuedDate?.toISOString().split('T')[0]}
+                </div>
               </div>
               <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">
                 <img src={TimerIcon} className="w-6 aspect-square" />
@@ -94,33 +78,21 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
             </div>
             <div className="flex flex-col mt-6">
               <div className="flex gap-5 px-2 text-sm text-white whitespace-nowrap">
-                <div className="flex-1">0</div>
+                <div className="flex-1">{data.points}</div>
                 <div className="flex-1 text-right">{data.maxPoints}</div>
               </div>
-              <Progress className="mt-2" value={data.points} max={data.maxPoints} />
+              <Progress className="mt-2" value={(data.points * 100) / data.maxPoints} />
             </div>
           </section>
-          <section className="flex flex-col px-6 pt-6 mt-5 bg-dark-grey rounded-[32px]">
+          {/* <section className="flex flex-col px-6 pt-6 mt-5 bg-dark-grey rounded-[32px]">
             <div className="flex flex-col">
               <div className="flex gap-5">
                 <h2 className="flex-1 text-base font-medium text-white">Account Creation</h2>
-                <button
-                  type="button"
-                  className="my-auto text-sm font-light leading-5 text-white underline"
-                >
-                  Deselect All
-                </button>
               </div>
               <div className="flex flex-col mt-6 pb-6 text-sm font-light">
                 {checklistItems.map((item: any) => (
                   <div key={item.label} className="flex gap-2 items-center mt-4">
                     <Checkbox id={item.label} />
-                    {/* <label
-                    htmlFor={item.label}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    {item.label}
-                  </label> */}
                     <div className="flex-1 self-stretch my-auto text-white">{item.label}</div>
                     <div className="self-stretch my-auto text-right text-amber-400">
                       {item.points.toFixed(2)} pts
@@ -129,7 +101,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
                 ))}
               </div>
             </div>
-          </section>
+          </section> */}
         </div>
       </div>
       <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black py-4">

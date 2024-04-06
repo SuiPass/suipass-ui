@@ -1,7 +1,7 @@
 import { Button, CredDetails } from '.';
 import { Drawer, DrawerContent, DrawerTrigger } from './ui/drawer';
 import { useState } from 'react';
-import { CredDto } from '@/dtos';
+import { CredDto, CredStatus } from '@/dtos';
 import { useCredCard } from '@/hooks';
 
 type CredCardProps = {
@@ -14,7 +14,10 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
   useCredCard({ data, setDrawerIsOpen });
 
   return (
-    <div className="flex flex-col p-6 border border-solid bg-dark-grey border-dark-grey rounded-[40px] h-full">
+    <div
+      className="flex flex-col p-6 border border-solid bg-dark-grey border-dark-grey rounded-[40px] h-full cursor-pointer"
+      onClick={() => setDrawerIsOpen(true)}
+    >
       <div className="flex gap-5 justify-between w-full text-center">
         <img src={data.logo} alt="Logo" className="h-12" />
         <div className="flex items-center gap-0.5 px-4 py-2 rounded-2xl bg-neutral-900 bg-opacity-40">
@@ -30,9 +33,21 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
         <div>
           <Drawer direction="right" open={isDrawerOpen} onOpenChange={setDrawerIsOpen}>
             <DrawerTrigger asChild>
-              <Button className="mt-6" onClick={() => setDrawerIsOpen(true)}>
-                Connect
-              </Button>
+              <div>
+                {data.status === CredStatus.NotVerified && (
+                  <Button className="mt-6">Connect</Button>
+                )}
+                {data.status === CredStatus.Waiting && (
+                  <Button className="mt-6" disabled>
+                    Waiting
+                  </Button>
+                )}
+                {data.status === CredStatus.Verified && (
+                  <Button className="mt-6" disabled>
+                    Verifired
+                  </Button>
+                )}
+              </div>
             </DrawerTrigger>
             <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 rounded-none">
               <CredDetails data={data} setDrawerIsOpen={setDrawerIsOpen} />

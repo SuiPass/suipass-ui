@@ -15,8 +15,9 @@ class CredRepository {
         desc: provider.desc,
         logo: provider.logoUrl,
         maxPoints: provider.maxScore,
-        points: provider.approvals ? provider.approvals[0].score : 0,
         status: provider.status ?? CredStatus.NotVerified,
+        points: provider.approvals ? provider.approvals[0].score : 0,
+        issuedDate: provider.approvals ? new Date(+provider.approvals[0].issuedDate) : null,
       };
     });
 

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useListOfCreds = ({ status }: { status: CredStatus[] }) => {
   const { data: listOfCredsData, isLoading: listOfCredsIsLoading } = useQuery({
-    queryKey: [QUERY_KEYS.LIST_OF_CREDS],
+    queryKey: [QUERY_KEYS.LIST_OF_CREDS, status],
     queryFn: async () => {
       return credRepository.getList({ status });
     },

@@ -84,24 +84,27 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               <Progress className="mt-2" value={(data.points * 100) / data.maxPoints} />
             </div>
           </section>
-          {/* <section className="flex flex-col px-6 pt-6 mt-5 bg-dark-grey rounded-[32px]">
+          <section className="flex flex-col px-6 pt-6 mt-5 bg-dark-grey rounded-[32px]">
             <div className="flex flex-col">
               <div className="flex gap-5">
-                <h2 className="flex-1 text-base font-medium text-white">Account Creation</h2>
+                <h2 className="flex-1 text-base font-medium text-white">Levels</h2>
               </div>
               <div className="flex flex-col mt-6 pb-6 text-sm font-light">
-                {checklistItems.map((item: any) => (
-                  <div key={item.label} className="flex gap-2 items-center mt-4">
-                    <Checkbox id={item.label} />
-                    <div className="flex-1 self-stretch my-auto text-white">{item.label}</div>
+                {data.levels.map((levelItem) => (
+                  <div key={levelItem.level} className="flex gap-2 items-center mt-4">
+                    <Checkbox
+                      id={levelItem.level.toString()}
+                      checked={data.currentLevel >= levelItem.level}
+                    />
+                    <div className="flex-1 self-stretch my-auto text-white">{levelItem.desc}</div>
                     <div className="self-stretch my-auto text-right text-amber-400">
-                      {item.points.toFixed(2)} pts
+                      {levelItem.level * (data.maxPoints / data.levels.length)} pts
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </section> */}
+          </section>
         </div>
       </div>
       <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black py-4">

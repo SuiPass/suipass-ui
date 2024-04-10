@@ -19,4 +19,8 @@ export type ProviderModel = {
     score: number;
   }[];
   status?: CredStatus;
+  levels: {
+    level: number;
+    desc: string;
+  }[];
 };

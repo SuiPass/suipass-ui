@@ -12,4 +12,6 @@ export type CredDto = {
   status: CredStatus;
   points: number;
   issuedDate: Date | null;
+  levels: { level: number; desc: string }[];
+  currentLevel: number;
 };

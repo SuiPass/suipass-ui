@@ -69,7 +69,7 @@ async function submitProof(payload: { providerAddress: string; providerCode: str
     provider: payload.providerCode,
     proof: payload.proof,
   });
-  await new Promise((res) => setTimeout(() => res(true), 1000));
+  await new Promise((res) => setTimeout(() => res(true), 5000));
 }
 
 export function useCredDetails({
@@ -128,17 +128,19 @@ export function useCredDetails({
       await submitProof({
         ...payload,
         providerCode,
+      }).then(() => {
+        queryClient.refetchQueries({
+          queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
+        });
+        queryClient.refetchQueries({
+          queryKey: [QUERY_KEYS.LIST_OF_CREDS],
+        });
+        queryClient.refetchQueries({
+          queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
+        });
       });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.LIST_OF_CREDS],
-      });
-      setStatus(CredStatus.Waiting);
-    },
+    onSuccess: () => {},
   });
 
   const verifyBtnOnClick = useCallback(() => {
@@ -163,6 +165,16 @@ export function useCredDetails({
           proof: {
             walletAddress: rootStore.contract.get.account()?.address!,
           },
+        }).then(() => {
+          queryClient.refetchQueries({
+            queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
+          });
+          queryClient.refetchQueries({
+            queryKey: [QUERY_KEYS.LIST_OF_CREDS],
+          });
+          queryClient.refetchQueries({
+            queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
+          });
         });
         return;
     }

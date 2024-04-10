@@ -98,7 +98,7 @@ export function Home({ status }: { status: CredStatus[] }) {
                         </div>
                         <div className="flex gap-2 pt-2">
                           {userStatsData?.verifiedCreds.map((cred) => (
-                            <img src={cred.logoUrl} alt="Logo" className="h-6" />
+                            <img key={cred.id} src={cred.logoUrl} alt="Logo" className="h-6" />
                           ))}
                         </div>
                       </div>

@@ -10,3 +10,4 @@ export * from './container';
 export * from './cred-details';
 export * from './loader';
 export * from './empty';
+export * from './cred-verifying';

@@ -1,4 +1,4 @@
-import { ApprivalDto } from '.';
+import { ApprivalDto, ProviderDto } from '.';
 
 export type UserDto = {
   address: string;
@@ -8,7 +8,9 @@ export type UserDto = {
 
 export type UserStatisticsDto = {
   allCredsCount: number;
+  verifiedCreds: ProviderDto[];
   verifiedCredsCount: number;
   humanityPoints: number;
   maxPoints: number;
+  approvals: ApprivalDto[];
 };

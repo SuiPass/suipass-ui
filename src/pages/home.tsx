@@ -1,4 +1,4 @@
-import { Container, CredCard, Empty, Loader } from '@/components';
+import { Container, CredCard, Empty, Loader, CredVerifying } from '@/components';
 import { Progress } from '@/components/ui/progress';
 import { CredStatus } from '@/dtos';
 import { useListOfCreds, useStatisticsOfUser } from '@/hooks';
@@ -13,6 +13,7 @@ export function Home({ status }: { status: CredStatus[] }) {
 
   return (
     <Container>
+      {/* <CredVerifying /> */}
       <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
         <div className="flex gap-5 justify-between self-start text-base font-semibold">
           <Link to="/">
@@ -87,14 +88,21 @@ export function Home({ status }: { status: CredStatus[] }) {
                   </div>
                   <section className="flex flex-col p-6 mt-6 w-full whitespace-nowrap bg-black rounded-[2rem] max-md:px-5">
                     <h3 className="text-base font-medium text-gray-500">Creds</h3>
-                    <div className="flex gap-5 mt-6">
-                      <div className="flex flex-1 gap-3">
-                        <div className="text-2xl font-medium text-amber-400">
-                          {userStatsData?.verifiedCredsCount ?? 0}
+                    <div className="flex gap-5 mt-6 divide-x divide-dashed">
+                      <div className="flex-1">
+                        <div className="flex gap-3">
+                          <div className="text-2xl font-medium text-amber-400">
+                            {userStatsData?.verifiedCredsCount ?? 0}
+                          </div>
+                          <div className="my-auto text-sm text-white">Valid</div>
                         </div>
-                        <div className="my-auto text-sm text-white">Valid</div>
+                        <div className="flex gap-2 pt-2">
+                          {userStatsData?.verifiedCreds.map((cred) => (
+                            <img src={cred.logoUrl} alt="Logo" className="h-6" />
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex flex-1 gap-3 pl-6">
                         <div className="text-2xl font-medium text-gray-500">0</div>
                         <div className="my-auto text-sm text-white">Expired</div>
                       </div>

@@ -25,9 +25,10 @@ class UserRepository {
     ]);
 
     const allCredsCount = providerModels.length;
-    const verifiedCredsCount = providerModels.filter(
+    const verifiedCreds = providerModels.filter(
       (provider) => provider.status === CredStatus.Verified,
-    ).length;
+    );
+    const verifiedCredsCount = verifiedCreds.length;
     const humanityPoints = userDetailModel.totalScore;
     const maxPoints = providerModels.reduce((prev, current) => {
       return prev + current.maxScore;
@@ -35,9 +36,11 @@ class UserRepository {
 
     return {
       allCredsCount,
+      verifiedCreds,
       verifiedCredsCount,
       humanityPoints,
       maxPoints,
+      approvals: userDetailModel.approvals,
     };
   }
 }

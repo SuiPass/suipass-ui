@@ -1,5 +1,5 @@
 import { providerApi } from '@/apis';
-import { CredDto, CredStatus } from '@/dtos';
+import { CredDto, CredStatus, ProviderDto } from '@/dtos';
 
 class CredRepository {
   async getList({ status }: { status?: CredStatus[] } = {}): Promise<CredDto[]> {
@@ -35,17 +35,20 @@ class CredRepository {
   async getStats(): Promise<{
     allCredsCount: number;
     verifiedCredsCount: number;
+    verifiedCreds: ProviderDto[];
   }> {
     const providerModels = await providerApi.getList();
 
     const allCredsCount = providerModels.length;
-    const verifiedCredsCount = providerModels.filter(
+    const verifiedCreds = providerModels.filter(
       (provider) => provider.status === CredStatus.Verified,
-    ).length;
+    );
+    const verifiedCredsCount = verifiedCreds.length;
 
     return {
       allCredsCount,
       verifiedCredsCount,
+      verifiedCreds,
     };
   }
 }

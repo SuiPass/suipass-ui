@@ -57,7 +57,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
                 '. Verify your contribution history with your SuiPass!
               </p>
             </div>
-            <div className="flex gap-2 mt-6 text-white">
+            <div className="flex gap-2 mt-6 text-white divide-x divide-dashed">
               <div className="flex flex-col flex-1 items-center px-2.5 whitespace-nowrap">
                 <img src={VerifyIcon} className="w-6 aspect-square" />
                 <div className="mt-2 text-xs font-light">Earned</div>

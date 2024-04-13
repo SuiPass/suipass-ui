@@ -4,7 +4,7 @@ import { CredDto } from '@/dtos';
 import { providerRepository, requestRepository } from '@/repositories';
 import { rootStore } from '@/stores';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export enum CredStatus {
@@ -79,6 +79,7 @@ export function useCredDetails({
   data: CredDto;
   setDrawerIsOpen: (isOpen: boolean) => void;
 }) {
+  const navigate = useNavigate();
   const [status, setStatus] = useState<CredStatus | null>(null);
   const queryClient = useQueryClient();
   const { suipassProvider, code: socialProviderProof } = useSearch<
@@ -129,6 +130,7 @@ export function useCredDetails({
         ...payload,
         providerCode,
       }).then(() => {
+        navigate({ to: '/collected-creds' });
         queryClient.refetchQueries({
           queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
         });
@@ -166,6 +168,7 @@ export function useCredDetails({
             walletAddress: rootStore.contract.get.account()?.address!,
           },
         }).then(() => {
+          navigate({ to: '/collected-creds' });
           queryClient.refetchQueries({
             queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
           });

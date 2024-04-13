@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { AccountDropdown, Brand } from '.';
 import { useHeader } from '@/hooks';
+import { Link } from '@tanstack/react-router';
 
 interface SocialIconProps {
   src: string;
@@ -45,7 +46,11 @@ export function Header() {
         {isLogged && <AccountDropdown logoutBtnOnClick={logoutBtnOnClick} />}
         {!isLogged && (
           <div className="flex gap-[7.5rem] max-md:gap-5">
-            <nav className="flex-1 font-semibold text-right text-white max-md:max-w-full">Docs</nav>
+            <Link to="https://docs.suipass.xyz">
+              <nav className="flex-1 font-semibold text-right text-white max-md:max-w-full">
+                Docs
+              </nav>
+            </Link>
             <div className="flex flex-col justify-center self-stretch my-auto">
               <div className="flex gap-5">
                 {socialIcons.map((icon, index) => (

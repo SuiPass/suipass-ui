@@ -46,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <div className="relative">
           {isLoading && (
             <div className="absolute w-full flex justify-center">
-              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+              <Loader2 className={`mr-2 animate-spin ${size === 'lg' ? 'h-8 w-8' : 'h-6 w-6'}`} />
             </div>
           )}
           <div className={`${isLoading ? 'opacity-0' : ''}`}>{children}</div>

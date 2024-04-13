@@ -27,7 +27,12 @@ export const Landing: React.FC = () => {
               demonstrate identity and reputation. SuiPass streamlines verification, boosting
               security, privacy, and how you connect across SUI ecosystem.
             </p>
-            <Button size="lg" className="mt-10 max-md:w-full" onClick={signInBtnOnClick}>
+            <Button
+              size="lg"
+              className="mt-10 max-md:w-full"
+              onClick={signInBtnOnClick}
+              isLoading={signInBtnIsLoading}
+            >
               <div className="flex gap-2">
                 <img
                   loading="lazy"

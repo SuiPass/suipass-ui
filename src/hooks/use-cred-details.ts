@@ -130,7 +130,6 @@ export function useCredDetails({
         ...payload,
         providerCode,
       }).then(() => {
-        navigate({ to: '/collected-creds' });
         queryClient.refetchQueries({
           queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
         });
@@ -140,6 +139,7 @@ export function useCredDetails({
         queryClient.refetchQueries({
           queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
         });
+        navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
       });
     },
     onSuccess: () => {},
@@ -168,7 +168,6 @@ export function useCredDetails({
             walletAddress: rootStore.contract.get.account()?.address!,
           },
         }).then(() => {
-          navigate({ to: '/collected-creds' });
           queryClient.refetchQueries({
             queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
           });
@@ -178,6 +177,8 @@ export function useCredDetails({
           queryClient.refetchQueries({
             queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
           });
+          console.log(providerCode);
+          navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
         });
         return;
     }

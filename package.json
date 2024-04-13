@@ -30,6 +30,7 @@
     "lucide-react": "^0.330.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-spinners": "^0.13.8",
     "shadcn-ui": "^0.8.0",
     "tailwind-merge": "^2.2.1",

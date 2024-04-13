@@ -42,11 +42,14 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
                     Waiting
                   </Button>
                 )}
-                {data.status === CredStatus.Verified && (
-                  <Button className="mt-6" disabled>
-                    Verifired
-                  </Button>
-                )}
+                {data.status === CredStatus.Verified &&
+                  (data.points === data.maxPoints ? (
+                    <Button className="mt-6" disabled>
+                      Verified
+                    </Button>
+                  ) : (
+                    <Button className="mt-6">Re-Verify</Button>
+                  ))}
               </div>
             </DrawerTrigger>
             <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 rounded-none">

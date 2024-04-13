@@ -1,6 +1,4 @@
 import { BaseApi } from '@/base';
-import { SUIPASS_API_URL } from '@/configs';
-import axios from 'axios';
 
 class RequestApi extends BaseApi {
   async getList(payload?: { provider: string }) {
@@ -16,7 +14,7 @@ class RequestApi extends BaseApi {
   }
 
   async create(payload: { provider: string; proof: string }) {
-    await this.httpClient({
+    const res = await this.httpClient({
       method: 'post',
       url: '/requests',
       data: {
@@ -24,6 +22,8 @@ class RequestApi extends BaseApi {
         proof: payload.proof,
       },
     });
+
+    return res.data?.data?.data;
   }
 }
 

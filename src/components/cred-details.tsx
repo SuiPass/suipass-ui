@@ -117,7 +117,12 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
             </Button>
           )}
           {status === CredStatus.Waiting && <Button disabled>Waiting</Button>}
-          {status === CredStatus.Connected && <Button disabled>Verified</Button>}
+          {status === CredStatus.Connected &&
+            (data.points === data.maxPoints ? (
+              <Button disabled>Verified</Button>
+            ) : (
+              <Button onClick={verifyBtnOnClick}>Re-Verify</Button>
+            ))}
         </div>
       </div>
     </>

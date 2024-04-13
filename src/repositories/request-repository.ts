@@ -6,7 +6,8 @@ class RequestRepository {
   }
 
   async create(payload: { provider: string; proof: string }) {
-    requestApi.create(payload);
+    const res = await requestApi.create(payload);
+    return res;
   }
 }
 

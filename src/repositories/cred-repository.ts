@@ -6,7 +6,6 @@ class CredRepository {
     const providerModels = await providerApi.getList();
 
     let dtos: CredDto[] = providerModels.map((provider) => {
-      provider.approvals?.sort((a, b) => (a.issuedDate < b.issuedDate ? 1 : -1));
       const currentApproval = provider.approvals ? provider.approvals[0] : null;
       let currentLevel = 0;
       if (currentApproval) {
@@ -20,8 +19,8 @@ class CredRepository {
         logo: provider.logoUrl,
         maxPoints: provider.maxScore,
         status: provider.status ?? CredStatus.NotVerified,
-        points: provider.approvals ? provider.approvals[0].score : 0,
-        issuedDate: provider.approvals ? new Date(+provider.approvals[0].issuedDate) : null,
+        points: currentApproval?.score ?? 0,
+        issuedDate: currentApproval ? new Date(+currentApproval.issuedDate) : null,
         levels: provider.levels,
         currentLevel,
       };

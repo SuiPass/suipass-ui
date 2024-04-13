@@ -6,6 +6,7 @@ import { rootStore } from '@/stores';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export enum CredStatus {
   NotConnected = 'NOT_CONNECTED',
@@ -65,11 +66,12 @@ const verifyFunctions = {
 
 async function submitProof(payload: { providerAddress: string; providerCode: string; proof: any }) {
   await providerRepository.submitReq(payload);
-  await requestRepository.create({
+  const res = await requestRepository.create({
     provider: payload.providerCode,
     proof: payload.proof,
   });
   await new Promise((res) => setTimeout(() => res(true), 5000));
+  return res;
 }
 
 export function useCredDetails({
@@ -106,7 +108,8 @@ export function useCredDetails({
     if (listOfRequestsData) {
       if (listOfRequestsData.length) {
         if (listOfRequestsData.find((request: any) => request.isApproved)) {
-          setStatus(CredStatus.Connected);
+          if (data.currentLevel === 0) setStatus(CredStatus.NotConnected);
+          else setStatus(CredStatus.Connected);
           return;
         } else {
           setStatus(CredStatus.Waiting);
@@ -123,26 +126,36 @@ export function useCredDetails({
     setStatus(CredStatus.NotConnected);
   }, [providerCode, suipassProvider, listOfRequestsIsLoading, listOfRequestsData]);
 
+  const afterVerified = (res: any) => {
+    queryClient.refetchQueries({
+      queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
+    });
+    queryClient.refetchQueries({
+      queryKey: [QUERY_KEYS.LIST_OF_CREDS],
+    });
+    queryClient.refetchQueries({
+      queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
+    });
+
+    if (res.level > 0) {
+      const points = (res.level * data.maxPoints) / data.levels.length;
+      toast.success(`You received ${points} points.`);
+      navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
+    } else {
+      toast.error(`You didn't receive any points.`);
+    }
+  };
+
   // Mutation
   const mutation = useMutation({
     mutationFn: async (payload: { providerAddress: string; proof: string }) => {
       await submitProof({
         ...payload,
         providerCode,
-      }).then(() => {
-        queryClient.refetchQueries({
-          queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
-        });
-        queryClient.refetchQueries({
-          queryKey: [QUERY_KEYS.LIST_OF_CREDS],
-        });
-        queryClient.refetchQueries({
-          queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
-        });
-        navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
+      }).then((res) => {
+        afterVerified(res);
       });
     },
-    onSuccess: () => {},
   });
 
   const verifyBtnOnClick = useCallback(() => {
@@ -167,18 +180,8 @@ export function useCredDetails({
           proof: {
             walletAddress: rootStore.contract.get.account()?.address!,
           },
-        }).then(() => {
-          queryClient.refetchQueries({
-            queryKey: [QUERY_KEYS.LIST_OF_REQUESTS, providerCode],
-          });
-          queryClient.refetchQueries({
-            queryKey: [QUERY_KEYS.LIST_OF_CREDS],
-          });
-          queryClient.refetchQueries({
-            queryKey: [QUERY_KEYS.STATISTICS_OF_USER],
-          });
-          console.log(providerCode);
-          navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
+        }).then((res) => {
+          afterVerified(res);
         });
         return;
     }

@@ -4,6 +4,7 @@ import { appStore } from '@/stores/app-store';
 import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Toaster } from 'react-hot-toast';
 
 export function RouteComponent() {
   useInitialize();
@@ -23,7 +24,37 @@ export function RouteComponent() {
 
   return (
     <div className="animate-fade-in">
-      {createPortal(<></>, document.body)}
+      {createPortal(
+        <>
+          <Toaster
+            toastOptions={{
+              style: {
+                background: '#36D4B7',
+                border: 'none',
+                borderRadius: '1.5rem',
+                padding: '1.5rem',
+                color: '#111019',
+                fontFamily: 'Poppins',
+                fontSize: '0.875rem',
+                fontWeight: 300,
+              },
+              success: {
+                iconTheme: {
+                  primary: 'black',
+                  secondary: 'white',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: 'black',
+                  secondary: 'white',
+                },
+              },
+            }}
+          />
+        </>,
+        document.body,
+      )}
       <Header />
       <Outlet />
     </div>

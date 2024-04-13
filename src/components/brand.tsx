@@ -11,9 +11,12 @@ export function Brand() {
           alt="SuiPass logo"
           className="shrink-0 w-10 aspect-square"
         />
-        <div className="flex-1 my-auto">
-          <span className="text-white">Sui</span>
-          <span className="text-yellow">Pass</span>
+        <div className="my-auto">
+          <div className="flex-1 pt-4">
+            <span className="text-white">Sui</span>
+            <span className="text-yellow">Pass</span>
+          </div>
+          <div className="text-light-grey text-sm font-light">testnet</div>
         </div>
       </div>
     </Link>

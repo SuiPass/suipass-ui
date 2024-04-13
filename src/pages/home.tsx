@@ -90,21 +90,23 @@ export function Home({ status }: { status: CredStatus[] }) {
                     <h3 className="text-base font-medium text-gray-500">Creds</h3>
                     <div className="flex gap-5 mt-6 divide-x divide-dashed">
                       <div className="flex-1">
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 items-center">
                           <div className="text-2xl font-medium text-amber-400">
                             {userStatsData?.verifiedCredsCount ?? 0}
                           </div>
-                          <div className="my-auto text-sm text-white">Valid</div>
+                          <div className="text-sm text-white">Valid</div>
                         </div>
-                        <div className="flex gap-2 pt-2">
+                        <div className="flex gap-2 pt-2 flex-wrap">
                           {userStatsData?.verifiedCreds.map((cred) => (
-                            <img key={cred.id} src={cred.logoUrl} alt="Logo" className="h-6" />
+                            <img key={cred.id} src={cred.logoUrl} alt="Logo" className="h-5 w-5" />
                           ))}
                         </div>
                       </div>
-                      <div className="flex flex-1 gap-3 pl-6">
-                        <div className="text-2xl font-medium text-gray-500">0</div>
-                        <div className="my-auto text-sm text-white">Expired</div>
+                      <div className="flex-1 pl-6">
+                        <div className="flex gap-3 items-center">
+                          <div className="text-2xl font-medium text-gray-500">0</div>
+                          <div className="text-sm text-white">Expired</div>
+                        </div>
                       </div>
                     </div>
                   </section>

@@ -139,10 +139,10 @@ export function useCredDetails({
 
     if (res.level > 0) {
       const points = (res.level * data.maxPoints) / data.levels.length;
-      toast.success(`You received ${points} points.`);
+      toast.success(`Congratulations! You've earned ${points} points.`);
       navigate({ to: '/collected-creds', search: { suipassProvider: providerCode } });
     } else {
-      toast.error(`You didn't receive any points.`);
+      toast.error(`No points awarded!`);
     }
   };
 

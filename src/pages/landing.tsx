@@ -1,11 +1,12 @@
 import { Button, Container } from '@/components';
 import { useHomePage } from '@/hooks';
-import * as React from 'react';
 import SuiIconImg from '@/assets/sui-icon.svg';
 import LandingCoverImg from '@/assets/landing-cover.svg';
+import React from 'react';
 
 export const Landing: React.FC = () => {
   const { signInBtnIsLoading, signInBtnOnClick } = useHomePage();
+
   return (
     <div className="relative min-h-dvh">
       <img

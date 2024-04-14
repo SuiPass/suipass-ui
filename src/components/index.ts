@@ -11,3 +11,4 @@ export * from './cred-details';
 export * from './loader';
 export * from './empty';
 export * from './cred-verifying';
+export * from './install-wallet-extension-dialog';

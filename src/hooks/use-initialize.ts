@@ -3,6 +3,7 @@ import {
   useCurrentAccount,
   useSignAndExecuteTransactionBlock,
   useSuiClient,
+  useWallets
 } from '@mysten/dapp-kit';
 import { useEffect } from 'react';
 
@@ -10,6 +11,7 @@ export function useInitialize() {
   const client = useSuiClient();
   const command = useSignAndExecuteTransactionBlock();
   const account = useCurrentAccount();
+  const wallets = useWallets();
 
   useEffect(() => {
     (client as any).command = command;

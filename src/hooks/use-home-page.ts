@@ -1,12 +1,18 @@
 import { useState } from 'react';
-import { useAppWallet } from '.';
+import { useAppWallet, useWalletExtInstall } from '.';
 
 export function useHomePage() {
-  const { connect, connectWalletIsPending } = useAppWallet();
   const [loading, setLoading] = useState(false);
+  const { connect } = useAppWallet({ setLoading });
+  const { getWalletExtInstalled, openInstallWalletExtDialog } = useWalletExtInstall();
+
   const signInBtnOnClick = () => {
-    setLoading(true);
-    connect();
+    if (getWalletExtInstalled()) {
+      setLoading(true);
+      connect();
+    } else {
+      openInstallWalletExtDialog()
+    }
   };
 
   return {

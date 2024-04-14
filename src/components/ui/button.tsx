@@ -8,7 +8,7 @@ const buttonVariants = cva('block justify-center font-semibold leading-6 text-ce
   variants: {
     variant: {
       default: 'bg-aqua-green text-neutral-900',
-      secondary: 'bg-aqua-green text-neutral-900',
+      secondary: 'bg-white text-neutral-900',
       outline: 'bg-aqua-green text-neutral-900',
       ghost: 'bg-slate-800 bg-opacity-60 text-base text-gray-500',
     },
@@ -26,7 +26,7 @@ const buttonVariants = cva('block justify-center font-semibold leading-6 text-ce
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   isLoading?: boolean;
 }

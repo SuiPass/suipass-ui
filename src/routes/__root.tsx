@@ -1,4 +1,4 @@
-import { Header, Loader } from '@/components';
+import { Header, InstallWalletExtensionDialog, Loader } from '@/components';
 import { useInitialize } from '@/hooks';
 import { appStore } from '@/stores/app-store';
 import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router';
@@ -52,6 +52,7 @@ export function RouteComponent() {
               },
             }}
           />
+          <InstallWalletExtensionDialog />
         </>,
         document.body,
       )}

@@ -157,7 +157,8 @@ export function useCredDetails({
           afterVerified(res);
         })
         .catch((err) => {
-          setStatus(status);
+          if (data.currentLevel === 0) setStatus(CredStatus.NotConnected);
+          else setStatus(CredStatus.Connected);
         });
     },
   });

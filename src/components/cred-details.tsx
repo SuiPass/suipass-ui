@@ -7,6 +7,7 @@ import StarIcon from '@/assets/icons/star.svg';
 import CloseIcon from '@/assets/icons/close.svg';
 import { Checkbox } from './ui/checkbox';
 import { CredStatus, useCredDetails } from '@/hooks';
+import toast from 'react-hot-toast';
 
 type CredDetailsProps = {
   data: CredDto;
@@ -27,7 +28,14 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
             <img
               src={CloseIcon}
               className="w-full aspect-square cursor-pointer"
-              onClick={() => setDrawerIsOpen(false)}
+              onClick={(e) => {
+                if (status === CredStatus.NeedToSubmit) {
+                  toast.error('The process is running, please wait.');
+                  return;
+                }
+                e.stopPropagation();
+                setDrawerIsOpen(false);
+              }}
             />
           </div>
           <div className="flex flex-col self-center mt-6 w-full">

@@ -10,6 +10,7 @@ type CredCardProps = {
 
 export const CredCard: React.FC<CredCardProps> = ({ data }) => {
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
+  console.log(isDrawerOpen);
 
   useCredCard({ data, setDrawerIsOpen });
 
@@ -31,7 +32,7 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
           <div className="mt-2 text-sm font-light leading-5">{data.desc}</div>
         </div>
         <div>
-          <Drawer direction="right" open={isDrawerOpen} onOpenChange={setDrawerIsOpen}>
+          <Drawer direction="right" open={isDrawerOpen}>
             <DrawerTrigger asChild>
               <div>
                 {data.status === CredStatus.NotVerified && (

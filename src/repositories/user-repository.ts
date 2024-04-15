@@ -1,8 +1,12 @@
 import { providerApi, userApi } from '@/apis';
+import { MIN_BALANCE } from '@/consts';
 import { CredStatus, UserDto, UserStatisticsDto } from '@/dtos';
 
 class UserRepository {
   async newUser(input: { name: string }) {
+    const { totalBalance } = await userApi.getBalance();
+    if (totalBalance <= MIN_BALANCE) throw new Error('BALANCE_NOT_ENOUGH');
+
     await userApi.newUser(input);
   }
 

@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { appStore } from './app-store';
 import { contractStore } from './contract-store';
 import { userRepository } from '@/repositories';
@@ -13,22 +14,45 @@ export const rootStore = {
 contractStore.store.subscribe(async (state, prevState) => {
   // connected
   if (state.account !== prevState.account && state.account) {
-    let user = await userRepository.getUserInfo();
+    const disconnectWallet = contractStore.get.disconnectWallet()!;
 
-    if (!user) {
-      await new Promise((res) => {
-        setTimeout(() => res(true), 2000);
+    const isTestnet = state.account.chains[0] === 'sui:testnet';
+    if (!isTestnet) {
+      disconnectWallet();
+      setTimeout(() => {
+        toast.error('SuiPass uses Testnet as its preferred network.');
       });
-      await userRepository.newUser({ name: generateUsername() });
-      user = await userRepository.getUserInfo();
+      throw new Error('SuiPass uses Testnet as its preferred network.');
     }
 
-    const coin = await userRepository.getSuiCoin();
+    appStore.set.isLoading(true);
 
-    contractStore.set.user({ id: user.data!.objectId });
-    appStore.set.isRegistered(true);
-    contractStore.set.coin({ sui: coin.data!.objectId });
-    appStore.set.isLogged(true);
-    appStore.set.isLoading(false);
+    try {
+      let user = await userRepository.getUserInfo();
+
+      if (!user) {
+        await new Promise((res) => {
+          setTimeout(() => res(true), 2000);
+        });
+        await userRepository.newUser({ name: generateUsername() });
+      }
+
+      const coin = await userRepository.getSuiCoin();
+
+      contractStore.set.user({ id: user.data!.objectId });
+      appStore.set.isRegistered(true);
+      contractStore.set.coin({ sui: coin.data!.objectId });
+      appStore.set.isLogged(true);
+    } catch (err: any) {
+      if (err.message === 'BALANCE_NOT_ENOUGH')
+        setTimeout(() => {
+          toast.error('The account balance must be greater than 0.5 SUI.');
+        });
+
+      disconnectWallet();
+      contractStore.set.account(null);
+    } finally {
+      appStore.set.isLoading(false);
+    }
   }
 });

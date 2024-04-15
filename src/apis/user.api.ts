@@ -32,6 +32,18 @@ class UserApi extends BaseApi {
     return res.data[res.data.length - 1];
   }
 
+  async getBalance() {
+    const res = await this.suiClient.getBalance({
+      owner: this.account.address,
+    });
+
+    console.log(res);
+
+    return {
+      totalBalance: +res.totalBalance,
+    };
+  }
+
   async newUser(input: { name: string }) {
     const txb = new TransactionBlock();
     const func = 'user::new';
@@ -40,22 +52,12 @@ class UserApi extends BaseApi {
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,
     });
 
-    await this.suiClient.command.mutateAsync(
-      {
-        transactionBlock: txb,
-        options: {
-          showEffects: true,
-        },
+    await this.suiClient.command.mutateAsync({
+      transactionBlock: txb,
+      options: {
+        showEffects: true,
       },
-      {
-        onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
-        },
-        onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
-        },
-      },
-    );
+    });
   }
 
   async getDetail(): Promise<UserModel> {

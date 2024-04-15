@@ -16,20 +16,18 @@ export function useAppWallet({ setLoading }: { setLoading?: (loading: boolean) =
   const { mutate: disconnectWallet, isPending: disconnectWalletIsPending } = useDisconnectWallet();
 
   const connect = useCallback(() => {
-    connectWallet({ wallet: wallets[0] }, {
-      onError: (err) => {
-        toaster.error('Please connect or unlock your wallet before logging in!');
-        setLoading!(false);
-      },
-      onSuccess: (data) => {
-        const isTestnet = data.accounts[0].chains[0] === "sui:testnet";
-        if (!isTestnet) {
-          toaster.error('SuiPass uses Testnet as its preferred network.');
+    connectWallet(
+      { wallet: wallets[0] },
+      {
+        onError: (err) => {
+          toaster.error('Please connect or unlock your wallet before logging in!');
           setLoading!(false);
-          disconnectWallet();
-        }
-      }
-    })
+        },
+        onSuccess: (data) => {
+          setLoading!(false);
+        },
+      },
+    );
   }, [wallets]);
 
   const disconnect = useCallback(() => {

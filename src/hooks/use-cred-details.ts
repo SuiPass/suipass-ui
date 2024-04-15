@@ -152,9 +152,13 @@ export function useCredDetails({
       await submitProof({
         ...payload,
         providerCode,
-      }).then((res) => {
-        afterVerified(res);
-      });
+      })
+        .then((res) => {
+          afterVerified(res);
+        })
+        .catch((err) => {
+          setStatus(status);
+        });
     },
   });
 
@@ -173,6 +177,7 @@ export function useCredDetails({
         return;
 
       case 'sui':
+        const beforeSubmitStatus = status;
         setStatus(CredStatus.NeedToSubmit);
         submitProof({
           providerCode: providerCode,
@@ -180,12 +185,16 @@ export function useCredDetails({
           proof: {
             walletAddress: rootStore.contract.get.account()?.address!,
           },
-        }).then((res) => {
-          afterVerified(res);
-        });
+        })
+          .then((res) => {
+            afterVerified(res);
+          })
+          .catch((err) => {
+            setStatus(beforeSubmitStatus);
+          });
         return;
     }
-  }, [data]);
+  }, [data, status]);
 
   // Submit proof for google, twitter, github
   useEffect(() => {

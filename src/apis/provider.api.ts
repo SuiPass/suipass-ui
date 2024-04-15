@@ -22,36 +22,13 @@ class ProviderApi extends BaseApi {
 
     txb.transferObjects([coin], txb.pure(this.suiCoin));
 
-    await this.suiClient.command.mutateAsync(
-      {
-        transactionBlock: txb,
-        options: {
-          showEffects: true,
-        },
+    await this.suiClient.command.mutateAsync({
+      transactionBlock: txb,
+      options: {
+        showEffects: true,
       },
-      {
-        onSuccess: (tx) => {
-          console.log('[SUCCESS]', func, JSON.stringify(tx));
-        },
-        onError: (e) => {
-          console.log('[ERROR]', func, JSON.stringify(e));
-        },
-      },
-    );
+    });
   }
-
-  // async mintPassportTxb(): Promise<TransactionBlock> {
-  //   const txb = new TransactionBlock();
-  //   txb.moveCall({
-  //     arguments: [
-  //       txb.object(SUI_CONFIGS.SUIPASS_ADDR),
-  //       // Id of User Object
-  //       txb.object('0x719b9f551eadbcb92c911e631eba2f0a565d00a2f3bcd14067c70d2f63b11008'),
-  //     ],
-  //     target: `${SUI_CONFIGS.PACKAGE_ADDR}::suipass::mint_passport`,
-  //   });
-  //   return txb;
-  // }
 
   async getList(): Promise<ProviderModel[]> {
     const res = await this.httpClient({

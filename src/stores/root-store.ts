@@ -35,6 +35,7 @@ contractStore.store.subscribe(async (state, prevState) => {
           setTimeout(() => res(true), 2000);
         });
         await userRepository.newUser({ name: generateUsername() });
+        user = await userRepository.getUserInfo();
       }
 
       const coin = await userRepository.getSuiCoin();
@@ -48,9 +49,8 @@ contractStore.store.subscribe(async (state, prevState) => {
         setTimeout(() => {
           toast.error('The account balance must be greater than 0.5 SUI.');
         });
-
       disconnectWallet();
-      contractStore.set.account(null);
+      throw err;
     } finally {
       appStore.set.isLoading(false);
     }

@@ -37,8 +37,6 @@ class UserApi extends BaseApi {
       owner: this.account.address,
     });
 
-    console.log(res);
-
     return {
       totalBalance: +res.totalBalance,
     };

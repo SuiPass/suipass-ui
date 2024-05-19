@@ -17,8 +17,8 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const StorybookLazyImport = createFileRoute('/storybook')()
+const EnterpriseLazyImport = createFileRoute('/enterprise')()
 const EntepriseListLazyImport = createFileRoute('/enteprise-list')()
-const EntepriseLazyImport = createFileRoute('/enteprise')()
 const DashboardLazyImport = createFileRoute('/dashboard')()
 const CollectedCredsLazyImport = createFileRoute('/collected-creds')()
 const IndexLazyImport = createFileRoute('/')()
@@ -30,17 +30,17 @@ const StorybookLazyRoute = StorybookLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/storybook.lazy').then((d) => d.Route))
 
+const EnterpriseLazyRoute = EnterpriseLazyImport.update({
+  path: '/enterprise',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/enterprise.lazy').then((d) => d.Route))
+
 const EntepriseListLazyRoute = EntepriseListLazyImport.update({
   path: '/enteprise-list',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/enteprise-list.lazy').then((d) => d.Route),
 )
-
-const EntepriseLazyRoute = EntepriseLazyImport.update({
-  path: '/enteprise',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/enteprise.lazy').then((d) => d.Route))
 
 const DashboardLazyRoute = DashboardLazyImport.update({
   path: '/dashboard',
@@ -75,12 +75,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardLazyImport
       parentRoute: typeof rootRoute
     }
-    '/enteprise': {
-      preLoaderRoute: typeof EntepriseLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/enteprise-list': {
       preLoaderRoute: typeof EntepriseListLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/enterprise': {
+      preLoaderRoute: typeof EnterpriseLazyImport
       parentRoute: typeof rootRoute
     }
     '/storybook': {
@@ -96,8 +96,8 @@ export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   CollectedCredsLazyRoute,
   DashboardLazyRoute,
-  EntepriseLazyRoute,
   EntepriseListLazyRoute,
+  EnterpriseLazyRoute,
   StorybookLazyRoute,
 ])
 

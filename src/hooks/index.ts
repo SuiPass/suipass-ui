@@ -7,3 +7,4 @@ export * from './use-list-of-creds';
 export * from './use-cred-card';
 export * from './use-statistics-of-user';
 export * from './use-wallet-ext-install';
+export * from './use-create-scorer';

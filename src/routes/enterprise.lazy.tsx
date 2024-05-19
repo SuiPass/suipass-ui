@@ -1,7 +1,7 @@
 import { Button, Container } from '@/components';
 import { CredCardMini } from '@/components/cred-card-mini';
 import { CredStatus } from '@/dtos';
-import { useListOfCreds } from '@/hooks';
+import { useCreateScorer, useListOfCreds } from '@/hooks';
 import { cn } from '@/lib/utils';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Form from '@radix-ui/react-form';
@@ -31,11 +31,11 @@ const METHODS = [
 ];
 
 function Enterprise() {
+  const { createScorerMutation } = useCreateScorer();
   const [selectIndex, setSelectIndex] = useState(-1);
   const [step, setStep] = useState(0);
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState<any>({});
   const [selectedCard, setSelectedCard] = useState<Set<string>>(new Set());
-  const navigate = useNavigate();
 
   const { listOfCredsData } = useListOfCreds({
     status: [CredStatus.Verified, CredStatus.NotVerified],
@@ -146,10 +146,15 @@ function Enterprise() {
                       <hr className="my-4 opacity-30 border-0 border-t" />
                       <Form.Root
                         className="flex flex-col gap-3"
-                        onSubmit={(ev) => {
+                        onSubmit={async (ev) => {
                           ev.preventDefault();
-                          console.log(values);
-                          navigate({ to: '/enteprise-list' });
+
+                          createScorerMutation.mutateAsync({
+                            name: values.name,
+                            metadata: values.description,
+                            providerIds: Array.from(selectedCard),
+                            threshold: maxPoint,
+                          });
                         }}
                       >
                         <Form.Field name="name" className="flex gap-2 flex-col">
@@ -245,6 +250,6 @@ function Enterprise() {
   );
 }
 
-export const Route = createLazyFileRoute('/enteprise')({
+export const Route = createLazyFileRoute('/enterprise')({
   component: Enterprise,
 });

@@ -20,7 +20,7 @@ class ScorerApi extends BaseApi {
         txb.pure.address(this.account.address),
         txb.pure.string(input.name),
         txb.pure.string(JSON.stringify(input.metadata)),
-        txb.pure.string(JSON.stringify(input.providerIds)),
+        txb.pure(input.providerIds),
         txb.pure.u16(input.threshold),
       ],
       target: `${SUI_CONFIGS.PACKAGE_ADDR}::${func}`,

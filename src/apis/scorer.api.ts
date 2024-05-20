@@ -6,7 +6,7 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 class ScorerApi extends BaseApi {
   async create(input: {
     name: string;
-    metadata: object;
+    metadata: string;
     providerIds: string[];
     threshold: number;
   }) {
@@ -19,7 +19,7 @@ class ScorerApi extends BaseApi {
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),
         txb.pure.address(this.account.address),
         txb.pure.string(input.name),
-        txb.pure.string(JSON.stringify(input.metadata)),
+        txb.pure.string(input.metadata),
         txb.pure(input.providerIds),
         txb.pure.u16(input.threshold),
       ],
@@ -35,12 +35,46 @@ class ScorerApi extends BaseApi {
   }
 
   async getList(): Promise<ScorerModel[]> {
-    const res = await this.httpClient({
-      method: 'get',
-      url: '/scorers',
+    // Get events
+    const events = await this.suiClient.queryEvents({
+      query: {
+        Sender: this.account.address,
+      },
+      limit: 99999,
+    });
+    const parsedEvents = events.data
+      .filter((data) => data.type === `${SUI_CONFIGS.PACKAGE_ADDR}::enterprise::CreatedEnterprise`)
+      .map((data) => data);
+
+    // Get objects
+    const res = await this.suiClient.multiGetObjects({
+      options: {
+        showContent: true,
+      },
+      ids: parsedEvents.map((event) => (event.parsedJson as any).enterprise_id),
     });
 
-    return res.data.data;
+    const dtos = res.map((object) => {
+      const data = (object.data!.content as any).fields;
+      const id: string = data.id.id;
+      const name: string = data.name;
+      const metadata: string = data.metadata;
+
+      const providerIds: string[] = data.providers.fields.contents.map(
+        (item: any) => item.fields.key,
+      );
+      const threshold: number = data.threshold;
+
+      return {
+        id,
+        name,
+        metadata,
+        providerIds,
+        threshold,
+      };
+    });
+
+    return dtos;
   }
 }
 

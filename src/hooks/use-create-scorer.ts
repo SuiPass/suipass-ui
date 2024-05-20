@@ -8,7 +8,7 @@ export function useCreateScorer() {
   const createScorerMutation = useMutation({
     mutationFn: async (payload: {
       name: string;
-      metadata: object;
+      metadata: string;
       providerIds: string[];
       threshold: number;
     }) => {

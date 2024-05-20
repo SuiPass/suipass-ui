@@ -36,6 +36,7 @@ function Enterprise() {
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<any>({});
   const [selectedCard, setSelectedCard] = useState<Set<string>>(new Set());
+  const [threshold, setThreshold] = useState<number>(0);
 
   const { listOfCredsData } = useListOfCreds({
     status: [CredStatus.Verified, CredStatus.NotVerified],
@@ -65,7 +66,7 @@ function Enterprise() {
     if (maxPoint === 0) {
       return [0, 0];
     }
-    return [start, middle, end];
+    return [start, end];
   }, [maxPoint]);
 
   const isLoading = useMemo(() => listOfScoreUseCaseIsLoading, [listOfScoreUseCaseIsLoading]);
@@ -161,7 +162,7 @@ function Enterprise() {
                             name: values.name,
                             metadata: values.description,
                             providerIds: Array.from(selectedCard),
-                            threshold: maxPoint,
+                            threshold,
                           });
                         }}
                       >
@@ -229,6 +230,9 @@ function Enterprise() {
                             defaultValue={[0]}
                             max={maxPoint}
                             step={1}
+                            onValueChange={(value) => {
+                              setThreshold(value[0]);
+                            }}
                           >
                             <Slider.Track className="bg-gray-300 relative flex-1 rounded-full h-1">
                               <Slider.Range className="absolute bg-aqua-green rounded-full h-full" />
@@ -243,9 +247,12 @@ function Enterprise() {
                               <div key={e}>{e}</div>
                             ))}
                           </div>
+                          <div className="pt-4 text-2xl text-center ">{threshold}</div>
                         </div>
                         <Form.Submit className="mt-8">
-                          <Button className="w-full">Continue</Button>
+                          <Button className="w-full" isLoading={createScorerMutation.isPending}>
+                            Continue
+                          </Button>
                         </Form.Submit>
                       </Form.Root>
                     </div>

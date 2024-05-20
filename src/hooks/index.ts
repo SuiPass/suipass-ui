@@ -8,3 +8,4 @@ export * from './use-cred-card';
 export * from './use-statistics-of-user';
 export * from './use-wallet-ext-install';
 export * from './use-create-scorer';
+export * from './use-list-of-score-use-case';

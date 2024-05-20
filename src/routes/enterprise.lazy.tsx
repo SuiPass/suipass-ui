@@ -1,7 +1,7 @@
-import { Button, Container } from '@/components';
+import { Button, Container, Loader } from '@/components';
 import { CredCardMini } from '@/components/cred-card-mini';
 import { CredStatus } from '@/dtos';
-import { useCreateScorer, useListOfCreds } from '@/hooks';
+import { useCreateScorer, useListOfCreds, useListOfScoreUseCase } from '@/hooks';
 import { cn } from '@/lib/utils';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Form from '@radix-ui/react-form';
@@ -9,28 +9,28 @@ import * as Slider from '@radix-ui/react-slider';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { ChevronLeft, XIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useRouter, useNavigate } from '@tanstack/react-router';
 
-const METHODS = [
-  {
-    title: 'Airdrop Protection',
-    description: 'I want to ensure my airdrop goes to real humans and not farmers.',
-  },
-  {
-    title: 'Sybil Prevention',
-    description: 'I need to ensure my community or app is not attacked.',
-  },
-  {
-    title: 'Bot prevention',
-    description: 'I want my community or app to be safe from bots.',
-  },
-  {
-    title: 'Other',
-    description: "It's something else, or I'm not sure yet.",
-  },
-];
+// const METHODS = [
+//   {
+//     title: 'Airdrop Protection',
+//     description: 'I want to ensure my airdrop goes to real humans and not farmers.',
+//   },
+//   {
+//     title: 'Sybil Prevention',
+//     description: 'I need to ensure my community or app is not attacked.',
+//   },
+//   {
+//     title: 'Bot prevention',
+//     description: 'I want my community or app to be safe from bots.',
+//   },
+//   {
+//     title: 'Other',
+//     description: "It's something else, or I'm not sure yet.",
+//   },
+// ];
 
 function Enterprise() {
+  const { listOfScoreUseCaseData, listOfScoreUseCaseIsLoading } = useListOfScoreUseCase();
   const { createScorerMutation } = useCreateScorer();
   const [selectIndex, setSelectIndex] = useState(-1);
   const [step, setStep] = useState(0);
@@ -68,7 +68,15 @@ function Enterprise() {
     return [start, middle, end];
   }, [maxPoint]);
 
-  const option = METHODS[selectIndex];
+  const isLoading = useMemo(() => listOfScoreUseCaseIsLoading, [listOfScoreUseCaseIsLoading]);
+  if (isLoading)
+    return (
+      <div className="w-dvw h-dvh">
+        <Loader />
+      </div>
+    );
+
+  const option = listOfScoreUseCaseData![selectIndex];
 
   return (
     <Container>
@@ -103,7 +111,7 @@ function Enterprise() {
                         <p className="mt-2 opacity-50">What will this Scorer be used for?</p>
                       </div>
                       <div className="grid grid-cols-2 gap-4 mt-8">
-                        {METHODS.map((e, i) => (
+                        {listOfScoreUseCaseData?.map((e, i) => (
                           <div
                             className={cn(
                               'p-4 border rounded border-gray-300 cursor-pointer hover:border-aqua-green',
@@ -113,7 +121,7 @@ function Enterprise() {
                             )}
                             onClick={() => setSelectIndex(i)}
                           >
-                            <h2 className="text-base font-semibold">{e.title}</h2>
+                            <h2 className="text-base font-semibold">{e.name}</h2>
                             <p className="text-sm opacity-60 mt-2">{e.description}</p>
                           </div>
                         ))}
@@ -141,7 +149,7 @@ function Enterprise() {
                         />{' '}
                         <span className="flex-1 text-center">Use Case Details</span>
                       </Dialog.Title>
-                      <h2 className="text-lg text-blue-500">{option.title}</h2>
+                      <h2 className="text-lg text-blue-500">{option.name}</h2>
                       <p className="mt-1 text-sm">{option.description}</p>
                       <hr className="my-4 opacity-30 border-0 border-t" />
                       <Form.Root
@@ -194,21 +202,27 @@ function Enterprise() {
                         <div>
                           <label className="text-sm mb-4 block">Creds</label>
                           <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1 mb-4">
-                            {listOfCredsData?.map((credData) => (
-                              <CredCardMini
-                                onClick={() => {
-                                  if (selectedCard.has(credData.id)) {
-                                    selectedCard.delete(credData.id);
-                                  } else {
-                                    selectedCard.add(credData.id);
-                                  }
-                                  setSelectedCard(new Set(selectedCard));
-                                }}
-                                key={credData.id}
-                                data={credData}
-                                isSelected={selectedCard.has(credData.id)}
-                              />
-                            ))}
+                            {listOfCredsData
+                              ?.filter(
+                                (item) =>
+                                  option.providerIds.length === 0 ||
+                                  option.providerIds.includes(item.id),
+                              )
+                              .map((credData) => (
+                                <CredCardMini
+                                  onClick={() => {
+                                    if (selectedCard.has(credData.id)) {
+                                      selectedCard.delete(credData.id);
+                                    } else {
+                                      selectedCard.add(credData.id);
+                                    }
+                                    setSelectedCard(new Set(selectedCard));
+                                  }}
+                                  key={credData.id}
+                                  data={credData}
+                                  isSelected={selectedCard.has(credData.id)}
+                                />
+                              ))}
                           </div>
                           <Slider.Root
                             className="relative flex items-center select-none w-full"

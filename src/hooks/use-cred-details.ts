@@ -208,9 +208,9 @@ export function useCredDetails({
       case 'verisoul': {
         setStatus(CredStatus.NeedToSubmit);
         (async () => {
-          // const res = await providerRepository.getVerisoulSession();
-          // const { sessionId } = res;
-          verifyFunctions.verisoulOAuth('00009f10-8b75-4365-986d-624398154bb2');
+          const res = await providerRepository.getVerisoulSession();
+          const { sessionId } = res;
+          verifyFunctions.verisoulOAuth(sessionId);
         })();
         return;
       }

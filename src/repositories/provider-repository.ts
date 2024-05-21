@@ -8,6 +8,12 @@ class ProviderRepository {
 
     await providerApi.submitReq(input);
   }
+
+  async getVerisoulSession(): Promise<{
+    sessionId: string;
+  }> {
+    return providerApi.getVerisoulSession();
+  }
 }
 
 export const providerRepository = new ProviderRepository();

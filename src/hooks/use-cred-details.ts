@@ -62,6 +62,17 @@ const verifyFunctions = {
     const url = `${rootUrl}?${qs}`;
     window.location.href = url;
   },
+  verisoulOAuth: (sessionId: string) => {
+    const rootURl = 'https://app.sandbox.verisoul.ai';
+    const options = {
+      session_id: sessionId,
+      redirect_url: `${SUIPASS_CONFIGS.URL}?suipassProvider=verisoul`,
+    };
+
+    const qs = new URLSearchParams(options);
+    const url = `${rootURl}?${qs.toString()}`;
+    window.location.href = url;
+  },
 } as const;
 
 async function submitProof(payload: { providerAddress: string; providerCode: string; proof: any }) {
@@ -84,12 +95,10 @@ export function useCredDetails({
   const navigate = useNavigate();
   const [status, setStatus] = useState<CredStatus | null>(null);
   const queryClient = useQueryClient();
-  const { suipassProvider, code: socialProviderProof } = useSearch<
-    any,
-    { suipassProvider: string; code: string }
-  >({
+  const queries = useSearch<any, { suipassProvider: string; code: string }>({
     strict: false,
   });
+  const { suipassProvider } = queries;
   const providerCode = useMemo(() => data.name.toLowerCase(), [data]);
 
   const { data: listOfRequestsData, isLoading: listOfRequestsIsLoading } = useQuery({
@@ -177,7 +186,7 @@ export function useCredDetails({
         verifyFunctions.twitterOAuth();
         return;
 
-      case 'sui':
+      case 'sui': {
         const beforeSubmitStatus = status;
         setStatus(CredStatus.NeedToSubmit);
         submitProof({
@@ -194,6 +203,17 @@ export function useCredDetails({
             setStatus(beforeSubmitStatus);
           });
         return;
+      }
+
+      case 'verisoul': {
+        setStatus(CredStatus.NeedToSubmit);
+        (async () => {
+          // const res = await providerRepository.getVerisoulSession();
+          // const { sessionId } = res;
+          verifyFunctions.verisoulOAuth('00009f10-8b75-4365-986d-624398154bb2');
+        })();
+        return;
+      }
     }
   }, [data, status]);
 
@@ -202,10 +222,32 @@ export function useCredDetails({
     if (status === CredStatus.NeedToSubmit) {
       if (suipassProvider === providerCode) {
         setDrawerIsOpen(true);
-        mutation.mutate({ providerAddress: data.id, proof: socialProviderProof });
+        const providerAddress = data.id;
+        let proof;
+        switch (suipassProvider) {
+          case 'github':
+          case 'google':
+          case 'twitter':
+            proof = queries.code;
+            break;
+
+          case 'verisoul':
+            const success = queries.success;
+
+            if (success !== 'true') {
+              toast.error(`Authentication with Verisoul failed!`);
+              setStatus(CredStatus.NotConnected);
+              return;
+            }
+
+            proof = queries.session_id;
+            break;
+        }
+
+        mutation.mutate({ providerAddress, proof });
       }
     }
-  }, [suipassProvider, providerCode, status]);
+  }, [suipassProvider, providerCode, status, queries]);
 
   return {
     status,

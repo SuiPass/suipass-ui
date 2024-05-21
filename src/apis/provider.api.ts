@@ -38,6 +38,17 @@ class ProviderApi extends BaseApi {
 
     return res.data.data;
   }
+
+  async getVerisoulSession(): Promise<{
+    sessionId: string;
+  }> {
+    const res = await this.httpClient({
+      method: 'get',
+      url: '/providers/verisoul/session',
+    });
+
+    return res.data.data;
+  }
 }
 
 export const providerApi = new ProviderApi();

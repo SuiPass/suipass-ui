@@ -10,7 +10,6 @@ type CredCardProps = {
 
 export const CredCard: React.FC<CredCardProps> = ({ data }) => {
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
-  console.log(isDrawerOpen);
 
   useCredCard({ data, setDrawerIsOpen });
 

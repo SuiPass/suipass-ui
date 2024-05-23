@@ -234,7 +234,7 @@ export function useCredDetails({
           case 'verisoul':
             const success = queries.success;
 
-            if (success !== 'true') {
+            if (success != true) {
               toast.error(`Authentication with Verisoul failed!`);
               setStatus(CredStatus.NotConnected);
               return;

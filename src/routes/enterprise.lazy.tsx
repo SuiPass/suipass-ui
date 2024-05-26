@@ -8,26 +8,7 @@ import * as Form from '@radix-ui/react-form';
 import * as Slider from '@radix-ui/react-slider';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { ChevronLeft, XIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
-
-// const METHODS = [
-//   {
-//     title: 'Airdrop Protection',
-//     description: 'I want to ensure my airdrop goes to real humans and not farmers.',
-//   },
-//   {
-//     title: 'Sybil Prevention',
-//     description: 'I need to ensure my community or app is not attacked.',
-//   },
-//   {
-//     title: 'Bot prevention',
-//     description: 'I want my community or app to be safe from bots.',
-//   },
-//   {
-//     title: 'Other',
-//     description: "It's something else, or I'm not sure yet.",
-//   },
-// ];
+import { useEffect, useMemo, useState } from 'react';
 
 function Enterprise() {
   const { listOfScoreUseCaseData, listOfScoreUseCaseIsLoading } = useListOfScoreUseCase();
@@ -38,9 +19,7 @@ function Enterprise() {
   const [selectedCard, setSelectedCard] = useState<Set<string>>(new Set());
   const [threshold, setThreshold] = useState<number>(0);
 
-  const { listOfCredsData } = useListOfCreds({
-    status: [CredStatus.Verified, CredStatus.NotVerified],
-  });
+  const { listOfCredsData } = useListOfCreds({});
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (ev) => {
     setValues({ ...values, [ev.target.name]: ev.target.value });
@@ -58,11 +37,14 @@ function Enterprise() {
     return 0;
   }, [listOfCredsData, selectedCard]);
 
+  useEffect(() => {
+    setThreshold(maxPoint);
+  }, [maxPoint]);
+
   const arrayPoint = useMemo(() => {
     const start = 0;
     const end = maxPoint;
 
-    const middle = Math.round(maxPoint / 2);
     if (maxPoint === 0) {
       return [0, 0];
     }
@@ -120,7 +102,10 @@ function Enterprise() {
                                 'border-aqua-green': selectIndex === i,
                               },
                             )}
-                            onClick={() => setSelectIndex(i)}
+                            onClick={() => {
+                              setSelectIndex(i);
+                              setSelectedCard(new Set(listOfScoreUseCaseData[i].providerIds));
+                            }}
                           >
                             <h2 className="text-base font-semibold">{e.name}</h2>
                             <p className="text-sm opacity-60 mt-2">{e.description}</p>
@@ -227,7 +212,7 @@ function Enterprise() {
                           </div>
                           <Slider.Root
                             className="relative flex items-center select-none w-full"
-                            defaultValue={[0]}
+                            defaultValue={[maxPoint]}
                             max={maxPoint}
                             step={1}
                             onValueChange={(value) => {

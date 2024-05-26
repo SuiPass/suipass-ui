@@ -3,7 +3,7 @@ import { CredStatus } from '@/dtos';
 import { credRepository } from '@/repositories';
 import { useQuery } from '@tanstack/react-query';
 
-export const useListOfCreds = ({ status }: { status: CredStatus[] }) => {
+export const useListOfCreds = ({ status }: { status?: CredStatus[] }) => {
   const { data: listOfCredsData, isLoading: listOfCredsIsLoading } = useQuery({
     queryKey: [QUERY_KEYS.LIST_OF_CREDS, status],
     queryFn: async () => {

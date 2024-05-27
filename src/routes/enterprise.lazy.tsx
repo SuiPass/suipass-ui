@@ -3,6 +3,8 @@ import { CredCardMini } from '@/components/cred-card-mini';
 import { CredStatus } from '@/dtos';
 import { useCreateScorer, useListOfCreds, useListOfScoreUseCase } from '@/hooks';
 import { cn } from '@/lib/utils';
+import { Landing } from '@/pages/landing';
+import { rootStore } from '@/stores';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Form from '@radix-ui/react-form';
 import * as Slider from '@radix-ui/react-slider';
@@ -11,6 +13,7 @@ import { ChevronLeft, XIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 function Enterprise() {
+  const isLogged = rootStore.app.use.isLogged();
   const { listOfScoreUseCaseData, listOfScoreUseCaseIsLoading } = useListOfScoreUseCase();
   const { createScorerMutation } = useCreateScorer();
   const [selectIndex, setSelectIndex] = useState(-1);
@@ -52,16 +55,19 @@ function Enterprise() {
   }, [maxPoint]);
 
   const isLoading = useMemo(() => listOfScoreUseCaseIsLoading, [listOfScoreUseCaseIsLoading]);
-  if (isLoading)
+
+  const option = (listOfScoreUseCaseData ?? [])![selectIndex];
+
+  if (isLogged && isLoading)
     return (
       <div className="w-dvw h-dvh">
         <Loader />
       </div>
     );
 
-  const option = listOfScoreUseCaseData![selectIndex];
-
-  return (
+  return !isLogged ? (
+    <Landing />
+  ) : (
     <Container>
       <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
         <div className="text-base  text-white text-center max-w-[768px] mx-auto">

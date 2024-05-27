@@ -39,7 +39,7 @@ export function Home({ status }: { status: CredStatus[] }) {
             {listOfCredsIsLoading ? (
               <Loader />
             ) : listOfCredsData?.length ? (
-              <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1">
+              <div className="grid grid-cols-2 gap-8 max-lg:grid-cols-1">
                 {listOfCredsData?.map((credData) => <CredCard key={credData.id} data={credData} />)}
               </div>
             ) : (

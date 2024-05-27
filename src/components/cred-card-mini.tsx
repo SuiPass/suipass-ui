@@ -25,7 +25,7 @@ export const CredCardMini: React.FC<CredCardMiniProps> = ({ data, isSelected, on
             <img src={data.logo} alt="Logo" className="h-6" />
             {data.name}
             <div className="ml-auto flex items-center gap-0.5 px-4 py-1 rounded-2xl bg-neutral-900 bg-opacity-40">
-              <div className="text-sm font-semibold text-white">{data.points}</div>&nbsp;
+              <div className="text-sm font-semibold text-white">{data.maxPoints}</div>&nbsp;
               <div className="text-xs font-light text-light-grey"> points</div>
             </div>
           </div>

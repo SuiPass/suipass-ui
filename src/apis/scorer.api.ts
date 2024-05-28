@@ -6,7 +6,7 @@ import { TransactionBlock } from '@mysten/sui.js/transactions';
 class ScorerApi extends BaseApi {
   async create(input: {
     name: string;
-    metadata: string;
+    metadata: object;
     providerIds: string[];
     threshold: number;
   }) {
@@ -19,7 +19,7 @@ class ScorerApi extends BaseApi {
         txb.object(SUI_CONFIGS.SUIPASS_ADDR),
         txb.pure.address(this.account.address),
         txb.pure.string(input.name),
-        txb.pure.string(input.metadata),
+        txb.pure.string(JSON.stringify(input.metadata)),
         txb.pure(input.providerIds),
         txb.pure.u16(input.threshold),
       ],
@@ -58,7 +58,7 @@ class ScorerApi extends BaseApi {
       const data = (object.data!.content as any).fields;
       const id: string = data.id.id;
       const name: string = data.name;
-      const metadata: string = data.metadata;
+      const metadata: any = JSON.parse(data.metadata);
 
       const providerIds: string[] = data.providers.fields.contents.map(
         (item: any) => item.fields.key,

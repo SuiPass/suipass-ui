@@ -4,4 +4,5 @@ export type ScoreUseCaseModel = {
   description: string;
   providerIds: string[];
   order: number;
+  thumbnailUrl: string;
 };

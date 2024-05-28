@@ -8,7 +8,7 @@ class ScorerRepository {
 
   async create(payload: {
     name: string;
-    metadata: string;
+    metadata: object;
     providerIds: string[];
     threshold: number;
   }) {

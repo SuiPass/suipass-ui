@@ -11,7 +11,7 @@ export const CredCardMini: React.FC<CredCardMiniProps> = ({ data, isSelected, on
   return (
     <div
       className={cn(
-        'flex flex-col p-3 border border-solid bg-dark-grey border-dark-grey rounded-lg h-full cursor-pointer',
+        'flex flex-col p-6 border-2 border-transparent bg-dark-grey rounded-[1.5rem] cursor-pointer',
         {
           'border-aqua-green': isSelected,
         },
@@ -21,15 +21,14 @@ export const CredCardMini: React.FC<CredCardMiniProps> = ({ data, isSelected, on
       <div className="flex gap-5 justify-between w-full text-center"></div>
       <div className="flex-1 flex flex-col justify-between">
         <div className="text-white">
-          <div className="text-lg font-semibold flex gap-2 items-center">
-            <img src={data.logo} alt="Logo" className="h-6" />
+          <div className="text-lg font-semibold flex gap-6 items-center">
+            <img src={data.logo} alt="Logo" className="w-8" />
             {data.name}
-            <div className="ml-auto flex items-center gap-0.5 px-4 py-1 rounded-2xl bg-neutral-900 bg-opacity-40">
-              <div className="text-sm font-semibold text-white">{data.maxPoints}</div>&nbsp;
-              <div className="text-xs font-light text-light-grey"> points</div>
+            <div className="ml-auto flex items-center gap-0.5">
+              <div className="text-base font-semibold text-white">{data.maxPoints}</div>&nbsp;
+              <div className="text-xs font-light text-light-grey">pts</div>
             </div>
           </div>
-          <div className="mt-2 text-xs font-light leading-5">{data.desc}</div>
         </div>
       </div>
     </div>

@@ -159,7 +159,7 @@ function Enterprise() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-6 divide-x divide-dashed divide-light-grey">
+                      <div className="flex gap-6 divide-x divide-dashed divide-light-grey mt-4">
                         <div className="flex-1">
                           <div className="text-lg font-semibold">{scorerData.name}</div>
                           <div className="text-sm font-light mt-2">{scorerData.metadata.desc}</div>
@@ -176,7 +176,9 @@ function Enterprise() {
                         </div>
                       </div>
                       <div className="flex justify-between mt-4">
-                        <div className="text-sm font-light mt-2">API key: {scorerData.id}</div>
+                        <div className="text-sm font-light mt-2 mr-2 break-words">
+                          API key: {scorerData.id}
+                        </div>
                         <img
                           src={CopyIcon}
                           className="w-6 cursor-pointer"

@@ -39,14 +39,14 @@ export function Home({ status }: { status: CredStatus[] }) {
             {listOfCredsIsLoading ? (
               <Loader />
             ) : listOfCredsData?.length ? (
-              <div className="grid grid-cols-2 gap-8 max-lg:grid-cols-1">
+              <div className="grid grid-cols-2 gap-8 max-xl:grid-cols-1">
                 {listOfCredsData?.map((credData) => <CredCard key={credData.id} data={credData} />)}
               </div>
             ) : (
               <Empty />
             )}
           </div>
-          <aside className="ml-5 w-[32%] max-md:ml-0 max-md:w-full max-md:mb-8">
+          <aside className="ml-5 w-[32%] min-w-[280px] max-md:ml-0 max-md:w-full max-md:mb-8">
             <div className="sticky top-40">
               <div className="flex flex-col max-md:mt-8">
                 <section className="flex flex-col p-6 bg-[#302E4066] bg-opacity-40 rounded-[2.5rem] max-md:px-5">
@@ -68,7 +68,7 @@ export function Home({ status }: { status: CredStatus[] }) {
                         <div className="flex gap-5 justify-between">
                           <div className="text-white">0</div>
                         </div>
-                        <div className="font-bold text-teal-400 ml-[-35px] relative">
+                        <div className="font-bold text-teal-400 ml-[-90px] relative">
                           <span>400</span>
                           <div className="divide-x divide-dashed absolute z-10 top-0 left-3">
                             <div className="h-6" />

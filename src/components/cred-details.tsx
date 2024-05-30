@@ -22,7 +22,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
 
   return (
     <>
-      <div className="overflow-y-auto flex flex-col px-4 w-[472px] shadow-lg bg-black h-full">
+      <div className="overflow-y-auto flex flex-col px-4 max-w-[472px] shadow-lg bg-black h-full">
         <div className="flex-1 flex flex-col">
           <div className="p-2 w-10 self-end">
             <img

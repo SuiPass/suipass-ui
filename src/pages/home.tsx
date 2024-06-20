@@ -1,4 +1,4 @@
-import { Container, CredCard, Empty, Loader, CredVerifying } from '@/components';
+import { Container, CredCard, Empty, Loader, CredVerifying, FeedbackButton } from '@/components';
 import { Progress } from '@/components/ui/progress';
 import { CredStatus } from '@/dtos';
 import { useListOfCreds, useStatisticsOfUser } from '@/hooks';
@@ -14,6 +14,7 @@ export function Home({ status }: { status: CredStatus[] }) {
   return (
     <Container>
       {/* <CredVerifying /> */}
+      <FeedbackButton />
       <main className="flex flex-col self-center mt-40 w-full max-w-[1120px] max-md:max-w-full">
         <div className="flex gap-5 justify-between self-start text-base font-semibold">
           <Link to="/">

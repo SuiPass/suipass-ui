@@ -23,18 +23,18 @@ const socialIcons = [
     url: 'https://x.com/SuiPass_',
     className: 'w-6 aspect-square',
   },
-  {
-    src: 'https://cdn.builder.io/api/v1/image/assets/TEMP/6b0a29dc8e707b9fe8fc1cfa3cf5fde91102b0047a0a0b15e0c59cebf4312946?apiKey=05796128f6dd44148e772baecec9d384&',
-    alt: 'Discord icon',
-    url: '',
-    className: 'w-6 aspect-square fill-[linear-gradient(180deg,#FFF_0%,#229ED9_9925.83%)]',
-  },
-  {
-    src: 'https://cdn.builder.io/api/v1/image/assets/TEMP/99352547f68e7257d20c5abede59a973b54f45978ff6a434b68a860cd1bd8b8e?apiKey=05796128f6dd44148e772baecec9d384&',
-    alt: 'Telegram icon',
-    url: '',
-    className: 'w-8 aspect-[1.33]',
-  },
+  // {
+  //   src: 'https://cdn.builder.io/api/v1/image/assets/TEMP/6b0a29dc8e707b9fe8fc1cfa3cf5fde91102b0047a0a0b15e0c59cebf4312946?apiKey=05796128f6dd44148e772baecec9d384&',
+  //   alt: 'Discord icon',
+  //   url: '',
+  //   className: 'w-6 aspect-square fill-[linear-gradient(180deg,#FFF_0%,#229ED9_9925.83%)]',
+  // },
+  // {
+  //   src: 'https://cdn.builder.io/api/v1/image/assets/TEMP/99352547f68e7257d20c5abede59a973b54f45978ff6a434b68a860cd1bd8b8e?apiKey=05796128f6dd44148e772baecec9d384&',
+  //   alt: 'Telegram icon',
+  //   url: '',
+  //   className: 'w-8 aspect-[1.33]',
+  // },
   {
     src: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b6831d5743b11ca398b23842e0b9998c5fb9cdf608c5faff39e8f84986dddcbc?apiKey=05796128f6dd44148e772baecec9d384&',
     alt: 'Medium icon',

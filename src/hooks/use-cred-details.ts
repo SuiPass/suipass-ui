@@ -21,7 +21,7 @@ const verifyFunctions = {
     const rootURl = 'https://github.com/login/oauth/authorize';
     const options = {
       client_id: '5f5991f94e3f8e1224df',
-      redirect_uri: `https://suipass.xyz?suipassProvider=github`,
+      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=github`,
       scope: 'user:email',
       state: location.pathname,
     };

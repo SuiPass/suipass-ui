@@ -1,5 +1,6 @@
-import { Container, CredCard, Empty, Loader, CredVerifying } from '@/components';
+import { Container, CredCard, Empty, Loader } from '@/components';
 import { Progress } from '@/components/ui/progress';
+import { SUIPASS_CONFIGS } from '@/configs';
 import { CredStatus } from '@/dtos';
 import { useListOfCreds, useStatisticsOfUser } from '@/hooks';
 import { Link } from '@tanstack/react-router';
@@ -20,7 +21,7 @@ export function Home({ status }: { status: CredStatus[] }) {
             <div
               className={`justify-center px-5 cursor-pointer hover:text-white ${status.includes(CredStatus.Verified) ? 'text-gray-500' : 'text-white'}`}
             >
-              Add Creds
+              Add Creds {SUIPASS_CONFIGS.URL}
             </div>
           </Link>
           <Link to="/collected-creds">

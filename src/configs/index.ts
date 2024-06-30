@@ -4,8 +4,6 @@ export const SUI_CONFIGS = {
   SUIPASS_ADDR: import.meta.env.VITE_SUIPASS_ADDR,
 } as const;
 
-export const SUIPASS_API_URL = 'http://localhost:3001/api';
-
 export const SUIPASS_CONFIGS = {
   URL: import.meta.env.VITE_SUIPASS_URL ?? 'https://suipass.xyz',
   API_URL: import.meta.env.VITE_SUIPASS_API_URL ?? 'https://api.suipass.xyz/api',

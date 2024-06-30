@@ -64,26 +64,44 @@ const IndexLazyRoute = IndexLazyImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/collected-creds': {
+      id: '/collected-creds'
+      path: '/collected-creds'
+      fullPath: '/collected-creds'
       preLoaderRoute: typeof CollectedCredsLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardLazyImport
       parentRoute: typeof rootRoute
     }
     '/enteprise-list': {
+      id: '/enteprise-list'
+      path: '/enteprise-list'
+      fullPath: '/enteprise-list'
       preLoaderRoute: typeof EntepriseListLazyImport
       parentRoute: typeof rootRoute
     }
     '/enterprise': {
+      id: '/enterprise'
+      path: '/enterprise'
+      fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseLazyImport
       parentRoute: typeof rootRoute
     }
     '/storybook': {
+      id: '/storybook'
+      path: '/storybook'
+      fullPath: '/storybook'
       preLoaderRoute: typeof StorybookLazyImport
       parentRoute: typeof rootRoute
     }
@@ -92,13 +110,49 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   CollectedCredsLazyRoute,
   DashboardLazyRoute,
   EntepriseListLazyRoute,
   EnterpriseLazyRoute,
   StorybookLazyRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/collected-creds",
+        "/dashboard",
+        "/enteprise-list",
+        "/enterprise",
+        "/storybook"
+      ]
+    },
+    "/": {
+      "filePath": "index.lazy.tsx"
+    },
+    "/collected-creds": {
+      "filePath": "collected-creds.lazy.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.lazy.tsx"
+    },
+    "/enteprise-list": {
+      "filePath": "enteprise-list.lazy.tsx"
+    },
+    "/enterprise": {
+      "filePath": "enterprise.lazy.tsx"
+    },
+    "/storybook": {
+      "filePath": "storybook.lazy.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

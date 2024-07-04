@@ -20,7 +20,7 @@ const verifyFunctions = {
   githubOAuth: () => {
     const rootURl = 'https://github.com/login/oauth/authorize';
     const options = {
-      client_id: '5f5991f94e3f8e1224df',
+      client_id: 'Ov23li6vwWBqTMGaeaU1',
       redirect_uri: `https://suipass.xyz?suipassProvider=github`,
       scope: 'user:email',
       state: location.pathname,
@@ -51,7 +51,7 @@ const verifyFunctions = {
     const rootUrl = 'https://twitter.com/i/oauth2/authorize';
     const options = {
       redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=twitter`,
-      client_id: 'LV9ERkc2ZUE1NE5TNzJvVUFKcjQ6MTpjaQ',
+      client_id: 'ZXNlNmVLQWthRVRyWjgtRmVvNFU6MTpjaQ',
       state: 'state',
       response_type: 'code',
       code_challenge: 'y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8',

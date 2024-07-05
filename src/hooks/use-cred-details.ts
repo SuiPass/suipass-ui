@@ -1,4 +1,4 @@
-import { SUIPASS_CONFIGS } from '@/configs';
+import { OAUTH2_CONFIG } from '@/configs';
 import { QUERY_KEYS } from '@/consts';
 import { CredDto } from '@/dtos';
 import { providerRepository, requestRepository } from '@/repositories';
@@ -18,59 +18,26 @@ export enum CredStatus {
 
 const verifyFunctions = {
   githubOAuth: () => {
-    const rootURl = 'https://github.com/login/oauth/authorize';
-    const options = {
-      client_id: 'Ov23li6vwWBqTMGaeaU1',
-      redirect_uri: `https://suipass.xyz?suipassProvider=github`,
-      scope: 'user:email',
-      state: location.pathname,
-    };
-
-    const qs = new URLSearchParams(options);
-    const url = `${rootURl}?${qs.toString()}`;
+    const qs = new URLSearchParams(OAUTH2_CONFIG.GITHUB.OPTIONS);
+    const url = `${OAUTH2_CONFIG.GITHUB.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
   googleOAuth: () => {
-    const rootURl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const options = {
-      client_id: '711294972943-nonheh2v74203ksus9l2ekfiqhbe202s.apps.googleusercontent.com',
-      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=google`,
-      state: location.pathname,
-      response_type: 'code',
-      scope: [
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
-      ].join(' '),
-    };
-
-    const qs = new URLSearchParams(options);
-    const url = `${rootURl}?${qs.toString()}`;
+    const qs = new URLSearchParams(OAUTH2_CONFIG.GOOGLE.OPTIONS);
+    const url = `${OAUTH2_CONFIG.GOOGLE.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
   twitterOAuth: () => {
-    const rootUrl = 'https://twitter.com/i/oauth2/authorize';
-    const options = {
-      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=twitter`,
-      client_id: 'ZXNlNmVLQWthRVRyWjgtRmVvNFU6MTpjaQ',
-      state: 'state',
-      response_type: 'code',
-      code_challenge: 'y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8',
-      code_challenge_method: 'S256',
-      scope: ['users.read'].join(' '),
-    };
-    const qs = new URLSearchParams(options).toString();
-    const url = `${rootUrl}?${qs}`;
+    const qs = new URLSearchParams(OAUTH2_CONFIG.TWITTER.OPTIONS).toString();
+    const url = `${OAUTH2_CONFIG.TWITTER.ROOL_URL}?${qs}`;
     window.location.href = url;
   },
   verisoulOAuth: (sessionId: string) => {
-    const rootURl = 'https://app.sandbox.verisoul.ai';
-    const options = {
+    const qs = new URLSearchParams({
+      ...OAUTH2_CONFIG.VERISOUL.OPTIONS,
       session_id: sessionId,
-      redirect_url: `${SUIPASS_CONFIGS.URL}?suipassProvider=verisoul`,
-    };
-
-    const qs = new URLSearchParams(options);
-    const url = `${rootURl}?${qs.toString()}`;
+    });
+    const url = `${OAUTH2_CONFIG.VERISOUL.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
 } as const;

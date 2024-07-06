@@ -1,0 +1,66 @@
+name: Deploy on Staging Testnet Environment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: Build and Deploy Project Artifacts to Vercel
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository at the specific commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Switch 'deploy/stag-testnet' branch and reset it to this commit
+        run: |
+          git fetch origin deploy/stag-testnet:deploy/stag-testnet
+          git checkout deploy/stag-testnet
+          git reset --hard ${{ github.sha }}
+
+      - name: Push to 'deploy/stag-testnet' branch
+        run: |
+          git push origin deploy/stag-testnet -f
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.yarn/cache
+            **/node_modules
+            **/.eslintcache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Setup Node 20.5.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.5.1
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --git-branch=deploy/stag-testnet --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: |
+          vercel build --token=${{ secrets.VERCEL_TOKEN }};
+
+      - name: Deploy Project Artifacts to Vercel
+        run: |-
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }};

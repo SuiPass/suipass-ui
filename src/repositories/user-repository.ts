@@ -1,6 +1,7 @@
 import { providerApi, userApi } from '@/apis';
 import { MIN_BALANCE } from '@/consts';
-import { CredStatus, UserDto, UserStatisticsDto } from '@/dtos';
+import { UserDto, UserStatisticsDto } from '@/dtos';
+import { CredStatus } from '@/enums';
 
 class UserRepository {
   async newUser(input: { name: string }) {

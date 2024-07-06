@@ -1,5 +1,6 @@
 import { providerApi } from '@/apis';
-import { CredDto, CredStatus, ProviderDto } from '@/dtos';
+import { CredDto, ProviderDto } from '@/dtos';
+import { CredStatus } from '@/enums';
 
 class CredRepository {
   async getList({ status }: { status?: CredStatus[] } = {}): Promise<CredDto[]> {

@@ -1,4 +1,4 @@
-import { CredStatus } from '@/dtos';
+import { CredStatus } from '@/enums';
 
 export type ProviderModel = {
   id: string;

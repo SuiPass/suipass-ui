@@ -1,6 +1,6 @@
 import { Container, CredCard, Empty, Loader, CredVerifying, FeedbackButton } from '@/components';
 import { Progress } from '@/components/ui/progress';
-import { CredStatus } from '@/dtos';
+import { CredStatus } from '@/enums';
 import { useListOfCreds, useStatisticsOfUser } from '@/hooks';
 import { Link } from '@tanstack/react-router';
 

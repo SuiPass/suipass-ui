@@ -1,8 +1,9 @@
 import { Button, CredDetails } from '.';
 import { Drawer, DrawerContent, DrawerTrigger } from './ui/drawer';
 import { useState } from 'react';
-import { CredDto, CredStatus } from '@/dtos';
 import { useCredCard } from '@/hooks';
+import { CredDto } from '@/dtos';
+import { CredStatus } from '@/enums';
 
 type CredCardProps = {
   data: CredDto;

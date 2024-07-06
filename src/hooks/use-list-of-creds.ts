@@ -1,5 +1,5 @@
 import { QUERY_KEYS } from '@/consts';
-import { CredStatus } from '@/dtos';
+import { CredStatus } from '@/enums';
 import { credRepository } from '@/repositories';
 import { useQuery } from '@tanstack/react-query';
 

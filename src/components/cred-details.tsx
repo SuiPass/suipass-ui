@@ -1,13 +1,14 @@
 import { CredDto } from '@/dtos';
-import { Button, CredVerifying, Loader } from '.';
+import { Button, Loader } from '.';
 import { Progress } from '@/components/ui/progress';
 import TimerIcon from '@/assets/icons/timer.svg';
 import VerifyIcon from '@/assets/icons/verify.svg';
 import StarIcon from '@/assets/icons/star.svg';
 import CloseIcon from '@/assets/icons/close.svg';
 import { Checkbox } from './ui/checkbox';
-import { CredStatus, useCredDetails } from '@/hooks';
 import toast from 'react-hot-toast';
+import { CredCardStatus } from '@/enums';
+import { useCredDetails } from '@/hooks';
 
 type CredDetailsProps = {
   data: CredDto;
@@ -29,7 +30,7 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
               src={CloseIcon}
               className="w-full aspect-square cursor-pointer"
               onClick={(e) => {
-                if (status === CredStatus.NeedToSubmit) {
+                if (status === CredCardStatus.NeedToSubmit) {
                   toast.error('The process is running, please wait.');
                   return;
                 }
@@ -118,14 +119,16 @@ export function CredDetails({ data, setDrawerIsOpen }: CredDetailsProps) {
         </div>
         <div className="flex flex-col gap-2 mt-8 sticky bottom-0 bg-black py-4">
           {status === null && <Loader />}
-          {status === CredStatus.NotConnected && <Button onClick={verifyBtnOnClick}>Verify</Button>}
-          {status === CredStatus.NeedToSubmit && (
+          {status === CredCardStatus.NotConnected && (
+            <Button onClick={verifyBtnOnClick}>Verify</Button>
+          )}
+          {status === CredCardStatus.NeedToSubmit && (
             <Button disabled isLoading>
               Submitting
             </Button>
           )}
-          {status === CredStatus.Waiting && <Button disabled>Waiting</Button>}
-          {status === CredStatus.Connected &&
+          {status === CredCardStatus.Waiting && <Button disabled>Waiting</Button>}
+          {status === CredCardStatus.Connected &&
             (data.points === data.maxPoints ? (
               <Button disabled>Verified</Button>
             ) : (

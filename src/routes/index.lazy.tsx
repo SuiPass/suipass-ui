@@ -1,4 +1,4 @@
-import { CredStatus } from '@/dtos';
+import { CredStatus } from '@/enums';
 import { Home } from '@/pages/home';
 import { Landing } from '@/pages/landing';
 import { rootStore } from '@/stores';

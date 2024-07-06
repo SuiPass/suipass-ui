@@ -1,8 +1,5 @@
-export enum CredStatus {
-  NotVerified = 'not_verified',
-  Waiting = 'waiting',
-  Verified = 'verified',
-}
+import { CredStatus } from '@/enums';
+
 export type CredDto = {
   id: string;
   name: string;

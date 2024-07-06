@@ -41,4 +41,13 @@ export const OAUTH2_CONFIG = {
       redirect_url: `${SUIPASS_CONFIGS.URL}?suipassProvider=verisoul`,
     },
   },
+  DISCORD: {
+    ROOT_URL: 'https://discord.com/oauth2/authorize',
+    OPTIONS: {
+      client_id: '1259024906868363274',
+      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=discord`,
+      response_type: 'code',
+      scope: ['email', 'identify'].join(' '),
+    },
+  },
 };

@@ -1,10 +1,10 @@
-name: Deploy on Develop Testnet Environment
+name: Deploy on Staging Testnet Environment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
-    branches: [dev, cicd/*]
+    branches: [main]
 jobs:
   build:
     name: Build and Deploy Project Artifacts to Vercel
@@ -22,15 +22,15 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Switch 'deploy/dev-testnet' branch and reset it to this commit
+      - name: Switch 'deploy/stag-testnet' branch and reset it to this commit
         run: |
-          git fetch origin deploy/dev-testnet:deploy/dev-testnet
-          git checkout deploy/dev-testnet
+          git fetch origin deploy/stag-testnet:deploy/stag-testnet
+          git checkout deploy/stag-testnet
           git reset --hard ${{ github.sha }}
 
-      - name: Push to 'deploy/dev-testnet' branch
+      - name: Push to 'deploy/stag-testnet' branch
         run: |
-          git push origin deploy/dev-testnet -f
+          git push origin deploy/stag-testnet -f
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -55,7 +55,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --git-branch=deploy/dev-testnet --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --git-branch=deploy/stag-testnet --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build
         run: |

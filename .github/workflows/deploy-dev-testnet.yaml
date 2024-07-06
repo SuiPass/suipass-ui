@@ -32,5 +32,38 @@ jobs:
         run: |
           git push origin deploy/dev-testnet -f
 
-      - name: Trigger Vercel deploy hook
-        run: curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_VxDGhmwd7SdZyOm24TZu2aOPMAeT/hlhad3o6ji
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Install Bun
+        run: curl -fsSL https://bun.sh/install | bash
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.yarn/cache
+            **/node_modules
+            **/.eslintcache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Setup Node 20.5.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.5.1
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --git-branch=deploy/dev --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: |
+          vercel build --token=${{ secrets.VERCEL_TOKEN }};
+
+      - name: Deploy Project Artifacts to Vercel
+        run: |-
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }};

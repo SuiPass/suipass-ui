@@ -35,9 +35,6 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Install Bun
-        run: curl -fsSL https://bun.sh/install | bash
-
       - name: Cache Dependencies
         uses: actions/cache@v2
         with:
@@ -67,9 +64,3 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         run: |-
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }};
-      # - uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-args: '--preview --git-branch=deploy/dev-testnet'
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}

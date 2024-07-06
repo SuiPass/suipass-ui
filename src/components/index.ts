@@ -12,3 +12,5 @@ export * from './loader';
 export * from './empty';
 export * from './cred-verifying';
 export * from './install-wallet-extension-dialog';
+
+export * from './feedback-button';

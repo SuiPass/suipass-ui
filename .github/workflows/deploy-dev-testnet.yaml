@@ -1,0 +1,36 @@
+name: Deploy on Develop Environment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    branches: [dev, cicd/*]
+jobs:
+  build:
+    name: Build and Deploy Project Artifacts to Vercel
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository at the specific commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Switch 'deploy/dev-testnet' branch and reset it to this commit
+        run: |
+          git fetch origin deploy/dev-testnet:deploy/dev-testnet
+          git checkout deploy/dev-testnet
+          git reset --hard ${{ github.sha }}
+
+      - name: Push to 'deploy/dev-testnet' branch
+        run: |
+          git push origin deploy/dev-testnet -f
+
+      - name: Trigger Vercel deploy hook
+        run: curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_VxDGhmwd7SdZyOm24TZu2aOPMAeT/hlhad3o6ji

@@ -38,6 +38,11 @@ const verifyFunctions = {
     const url = `${OAUTH2_CONFIG.DISCORD.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
+  facebookOAuth2: () => {
+    const qs = new URLSearchParams(OAUTH2_CONFIG.FACEBOOK.OPTIONS);
+    const url = `${OAUTH2_CONFIG.FACEBOOK.ROOT_URL}?${qs.toString()}`;
+    window.location.href = url;
+  },
 } as const;
 
 async function submitProof(payload: { providerAddress: string; providerCode: string; proof: any }) {
@@ -131,6 +136,7 @@ export function useCredDetails({
           afterVerified(res);
         })
         .catch((err) => {
+          console.error(err);
           if (data.currentLevel === 0) setStatus(CredCardStatus.NotConnected);
           else setStatus(CredCardStatus.Connected);
         });
@@ -187,6 +193,11 @@ export function useCredDetails({
         verifyFunctions.discordOAuth2();
         return;
       }
+
+      case Providers.Facebook: {
+        verifyFunctions.facebookOAuth2();
+        return;
+      }
     }
   }, [data, status]);
 
@@ -201,6 +212,8 @@ export function useCredDetails({
           case Providers.Github:
           case Providers.Google:
           case Providers.Twitter:
+          case Providers.Discord:
+          case Providers.Facebook:
             proof = queries.code;
             break;
 
@@ -216,7 +229,6 @@ export function useCredDetails({
             proof = queries.session_id;
             break;
         }
-
         mutation.mutate({ providerAddress, proof });
       }
     }

@@ -50,4 +50,12 @@ export const OAUTH2_CONFIG = {
       scope: ['email', 'identify'].join(' '),
     },
   },
+  FACEBOOK: {
+    ROOT_URL: 'https://www.facebook.com/v12.0/dialog/oauth',
+    OPTIONS: {
+      client_id: '502758942207946',
+      redirect_uri: `${SUIPASS_CONFIGS.URL}/?suipassProvider=facebook`,
+      scope: 'public_profile',
+    },
+  },
 };

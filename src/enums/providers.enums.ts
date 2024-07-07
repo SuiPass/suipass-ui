@@ -5,4 +5,5 @@ export enum Providers {
   Twitter = 'twitter',
   Verisoul = 'verisoul',
   Discord = 'discord',
+  Facebook = 'facebook',
 }

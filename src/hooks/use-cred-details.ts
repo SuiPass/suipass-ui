@@ -40,6 +40,11 @@ const verifyFunctions = {
     const url = `${OAUTH2_CONFIG.VERISOUL.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
+  ten: () => {
+    const qs = new URLSearchParams(OAUTH2_CONFIG.LIVENESS.OPTIONS).toString();
+    const url = `${OAUTH2_CONFIG.LIVENESS.ROOT_URL}?${qs.toString()}`;
+    window.location.href = url;
+  },
 } as const;
 
 async function submitProof(payload: { providerAddress: string; providerCode: string; proof: any }) {
@@ -181,6 +186,12 @@ export function useCredDetails({
         })();
         return;
       }
+
+      case 'ten': {
+        setStatus(CredStatus.NeedToSubmit);
+        verifyFunctions.ten();
+        return;
+      }
     }
   }, [data, status]);
 
@@ -209,6 +220,18 @@ export function useCredDetails({
 
             proof = queries.session_id;
             break;
+          case 'ten': {
+            const success = queries.success;
+
+            if (success != true) {
+              toast.error(`Authentication with Liveness failed!`);
+              setStatus(CredStatus.NotConnected);
+              return;
+            }
+
+            proof = queries.session_id;
+            break;
+          }
         }
 
         mutation.mutate({ providerAddress, proof });

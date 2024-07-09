@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const StorybookLazyImport = createFileRoute('/storybook')()
+const LivenessKycLazyImport = createFileRoute('/liveness-kyc')()
 const EnterpriseLazyImport = createFileRoute('/enterprise')()
 const EntepriseListLazyImport = createFileRoute('/enteprise-list')()
 const DashboardLazyImport = createFileRoute('/dashboard')()
@@ -29,6 +30,11 @@ const StorybookLazyRoute = StorybookLazyImport.update({
   path: '/storybook',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/storybook.lazy').then((d) => d.Route))
+
+const LivenessKycLazyRoute = LivenessKycLazyImport.update({
+  path: '/liveness-kyc',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/liveness-kyc.lazy').then((d) => d.Route))
 
 const EnterpriseLazyRoute = EnterpriseLazyImport.update({
   path: '/enterprise',
@@ -64,26 +70,51 @@ const IndexLazyRoute = IndexLazyImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/collected-creds': {
+      id: '/collected-creds'
+      path: '/collected-creds'
+      fullPath: '/collected-creds'
       preLoaderRoute: typeof CollectedCredsLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardLazyImport
       parentRoute: typeof rootRoute
     }
     '/enteprise-list': {
+      id: '/enteprise-list'
+      path: '/enteprise-list'
+      fullPath: '/enteprise-list'
       preLoaderRoute: typeof EntepriseListLazyImport
       parentRoute: typeof rootRoute
     }
     '/enterprise': {
+      id: '/enterprise'
+      path: '/enterprise'
+      fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseLazyImport
       parentRoute: typeof rootRoute
     }
+    '/liveness-kyc': {
+      id: '/liveness-kyc'
+      path: '/liveness-kyc'
+      fullPath: '/liveness-kyc'
+      preLoaderRoute: typeof LivenessKycLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/storybook': {
+      id: '/storybook'
+      path: '/storybook'
+      fullPath: '/storybook'
       preLoaderRoute: typeof StorybookLazyImport
       parentRoute: typeof rootRoute
     }
@@ -92,13 +123,54 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   CollectedCredsLazyRoute,
   DashboardLazyRoute,
   EntepriseListLazyRoute,
   EnterpriseLazyRoute,
+  LivenessKycLazyRoute,
   StorybookLazyRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/collected-creds",
+        "/dashboard",
+        "/enteprise-list",
+        "/enterprise",
+        "/liveness-kyc",
+        "/storybook"
+      ]
+    },
+    "/": {
+      "filePath": "index.lazy.tsx"
+    },
+    "/collected-creds": {
+      "filePath": "collected-creds.lazy.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.lazy.tsx"
+    },
+    "/enteprise-list": {
+      "filePath": "enteprise-list.lazy.tsx"
+    },
+    "/enterprise": {
+      "filePath": "enterprise.lazy.tsx"
+    },
+    "/liveness-kyc": {
+      "filePath": "liveness-kyc.lazy.tsx"
+    },
+    "/storybook": {
+      "filePath": "storybook.lazy.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

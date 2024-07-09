@@ -41,4 +41,10 @@ export const OAUTH2_CONFIG = {
       redirect_url: `${SUIPASS_CONFIGS.URL}?suipassProvider=verisoul`,
     },
   },
+  LIVENESS: {
+    ROOT_URL: 'http://localhost:5173/liveness-kyc',
+    OPTIONS: {
+      redirect_uri: `${SUIPASS_CONFIGS.URL}?suipassProvider=ten`,
+    },
+  },
 };

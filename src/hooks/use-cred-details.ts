@@ -41,7 +41,7 @@ const verifyFunctions = {
     window.location.href = url;
   },
   ten: () => {
-    const qs = new URLSearchParams(OAUTH2_CONFIG.LIVENESS.OPTIONS).toString();
+    const qs = new URLSearchParams({ redirect_uri: window.location.pathname }).toString();
     const url = `${OAUTH2_CONFIG.LIVENESS.ROOT_URL}?${qs.toString()}`;
     window.location.href = url;
   },
@@ -194,9 +194,10 @@ export function useCredDetails({
       }
     }
   }, [data, status]);
-
   // Submit proof for google, twitter, github
   useEffect(() => {
+    console.log(status);
+
     if (status === CredStatus.NeedToSubmit) {
       if (suipassProvider === providerCode) {
         setDrawerIsOpen(true);
@@ -233,7 +234,6 @@ export function useCredDetails({
             break;
           }
         }
-
         mutation.mutate({ providerAddress, proof });
       }
     }

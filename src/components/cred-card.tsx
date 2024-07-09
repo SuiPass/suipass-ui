@@ -12,7 +12,6 @@ export const CredCard: React.FC<CredCardProps> = ({ data }) => {
   const [isDrawerOpen, setDrawerIsOpen] = useState(false);
 
   useCredCard({ data, setDrawerIsOpen });
-
   return (
     <div
       className="flex flex-col p-6 border border-solid bg-dark-grey border-dark-grey rounded-[40px] h-full cursor-pointer"

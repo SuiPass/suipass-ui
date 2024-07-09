@@ -29,6 +29,8 @@ const FaceDetection: React.FC = () => {
       //     `${searchParam.get('redirect_uri')}?suipassProvider=ten&success=true&session_id=${Math.random()}`;
       // }, 3000);
 
+      
+
       if (navigator.mediaDevices.getUserMedia) {
         const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
         if (videoRef.current) {

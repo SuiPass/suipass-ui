@@ -10,3 +10,4 @@ export * from './use-wallet-ext-install';
 export * from './use-create-scorer';
 export * from './use-list-of-score-use-case';
 export * from './use-list-of-scorers';
+export * from './use-select-wallet-dialog';

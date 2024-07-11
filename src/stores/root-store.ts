@@ -3,11 +3,13 @@ import { appStore } from './app-store';
 import { contractStore } from './contract-store';
 import { userRepository } from '@/repositories';
 import { generateUsername } from 'unique-username-generator';
+import { dialogStore } from './dialog-store';
 
 // Global store
 export const rootStore = {
   app: appStore,
   contract: contractStore,
+  dialog: dialogStore,
 };
 
 // Listeners

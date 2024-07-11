@@ -15,20 +15,24 @@ export function useAppWallet({ setLoading }: { setLoading?: (loading: boolean) =
   const { mutate: connectWallet, isPending: connectWalletIsPending } = useConnectWallet();
   const { mutate: disconnectWallet, isPending: disconnectWalletIsPending } = useDisconnectWallet();
 
-  const connect = useCallback(() => {
-    connectWallet(
-      { wallet: wallets[0] },
-      {
-        onError: (err) => {
-          toaster.error('Please connect or unlock your wallet before logging in!');
-          setLoading!(false);
+  const connect = useCallback(
+    (name?: string) => {
+      connectWallet(
+        { wallet: wallets.find((wallet) => wallet.name === name) ?? wallets[0] },
+        {
+          onError: (err) => {
+            console.error(err);
+            toaster.error('Please connect or unlock your wallet before logging in!');
+            setLoading!(false);
+          },
+          onSuccess: (data) => {
+            setLoading!(false);
+          },
         },
-        onSuccess: (data) => {
-          setLoading!(false);
-        },
-      },
-    );
-  }, [wallets]);
+      );
+    },
+    [wallets],
+  );
 
   const disconnect = useCallback(() => {
     disconnectWallet();

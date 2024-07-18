@@ -64,12 +64,15 @@ export function Home({ status }: { status: CredStatus[] }) {
                   <hr className="shrink-0 mt-6 h-px bg-gray-500 border border-gray-500 border-dashed" />
                   <div className="flex flex-col mt-6">
                     <div className="text-base font-medium text-gray-500">Points/Threshold</div>
-                    <div className="flex flex-col mt-4">
+                    <div className="flex flex-col mt-4 relative">
                       <div className="flex gap-5 justify-between px-2 py-1 w-full text-sm whitespace-nowrap">
                         <div className="flex gap-5 justify-between">
                           <div className="text-white">0</div>
                         </div>
-                        <div className="font-bold text-teal-400 ml-[-90px] relative">
+                        <div
+                          className="font-bold text-teal-400 absolute -translate-x-1/2 z-10"
+                          style={{ left: `${400 * 100 / (userStatsData?.maxPoints ?? 1)}%` }}
+                        >
                           <span>400</span>
                           <div className="divide-x divide-dashed absolute z-10 top-0 left-3">
                             <div className="h-6" />

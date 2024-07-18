@@ -38,7 +38,7 @@ export const OAUTH2_CONFIG = {
   VERISOUL: {
     ROOT_URL: 'https://app.sandbox.verisoul.ai',
     OPTIONS: {
-      redirect_url: `${SUIPASS_CONFIGS.URL}?suipassProvider=verisoul`,
+      redirect_url: `${SUIPASS_CONFIGS.URL}/verisoul`,
     },
   },
   LIVENESS: {

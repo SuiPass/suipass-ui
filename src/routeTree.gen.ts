@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const VerisoulLazyImport = createFileRoute('/verisoul')()
 const StorybookLazyImport = createFileRoute('/storybook')()
 const LivenessKycLazyImport = createFileRoute('/liveness-kyc')()
 const EnterpriseLazyImport = createFileRoute('/enterprise')()
@@ -25,6 +26,11 @@ const CollectedCredsLazyImport = createFileRoute('/collected-creds')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const VerisoulLazyRoute = VerisoulLazyImport.update({
+  path: '/verisoul',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/verisoul.lazy').then((d) => d.Route))
 
 const StorybookLazyRoute = StorybookLazyImport.update({
   path: '/storybook',
@@ -118,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StorybookLazyImport
       parentRoute: typeof rootRoute
     }
+    '/verisoul': {
+      id: '/verisoul'
+      path: '/verisoul'
+      fullPath: '/verisoul'
+      preLoaderRoute: typeof VerisoulLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -131,6 +144,7 @@ export const routeTree = rootRoute.addChildren({
   EnterpriseLazyRoute,
   LivenessKycLazyRoute,
   StorybookLazyRoute,
+  VerisoulLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -147,7 +161,8 @@ export const routeTree = rootRoute.addChildren({
         "/enteprise-list",
         "/enterprise",
         "/liveness-kyc",
-        "/storybook"
+        "/storybook",
+        "/verisoul"
       ]
     },
     "/": {
@@ -170,6 +185,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/storybook": {
       "filePath": "storybook.lazy.tsx"
+    },
+    "/verisoul": {
+      "filePath": "verisoul.lazy.tsx"
     }
   }
 }
